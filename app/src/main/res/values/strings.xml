@@ -1,0 +1,7 @@
+<resources>
+	<string name="app_name">Travel Perfect</string>
+	<string name="action_settings">Settings</string>
+	<string name="btn_edit">Edit</string>
+	<string name="btn_done">Done</string>
+	<string name="title_activity_create_trip">CreateTripActivity</string>
+</resources>

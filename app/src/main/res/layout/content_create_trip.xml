@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -9,5 +9,27 @@
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
 	tools:context="com.cvv.birdsofonefeather.travelperfect.view.CreateTripActivity"
 	tools:showIn="@layout/activity_create_trip">
-
-</android.support.constraint.ConstraintLayout>
+	
+	<android.support.v7.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		
+		<fragment
+			android:id="@+id/place_autocomplete_fragment"
+			android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	</android.support.v7.widget.CardView>
+	
+	<ImageView
+		android:id="@+id/place_image"
+		android:layout_width="match_parent"
+		android:layout_height="300dp"
+		android:layout_centerInParent="true"/>
+	
+	<TextView
+		android:id="@+id/attributions"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"/>
+</RelativeLayout>

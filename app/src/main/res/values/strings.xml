@@ -13,4 +13,7 @@
 	<string name="btn_yes">Yes</string>
 	<string name="btn_no">No, keep it activated</string>
 	<string name="label_departure">Departure</string>
+	<string name="label_return">Return</string>
+	<string name="btn_add_departure">Add Departure</string>
+	<string name="btn_add_return">Add Return</string>
 </resources>

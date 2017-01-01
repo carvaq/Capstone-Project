@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.cvv.birdsofonefeather.travelperfect.R;
 import com.cvv.birdsofonefeather.travelperfect.model.TripBuilder;
@@ -36,11 +37,23 @@ public abstract class EditorActivity extends BaseActivity
     EditText mEditText;
     @BindView(R.id.feature_toggle)
     SwitchCompat mFeatureToggle;
+    @BindView(R.id.departure_date)
+    TextView mDepartureDate;
+    @BindView(R.id.departure_time)
+    TextView mDepartureTime;
+    @BindView(R.id.departure_add)
+    TextView mDepartureAdd;
+    @BindView(R.id.return_date)
+    TextView mReturnDate;
+    @BindView(R.id.return_time)
+    TextView mReturnTime;
+    @BindView(R.id.return_add)
+    TextView mReturnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_trip);
+        setContentView(R.layout.activity_editor);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -89,18 +102,42 @@ public abstract class EditorActivity extends BaseActivity
         }.execute(place.getId());
     }
 
+    void changeVisibilityInDatesSection(boolean departure, boolean addButtonVisible) {
+        if (departure) {
+            if (addButtonVisible) {
+                mDepartureAdd.setVisibility(View.VISIBLE);
+                mDepartureDate.setVisibility(View.GONE);
+                mDepartureTime.setVisibility(View.GONE);
+            } else {
+                mDepartureAdd.setVisibility(View.GONE);
+                mDepartureDate.setVisibility(View.VISIBLE);
+                mDepartureTime.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (addButtonVisible) {
+                mReturnAdd.setVisibility(View.VISIBLE);
+                mReturnDate.setVisibility(View.GONE);
+                mReturnTime.setVisibility(View.GONE);
+            } else {
+                mReturnAdd.setVisibility(View.GONE);
+                mReturnDate.setVisibility(View.VISIBLE);
+                mReturnTime.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        if (isTripEmpty()) {
-            super.onBackPressed();
-        } else {
+        if (hasTripChanges()) {
             showSaveDialog();
+        } else {
+            super.onBackPressed();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home && !isTripEmpty()) {
+        if (item.getItemId() == android.R.id.home && hasTripChanges()) {
             showSaveDialog();
             return true;
         } else if (item.getItemId() == R.id.action_discard) {
@@ -111,8 +148,8 @@ public abstract class EditorActivity extends BaseActivity
         }
     }
 
-    private boolean isTripEmpty() {
-        return ORIGINAL_TRIP_BUILDER.equals(mTripBuilder);
+    private boolean hasTripChanges() {
+        return !ORIGINAL_TRIP_BUILDER.equals(mTripBuilder);
     }
 
     private void showSaveDialog() {

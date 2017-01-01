@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/content_create_trip"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	app:layout_behavior="@string/appbar_scrolling_view_behavior"
+	tools:context="com.cvv.birdsofonefeather.travelperfect.view.CreateTripActivity"
+	tools:showIn="@layout/activity_editor">
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:padding="@dimen/frame_padding">
+		
+		<android.support.v7.widget.CardView
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/ideal_touch_size">
+			
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+				
+				<fragment
+					android:id="@+id/place_autocomplete_fragment"
+					android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"/>
+				
+				<EditText
+					android:id="@+id/plain_name_of_place"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:inputType="text"
+					android:visibility="gone"/>
+			</FrameLayout>
+		</android.support.v7.widget.CardView>
+		
+		<android.support.v7.widget.SwitchCompat
+			android:id="@+id/feature_toggle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end"
+			android:layout_marginTop="@dimen/widget_padding"
+			android:checked="true"
+			android:text="@string/label_use_google_for_search"/>
+		
+		<include
+			layout="@layout/editor_dates_section"/>
+		
+		<LinearLayout
+			android:id="@+id/item_container"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/section_separator"
+			android:orientation="vertical"/>
+	
+	</LinearLayout>
+</ScrollView>

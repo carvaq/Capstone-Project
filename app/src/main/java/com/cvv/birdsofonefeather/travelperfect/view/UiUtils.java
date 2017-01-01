@@ -14,7 +14,7 @@ import android.view.Display;
 
 public class UiUtils {
     private static final String KEY_FEATURE_TOGGLE_DIALOG_SHOWN = "feature_toggle_dialog_shown";
-    private static final double GOLDEN_RATIO = 1.68230;
+    private static final double GOLDEN_RATIO = 1.61803398875;
 
     public static int getDisplayWidth(Activity context) {
         Display display = context.getWindowManager().getDefaultDisplay();

@@ -12,4 +12,5 @@
 	<string name="dialog_disabling_google_search_text">The search powered by Google will give you more exact name. If you disable it, you will not get an image associated to your trip. Do you still want to disable it?? </string>
 	<string name="btn_yes">Yes</string>
 	<string name="btn_no">No, keep it activated</string>
+	<string name="label_departure">Departure</string>
 </resources>

@@ -16,4 +16,7 @@
 	<string name="label_return">Return</string>
 	<string name="btn_add_departure">Add Departure</string>
 	<string name="btn_add_return">Add Return</string>
+	<string name="label_number_of">Number</string>
+	<string name="label_name">Name</string>
+	<string name="btn_add_item">Add Item</string>
 </resources>

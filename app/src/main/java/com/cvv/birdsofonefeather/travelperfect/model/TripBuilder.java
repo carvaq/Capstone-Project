@@ -2,9 +2,6 @@ package com.cvv.birdsofonefeather.travelperfect.model;
 
 import android.content.ContentValues;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Carla
  * Date: 31/12/2016
@@ -17,7 +14,6 @@ public class TripBuilder {
     private String mAttributions;
     private long mDeparture;
     private long mReturn;
-    private List<Item> mItems = new ArrayList<>();
 
     public TripBuilder setTitle(String title) {
         mTitle = title;
@@ -44,11 +40,6 @@ public class TripBuilder {
         return this;
     }
 
-    public TripBuilder addItem(int numberOf, String name) {
-        mItems.add(new Item(numberOf, name));
-        return this;
-    }
-
     public ContentValues getTripContentValues() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TripContract.TripEntry.COLUMN_NAME_OF_PLACE, mTitle);
@@ -69,16 +60,6 @@ public class TripBuilder {
         return mReturn;
     }
 
-    public class Item {
-        private int numberOf;
-        private String what;
-
-        public Item(int numberOf, String what) {
-            this.numberOf = numberOf;
-            this.what = what;
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,9 +69,7 @@ public class TripBuilder {
 
         if (mDeparture != that.mDeparture) return false;
         if (mReturn != that.mReturn) return false;
-        if (mTitle != null ? !mTitle.equals(that.mTitle) : that.mTitle != null) return false;
-        return mItems != null ? mItems.equals(that.mItems) : that.mItems == null;
-
+        return mTitle != null ? mTitle.equals(that.mTitle) : that.mTitle == null;
     }
 
     @Override
@@ -98,7 +77,6 @@ public class TripBuilder {
         int result = mTitle != null ? mTitle.hashCode() : 0;
         result = 31 * result + (int) (mDeparture ^ (mDeparture >>> 32));
         result = 31 * result + (int) (mReturn ^ (mReturn >>> 32));
-        result = 31 * result + (mItems != null ? mItems.hashCode() : 0);
         return result;
     }
 
@@ -110,7 +88,6 @@ public class TripBuilder {
                 ", mAttributions='" + mAttributions + '\'' +
                 ", mDeparture=" + mDeparture +
                 ", mReturn=" + mReturn +
-                ", mItems=" + mItems +
                 '}';
     }
 }

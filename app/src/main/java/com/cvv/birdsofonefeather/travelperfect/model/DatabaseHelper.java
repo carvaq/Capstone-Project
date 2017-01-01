@@ -15,47 +15,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        addReminder(database);
-        addListItem(database);
-        addTripEntity(database);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    }
-
-    private void addListItem(SQLiteDatabase db) {
-        db.execSQL(
+        database.execSQL(
                 "CREATE TABLE " + TripContract.ListItemEntry.TABLE_NAME + " (" +
                         TripContract.ListItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         TripContract.ListItemEntry.COLUMN_NUMBER_OF + " INTEGER NOT NULL, " +
-                        TripContract.ListItemEntry.COLUMN_WHAT + " TEXT NOT NULL);");
-    }
-
-    private void addReminder(SQLiteDatabase db) {
-        db.execSQL(
+                        TripContract.ListItemEntry.COLUMN_WHAT + " TEXT NOT NULL," +
+                        TripContract.ListItemEntry.COLUMN_DONE + " SMALLINT NOT NULL," +
+                        TripContract.ListItemEntry.COLUMN_TRIP_FK + " INTEGER, " +
+                        "FOREIGN KEY (" + TripContract.ListItemEntry.COLUMN_TRIP_FK + ") " +
+                        "REFERENCES " + TripContract.TripEntry.TABLE_NAME + " (" + TripContract.TripEntry._ID + "));");
+        database.execSQL(
                 "CREATE TABLE " + TripContract.ReminderEntry.TABLE_NAME + " (" +
                         TripContract.ReminderEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        TripContract.ReminderEntry.COLUMN_WHEN + " REAL NOT NULL);");
-    }
+                        TripContract.ReminderEntry.COLUMN_WHEN + " REAL NOT NULL," +
+                        TripContract.ReminderEntry.COLUMN_TRIP_FK + " INTEGER, " +
+                        "FOREIGN KEY (" + TripContract.ReminderEntry.COLUMN_TRIP_FK + ") " +
+                        "REFERENCES " + TripContract.TripEntry.TABLE_NAME + " (" + TripContract.TripEntry._ID + "));");
 
-    private void addTripEntity(SQLiteDatabase db) {
-        db.execSQL(
+        database.execSQL(
                 "CREATE TABLE " + TripContract.TripEntry.TABLE_NAME + " (" +
                         TripContract.TripEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         TripContract.TripEntry.COLUMN_NAME_OF_PLACE + " TEXT NOT NULL, " +
                         TripContract.TripEntry.COLUMN_DEPARTURE + " REAL NOT NULL, " +
                         TripContract.TripEntry.COLUMN_RETURN + " REAL, " +
                         TripContract.TripEntry.COLUMN_IMAGE_URL + " TEXT, " +
-                        TripContract.TripEntry.COLUMN_ATTRIBUTIONS + " TEXT, " +
-                        TripContract.TripEntry.COLUMN_LIST_ITEM_FK + " INTEGER, " +
-                        TripContract.TripEntry.COLUMN_REMINDER_FK + " INTEGER, " +
-                        "FOREIGN KEY (" + TripContract.TripEntry.COLUMN_LIST_ITEM_FK + ") " +
-                        "REFERENCES " + TripContract.ListItemEntry.TABLE_NAME + " (" + TripContract.ListItemEntry._ID + ")," +
-                        "FOREIGN KEY (" + TripContract.TripEntry.COLUMN_REMINDER_FK + ") " +
-                        "REFERENCES " + TripContract.ReminderEntry.TABLE_NAME + " (" + TripContract.ReminderEntry._ID + "));"
+                        TripContract.TripEntry.COLUMN_ATTRIBUTIONS + " TEXT);");
+    }
 
-        );
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 
 

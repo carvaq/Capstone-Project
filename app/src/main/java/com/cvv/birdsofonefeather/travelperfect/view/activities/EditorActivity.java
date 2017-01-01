@@ -3,16 +3,19 @@ package com.cvv.birdsofonefeather.travelperfect.view.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cvv.birdsofonefeather.travelperfect.R;
+import com.cvv.birdsofonefeather.travelperfect.model.Item;
 import com.cvv.birdsofonefeather.travelperfect.model.TripBuilder;
 import com.cvv.birdsofonefeather.travelperfect.view.EditDialogHelper;
+import com.cvv.birdsofonefeather.travelperfect.view.ItemAdapter;
 import com.cvv.birdsofonefeather.travelperfect.view.PhotoTask;
 import com.cvv.birdsofonefeather.travelperfect.view.UiUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -24,18 +27,17 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import timber.log.Timber;
 
 public abstract class EditorActivity extends BaseActivity
-        implements GoogleApiClient.OnConnectionFailedListener, CompoundButton.OnCheckedChangeListener {
+        implements GoogleApiClient.OnConnectionFailedListener {
 
     public static final String DATE_FORMAT = "dd. MMM yyyy";
     public static final String TIME_FORMAT = "HH:mm";
-    private GoogleApiClient mGoogleApiClient;
-    TripBuilder mTripBuilder = new TripBuilder();
-    TripBuilder ORIGINAL_TRIP_BUILDER;
+
 
     @BindView(R.id.plain_name_of_place)
     EditText mEditText;
@@ -53,14 +55,21 @@ public abstract class EditorActivity extends BaseActivity
     TextView mReturnTime;
     @BindView(R.id.return_add)
     TextView mReturnAdd;
+    @BindView(R.id.item_container)
+    RecyclerView mRecyclerView;
+
+    TripBuilder mTripBuilder = new TripBuilder();
 
     private EditDialogHelper mDialogHelper;
+    private ItemAdapter mAdapter;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         mDialogHelper = new EditDialogHelper(this);
+        mAdapter = new ItemAdapter(this);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -72,8 +81,6 @@ public abstract class EditorActivity extends BaseActivity
     @Override
     protected void onViewsInitialized() {
         enableBackNavigation();
-
-        initializedTripBuilder();
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -90,10 +97,8 @@ public abstract class EditorActivity extends BaseActivity
                 Timber.d("An error occurred: %s", status);
             }
         });
-        mFeatureToggle.setOnCheckedChangeListener(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-    protected abstract void initializedTripBuilder();
 
     private void processPlace(Place place) {
         mTripBuilder.setTitle(place.getName().toString());
@@ -114,6 +119,11 @@ public abstract class EditorActivity extends BaseActivity
         mTripBuilder.setTitle(mEditText.getText().toString());
     }
 
+    @OnClick(R.id.add_item)
+    void addNewItem() {
+        mAdapter.addItem(new Item());
+    }
+
     @OnClick(value = {R.id.departure_add, R.id.return_add})
     void onAddDateClicked(View view) {
         if (view.getId() == R.id.departure_add) {
@@ -132,7 +142,6 @@ public abstract class EditorActivity extends BaseActivity
         }
     }
 
-
     @OnClick(value = {R.id.departure_time, R.id.return_time})
     void onChangeTimeClicked(View view) {
         if (view.getId() == R.id.departure_time) {
@@ -141,6 +150,8 @@ public abstract class EditorActivity extends BaseActivity
             mDialogHelper.showTimePicker(mTripBuilder, mReturnTime);
         }
     }
+
+    abstract boolean hasTripChanges();
 
     @Override
     public void onBackPressed() {
@@ -164,13 +175,8 @@ public abstract class EditorActivity extends BaseActivity
         }
     }
 
-    private boolean hasTripChanges() {
-        return !ORIGINAL_TRIP_BUILDER.equals(mTripBuilder);
-    }
-
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    @OnCheckedChanged(R.id.feature_toggle)
+    public void onCheckedChanged(boolean isChecked) {
         if (!isChecked) {
             mDialogHelper.showFeatureDisableDialog(mFeatureToggle);
             findViewById(R.id.place_autocomplete_fragment).setVisibility(View.GONE);
@@ -183,6 +189,9 @@ public abstract class EditorActivity extends BaseActivity
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        mFeatureToggle.setVisibility(View.GONE);
+        findViewById(R.id.place_autocomplete_fragment).setVisibility(View.GONE);
+        mEditText.setVisibility(View.VISIBLE);
     }
+
 }

@@ -87,11 +87,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER) {
-            Uri forecastQueryUri = TripContract.TripEntry.CONTENT_URI;
+            Uri queryUri = TripContract.TripEntry.CONTENT_URI;
             String sortOrder = TripContract.TripEntry.COLUMN_DEPARTURE + " ASC";
 
             return new CursorLoader(this,
-                    forecastQueryUri,
+                    queryUri,
                     MAIN_PROJECTION,
                     null,
                     null,

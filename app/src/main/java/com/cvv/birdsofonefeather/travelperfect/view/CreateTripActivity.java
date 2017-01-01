@@ -37,7 +37,6 @@ public class CreateTripActivity extends BaseActivity
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-        mTripBuilder.setTitle("A place");
     }
 
     @Override

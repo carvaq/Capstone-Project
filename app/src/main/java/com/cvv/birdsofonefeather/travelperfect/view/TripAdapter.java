@@ -83,7 +83,7 @@ class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
 
         String title = mCursor.getString(MainActivity.IDX_COL_NAME_OF_PLACE);
@@ -110,6 +110,7 @@ class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         holder.title.setText(title);
         Picasso.with(mContext)
                 .load(imageUrl)
+                .placeholder(R.drawable.ic_image)
                 .centerCrop()
                 .into(holder.image);
     }

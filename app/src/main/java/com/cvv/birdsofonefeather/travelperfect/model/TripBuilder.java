@@ -61,6 +61,14 @@ public class TripBuilder {
         return contentValues;
     }
 
+    public long getDeparture() {
+        return mDeparture;
+    }
+
+    public long getReturn() {
+        return mReturn;
+    }
+
     public class Item {
         private int numberOf;
         private String what;

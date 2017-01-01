@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view;
+package com.cvv.birdsofonefeather.travelperfect.view.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

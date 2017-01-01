@@ -8,7 +8,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
-	tools:context="com.cvv.birdsofonefeather.travelperfect.view.CreateTripActivity"
+	tools:context="com.cvv.birdsofonefeather.travelperfect.view.activities.CreateTripActivity"
 	tools:showIn="@layout/activity_editor">
 	
 	<LinearLayout

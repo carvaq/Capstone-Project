@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Followed suggestions from https://developers.google.com/places/android-api/photos#asyncTask
  */
-abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
+public abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
 
     private static final String DIR_PLACES = "places";
 
@@ -27,11 +27,11 @@ abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPho
     private GoogleApiClient mGoogleApiClient;
     private Context mContext;
 
-    PhotoTask(Context context, GoogleApiClient apiClient, int width) {
+    public PhotoTask(Context context, GoogleApiClient apiClient, int width) {
         mContext = context;
         mGoogleApiClient = apiClient;
         mWidth = width;
-        mHeight = UiUtils.getGoldenHeight(width);
+        mHeight = UiUtils.getProportionalHeight(width);
     }
 
     /**
@@ -95,9 +95,9 @@ abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPho
     /**
      * Holder for an image and its attribution.
      */
-    class AttributedPhoto {
-        final CharSequence attribution;
-        final String path;
+    public class AttributedPhoto {
+        public final CharSequence attribution;
+        public final String path;
 
         public AttributedPhoto(CharSequence attribution, String path) {
             this.attribution = attribution;

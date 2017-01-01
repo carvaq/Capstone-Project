@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view;
+package com.cvv.birdsofonefeather.travelperfect.view.activities;
 
 import android.animation.Animator;
 import android.content.Intent;
@@ -15,17 +15,19 @@ import android.view.View;
 
 import com.cvv.birdsofonefeather.travelperfect.R;
 import com.cvv.birdsofonefeather.travelperfect.model.TripContract;
+import com.cvv.birdsofonefeather.travelperfect.view.AnimationUtils;
+import com.cvv.birdsofonefeather.travelperfect.view.TripAdapter;
 
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, TripAdapter.TripViewListener {
 
-    static final int IDX_COL_NAME_OF_PLACE = 0;
-    static final int IDX_COL_DEPARTURE = 1;
-    static final int IDX_COL_RETURN = 2;
-    static final int IDX_COL_IMAGE_URL = 3;
-    static final int IDX_COL_ATTRIBUTIONS = 4;
+    public static final int IDX_COL_NAME_OF_PLACE = 0;
+    public static final int IDX_COL_DEPARTURE = 1;
+    public static final int IDX_COL_RETURN = 2;
+    public static final int IDX_COL_IMAGE_URL = 3;
+    public static final int IDX_COL_ATTRIBUTIONS = 4;
 
     private static final int ID_LOADER = 123;
     private static final String[] MAIN_PROJECTION = new String[]{

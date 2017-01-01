@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cvv.birdsofonefeather.travelperfect.R;
+import com.cvv.birdsofonefeather.travelperfect.view.activities.MainActivity;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
  * Project: Capstone-Project
  */
 
-class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
+public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     private Cursor mCursor;
     private TripViewListener mTripViewListener;
@@ -35,12 +36,12 @@ class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     private int mWidth;
     private int mHeight;
 
-    TripAdapter(Context context, TripViewListener tripViewListener) {
+    public TripAdapter(Context context, TripViewListener tripViewListener) {
         mTripViewListener = tripViewListener;
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         mWidth = UiUtils.getDisplayWidth((Activity) context);
-        mHeight = UiUtils.getGoldenHeight(mWidth);
+        mHeight = UiUtils.getProportionalHeight(mWidth);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -127,12 +128,12 @@ class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         return mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID));
     }
 
-    void swapCursor(Cursor newCursor) {
+    public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
     }
 
-    interface TripViewListener {
+    public interface TripViewListener {
         void onDetailOpenClicked(Long id);
 
         void onEditClicked(Long id);

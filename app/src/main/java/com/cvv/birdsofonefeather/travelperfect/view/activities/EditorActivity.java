@@ -1,10 +1,8 @@
-package com.cvv.birdsofonefeather.travelperfect.view;
+package com.cvv.birdsofonefeather.travelperfect.view.activities;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +12,9 @@ import android.widget.TextView;
 
 import com.cvv.birdsofonefeather.travelperfect.R;
 import com.cvv.birdsofonefeather.travelperfect.model.TripBuilder;
-import com.cvv.birdsofonefeather.travelperfect.model.TripContract;
+import com.cvv.birdsofonefeather.travelperfect.view.EditDialogHelper;
+import com.cvv.birdsofonefeather.travelperfect.view.PhotoTask;
+import com.cvv.birdsofonefeather.travelperfect.view.UiUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -24,11 +24,15 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import timber.log.Timber;
 
 public abstract class EditorActivity extends BaseActivity
         implements GoogleApiClient.OnConnectionFailedListener, CompoundButton.OnCheckedChangeListener {
 
+    public static final String DATE_FORMAT = "dd. MMM yyyy";
+    public static final String TIME_FORMAT = "HH:mm";
     private GoogleApiClient mGoogleApiClient;
     TripBuilder mTripBuilder = new TripBuilder();
     TripBuilder ORIGINAL_TRIP_BUILDER;
@@ -50,10 +54,13 @@ public abstract class EditorActivity extends BaseActivity
     @BindView(R.id.return_add)
     TextView mReturnAdd;
 
+    private EditDialogHelper mDialogHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+        mDialogHelper = new EditDialogHelper(this);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -102,34 +109,43 @@ public abstract class EditorActivity extends BaseActivity
         }.execute(place.getId());
     }
 
-    void changeVisibilityInDatesSection(boolean departure, boolean addButtonVisible) {
-        if (departure) {
-            if (addButtonVisible) {
-                mDepartureAdd.setVisibility(View.VISIBLE);
-                mDepartureDate.setVisibility(View.GONE);
-                mDepartureTime.setVisibility(View.GONE);
-            } else {
-                mDepartureAdd.setVisibility(View.GONE);
-                mDepartureDate.setVisibility(View.VISIBLE);
-                mDepartureTime.setVisibility(View.VISIBLE);
-            }
+    @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void saveUserInput() {
+        mTripBuilder.setTitle(mEditText.getText().toString());
+    }
+
+    @OnClick(value = {R.id.departure_add, R.id.return_add})
+    void onAddDateClicked(View view) {
+        if (view.getId() == R.id.departure_add) {
+            mDialogHelper.showDatePicker(mTripBuilder, mDepartureAdd, mDepartureDate, mDepartureTime);
         } else {
-            if (addButtonVisible) {
-                mReturnAdd.setVisibility(View.VISIBLE);
-                mReturnDate.setVisibility(View.GONE);
-                mReturnTime.setVisibility(View.GONE);
-            } else {
-                mReturnAdd.setVisibility(View.GONE);
-                mReturnDate.setVisibility(View.VISIBLE);
-                mReturnTime.setVisibility(View.VISIBLE);
-            }
+            mDialogHelper.showDatePicker(mTripBuilder, mReturnAdd, mReturnDate, mReturnTime);
+        }
+    }
+
+    @OnClick(value = {R.id.departure_date, R.id.return_date})
+    void onChangedDateClicked(View view) {
+        if (view.getId() == R.id.departure_date) {
+            mDialogHelper.showDatePicker(mTripBuilder, mDepartureAdd, mDepartureDate, null);
+        } else {
+            mDialogHelper.showDatePicker(mTripBuilder, mReturnAdd, mReturnDate, null);
+        }
+    }
+
+
+    @OnClick(value = {R.id.departure_time, R.id.return_time})
+    void onChangeTimeClicked(View view) {
+        if (view.getId() == R.id.departure_time) {
+            mDialogHelper.showTimePicker(mTripBuilder, mDepartureTime);
+        } else {
+            mDialogHelper.showTimePicker(mTripBuilder, mReturnTime);
         }
     }
 
     @Override
     public void onBackPressed() {
         if (hasTripChanges()) {
-            showSaveDialog();
+            mDialogHelper.showSaveDialog(mTripBuilder);
         } else {
             super.onBackPressed();
         }
@@ -138,7 +154,7 @@ public abstract class EditorActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home && hasTripChanges()) {
-            showSaveDialog();
+            mDialogHelper.showSaveDialog(mTripBuilder);
             return true;
         } else if (item.getItemId() == R.id.action_discard) {
             NavUtils.navigateUpFromSameTask(this);
@@ -152,49 +168,11 @@ public abstract class EditorActivity extends BaseActivity
         return !ORIGINAL_TRIP_BUILDER.equals(mTripBuilder);
     }
 
-    private void showSaveDialog() {
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (DialogInterface.BUTTON_POSITIVE == which) {
-                    getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
-                }
-                finish();
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditorActivity.this);
-        builder.setMessage(R.string.dialog_save_before_exiting_text)
-                .setTitle(R.string.dialog_title_attention)
-                .setPositiveButton(R.string.btn_save, listener)
-                .setNegativeButton(R.string.btn_discard, listener)
-                .show();
-    }
-
-    private void showFeatureDisableDialog() {
-        if (UiUtils.featureToggleDialogAlreadyShown(EditorActivity.this)) {
-            return;
-        }
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (DialogInterface.BUTTON_NEGATIVE == which) {
-                    mFeatureToggle.setChecked(true);
-                    UiUtils.setFeatureDialogShownPref(EditorActivity.this);
-                }
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditorActivity.this);
-        builder.setMessage(R.string.dialog_disabling_google_search_text)
-                .setTitle(R.string.dialog_title_attention)
-                .setPositiveButton(R.string.btn_save, listener)
-                .setNegativeButton(R.string.btn_discard, listener)
-                .show();
-    }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (!isChecked) {
-            showFeatureDisableDialog();
+            mDialogHelper.showFeatureDisableDialog(mFeatureToggle);
             findViewById(R.id.place_autocomplete_fragment).setVisibility(View.GONE);
             mEditText.setVisibility(View.VISIBLE);
         } else {

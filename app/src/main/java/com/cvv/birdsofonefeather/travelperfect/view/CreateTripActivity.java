@@ -143,7 +143,7 @@ public class CreateTripActivity extends BaseActivity
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTripActivity.this);
-        builder.setMessage(R.string.dialog_save_before_exiting_text)
+        builder.setMessage(R.string.dialog_disabling_google_search_text)
                 .setTitle(R.string.dialog_title_attention)
                 .setPositiveButton(R.string.btn_save, listener)
                 .setNegativeButton(R.string.btn_discard, listener)

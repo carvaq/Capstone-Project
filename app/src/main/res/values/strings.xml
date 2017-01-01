@@ -8,4 +8,8 @@
 	<string name="dialog_save_before_exiting_text">Do you wish to save this trip?</string>
 	<string name="btn_save">Save</string>
 	<string name="btn_discard">Discard</string>
+	<string name="label_use_google_for_search">Use Google</string>
+	<string name="dialog_disabling_google_search_text">The search powered by Google will give you more exact name. If you disable it, you will not get an image associated to your trip. Do you still want to disable it?? </string>
+	<string name="btn_yes">Yes</string>
+	<string name="btn_no">No, keep it activated</string>
 </resources>

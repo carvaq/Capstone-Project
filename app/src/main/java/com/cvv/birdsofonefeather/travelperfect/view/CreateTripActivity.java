@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 
 import com.cvv.birdsofonefeather.travelperfect.R;
 import com.cvv.birdsofonefeather.travelperfect.model.TripBuilder;
@@ -18,14 +22,20 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import butterknife.BindView;
 import timber.log.Timber;
 
 public class CreateTripActivity extends BaseActivity
-        implements GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.OnConnectionFailedListener, CompoundButton.OnCheckedChangeListener {
 
     private GoogleApiClient mGoogleApiClient;
     private TripBuilder mTripBuilder = new TripBuilder();
     private final TripBuilder EMPTY_TRIP_BUILDER = new TripBuilder();
+
+    @BindView(R.id.plain_name_of_place)
+    EditText mEditText;
+    @BindView(R.id.feature_toggle)
+    SwitchCompat mFeatureToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,7 @@ public class CreateTripActivity extends BaseActivity
                 Timber.d("An error occurred: %s", status);
             }
         });
+        mFeatureToggle.setOnCheckedChangeListener(this);
     }
 
     private void processPlace(Place place) {
@@ -118,9 +129,41 @@ public class CreateTripActivity extends BaseActivity
                 .show();
     }
 
+    private void showFeatureDisableDialog() {
+        if (UiUtils.featureToggleDialogAlreadyShown(CreateTripActivity.this)) {
+            return;
+        }
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (DialogInterface.BUTTON_NEGATIVE == which) {
+                    mFeatureToggle.setChecked(true);
+                    UiUtils.setFeatureDialogShownPref(CreateTripActivity.this);
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateTripActivity.this);
+        builder.setMessage(R.string.dialog_save_before_exiting_text)
+                .setTitle(R.string.dialog_title_attention)
+                .setPositiveButton(R.string.btn_save, listener)
+                .setNegativeButton(R.string.btn_discard, listener)
+                .show();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (!isChecked) {
+            showFeatureDisableDialog();
+            findViewById(R.id.place_autocomplete_fragment).setVisibility(View.GONE);
+            mEditText.setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.place_autocomplete_fragment).setVisibility(View.VISIBLE);
+            mEditText.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
 }

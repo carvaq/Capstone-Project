@@ -15,6 +15,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * Followed suggestions from https://developers.google.com/places/android-api/photos#asyncTask
+ */
 abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
 
     private static final String DIR_PLACES = "places";
@@ -24,7 +27,7 @@ abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPho
     private GoogleApiClient mGoogleApiClient;
     private Context mContext;
 
-    public PhotoTask(Context context, GoogleApiClient apiClient, int width) {
+    PhotoTask(Context context, GoogleApiClient apiClient, int width) {
         mContext = context;
         mGoogleApiClient = apiClient;
         mWidth = width;

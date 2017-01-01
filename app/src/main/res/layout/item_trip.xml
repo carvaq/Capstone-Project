@@ -10,10 +10,25 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical">
 		
-		<ImageView
-			android:id="@+id/image"
+		<FrameLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"/>
+			android:layout_height="wrap_content">
+			
+			<TextView
+				android:id="@+id/attributions"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom"
+				android:gravity="end|bottom"
+				tools:text="A very fancy fotograph"/>
+			
+			<ImageView
+				android:id="@+id/image"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@color/grey_background"
+				tools:layout_height="200dp"/>
+		</FrameLayout>
 		
 		<LinearLayout
 			android:layout_width="match_parent"

@@ -31,6 +31,7 @@ public class TripContract {
         public static final String COLUMN_DEPARTURE = "departure";
         public static final String COLUMN_RETURN = "return";
         public static final String COLUMN_IMAGE_URL = "imageUrl";
+        public static final String COLUMN_ATTRIBUTIONS = "attributions";
         public static final String COLUMN_LIST_ITEM_FK = "listItemFK";
         public static final String COLUMN_REMINDER_FK = "reminderFK";
 
@@ -67,7 +68,7 @@ public class TripContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_REMINDER).build();
 
         public static final String TABLE_NAME = "reminders";
-        public static final String COLUMN_WHEN = "when";
+        public static final String COLUMN_WHEN = "timestamp";
 
         public static final String CONTENT_TYPE =
                 CONTENT_TYPE_DIR + CONTENT_URI + "/" + PATH_REMINDER;

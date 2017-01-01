@@ -15,6 +15,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
+        addReminder(database);
+        addListItem(database);
         addTripEntity(database);
     }
 
@@ -45,6 +47,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         TripContract.TripEntry.COLUMN_DEPARTURE + " REAL NOT NULL, " +
                         TripContract.TripEntry.COLUMN_RETURN + " REAL, " +
                         TripContract.TripEntry.COLUMN_IMAGE_URL + " TEXT, " +
+                        TripContract.TripEntry.COLUMN_ATTRIBUTIONS + " TEXT, " +
+                        TripContract.TripEntry.COLUMN_LIST_ITEM_FK + " INTEGER, " +
+                        TripContract.TripEntry.COLUMN_REMINDER_FK + " INTEGER, " +
                         "FOREIGN KEY (" + TripContract.TripEntry.COLUMN_LIST_ITEM_FK + ") " +
                         "REFERENCES " + TripContract.ListItemEntry.TABLE_NAME + " (" + TripContract.ListItemEntry._ID + ")," +
                         "FOREIGN KEY (" + TripContract.TripEntry.COLUMN_REMINDER_FK + ") " +

@@ -4,21 +4,29 @@
 	
 	<!-- android:roundIcon="@mipmap/ic_launcher_round" -->
 	<application
+		android:name=".TravelPerfectApplication"
 		android:allowBackup="true"
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name"
-		android:name=".TravelPerfectApplication"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
 		<activity
 			android:name=".view.MainActivity"
-			android:label="@string/app_name"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
+		</activity>
+		
+		<activity
+			android:name=".view.CreateTripActivity"
+			android:label="@string/title_activity_create_trip"
+			android:parentActivityName=".view.MainActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.cvv.birdsofonefeather.travelperfect.view.MainActivity"/>
 		</activity>
 		
 		<provider
@@ -28,15 +36,6 @@
 			android:protectionLevel="signature"
 			android:syncable="true"/>
 		
-		<activity
-			android:name=".view.CreateTripActivity"
-			android:label="@string/title_activity_create_trip"
-			android:parentActivityName=".view.MainActivity"
-			android:theme="@style/AppTheme.NoActionBar">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.cvv.birdsofonefeather.travelperfect.view.MainActivity"/>
-		</activity>
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
 			android:value="@string/places_api_key"/>

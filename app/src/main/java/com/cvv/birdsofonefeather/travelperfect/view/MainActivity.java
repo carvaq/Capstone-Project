@@ -25,13 +25,15 @@ public class MainActivity extends BaseActivity implements
     static final int IDX_COL_DEPARTURE = 1;
     static final int IDX_COL_RETURN = 2;
     static final int IDX_COL_IMAGE_URL = 3;
+    static final int IDX_COL_ATTRIBUTIONS = 4;
 
     private static final int ID_LOADER = 123;
     private static final String[] MAIN_PROJECTION = new String[]{
             TripContract.TripEntry.COLUMN_NAME_OF_PLACE,
             TripContract.TripEntry.COLUMN_DEPARTURE,
             TripContract.TripEntry.COLUMN_RETURN,
-            TripContract.TripEntry.COLUMN_IMAGE_URL
+            TripContract.TripEntry.COLUMN_IMAGE_URL,
+            TripContract.TripEntry.COLUMN_ATTRIBUTIONS
     };
 
     @BindView(R.id.fab)
@@ -74,6 +76,9 @@ public class MainActivity extends BaseActivity implements
                 }
             }
         });
+
+        getSupportLoaderManager().initLoader(ID_LOADER, null, this);
+
     }
 
 

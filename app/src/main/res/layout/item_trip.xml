@@ -61,22 +61,27 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical">
 			
-			<TextView
+			<Button
 				android:id="@+id/edit"
 				style="@style/AppTheme.ButtonWithImage"
 				android:drawableStart="@drawable/ic_mode_edit"
 				android:gravity="center_vertical"
 				android:text="@string/btn_edit"/>
 			
-			<TextView
-				android:id="@+id/done"
-				style="@style/AppTheme.ButtonWithImage"
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
 				android:layout_alignParentEnd="true"
-				android:layout_toEndOf="@id/edit"
-				android:drawableEnd="@drawable/ic_done"
-				android:gravity="end|center_vertical"
-				android:text="@string/btn_done"/>
-		
+				android:layout_toEndOf="@id/edit">
+				
+				<Button
+					android:id="@+id/done"
+					style="@style/AppTheme.ButtonWithImage"
+					android:layout_gravity="end"
+					android:drawableEnd="@drawable/ic_done"
+					android:gravity="end|center_vertical"
+					android:text="@string/btn_done"/>
+			</FrameLayout>
 		</RelativeLayout>
 	</LinearLayout>
 </android.support.v7.widget.CardView>

@@ -3,19 +3,17 @@ package com.cvv.birdsofonefeather.travelperfect.view.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cvv.birdsofonefeather.travelperfect.R;
-import com.cvv.birdsofonefeather.travelperfect.model.Item;
 import com.cvv.birdsofonefeather.travelperfect.model.TripBuilder;
 import com.cvv.birdsofonefeather.travelperfect.view.EditDialogHelper;
-import com.cvv.birdsofonefeather.travelperfect.view.ItemAdapter;
 import com.cvv.birdsofonefeather.travelperfect.view.PhotoTask;
 import com.cvv.birdsofonefeather.travelperfect.view.UiUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -56,20 +54,27 @@ public abstract class EditorActivity extends BaseActivity
     @BindView(R.id.return_add)
     TextView mReturnAdd;
     @BindView(R.id.item_container)
-    RecyclerView mRecyclerView;
+    LinearLayout mItemContainer;
 
     TripBuilder mTripBuilder = new TripBuilder();
 
     private EditDialogHelper mDialogHelper;
-    private ItemAdapter mAdapter;
     private GoogleApiClient mGoogleApiClient;
+
+    private View.OnFocusChangeListener mOnFocusChangeListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                addNewItem();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         mDialogHelper = new EditDialogHelper(this);
-        mAdapter = new ItemAdapter(this);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -97,7 +102,6 @@ public abstract class EditorActivity extends BaseActivity
                 Timber.d("An error occurred: %s", status);
             }
         });
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void processPlace(Place place) {
@@ -114,14 +118,21 @@ public abstract class EditorActivity extends BaseActivity
         }.execute(place.getId());
     }
 
+    void addNewItem() {
+        for (int i = 0; i < mItemContainer.getChildCount(); i++) {
+            View child = mItemContainer.getChildAt(i);
+            child.findViewById(R.id.number_of).setOnFocusChangeListener(null);
+            child.findViewById(R.id.name).setOnFocusChangeListener(null);
+        }
+        View view = LayoutInflater.from(this).inflate(R.layout.item_list_item, mItemContainer, false);
+        view.findViewById(R.id.number_of).setOnFocusChangeListener(mOnFocusChangeListener);
+        view.findViewById(R.id.name).setOnFocusChangeListener(mOnFocusChangeListener);
+        mItemContainer.addView(view, mItemContainer.getChildCount());
+    }
+
     @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void saveUserInput() {
         mTripBuilder.setTitle(mEditText.getText().toString());
-    }
-
-    @OnClick(R.id.add_item)
-    void addNewItem() {
-        mAdapter.addItem(new Item());
     }
 
     @OnClick(value = {R.id.departure_add, R.id.return_add})

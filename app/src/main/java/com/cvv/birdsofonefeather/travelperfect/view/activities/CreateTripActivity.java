@@ -16,6 +16,9 @@ public class CreateTripActivity extends EditorActivity {
         mReturnAdd.setVisibility(View.VISIBLE);
         mReturnDate.setVisibility(View.GONE);
         mReturnTime.setVisibility(View.GONE);
+
+        addNewItem();
+
         super.onViewsInitialized();
     }
 

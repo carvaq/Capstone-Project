@@ -60,8 +60,6 @@ public class TripBuilder {
         contentValues.put(TripContract.TripEntry.COLUMN_RETURN, mReturn);
         contentValues.put(TripContract.TripEntry.COLUMN_IMAGE_URL, mFilePath);
         contentValues.put(TripContract.TripEntry.COLUMN_ATTRIBUTIONS, mAttributions);
-        //contentValues.put(TripContract.TripEntry.COLUMN_LIST_ITEM_FK, );
-        //contentValues.put(TripContract.TripEntry.COLUMN_REMINDER_FK, );
         return contentValues;
     }
 

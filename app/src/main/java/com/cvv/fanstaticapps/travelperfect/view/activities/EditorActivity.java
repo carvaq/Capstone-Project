@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -194,6 +195,13 @@ public abstract class EditorActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         saveTrip();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_editor, menu);
+        return true;
     }
 
     @Override

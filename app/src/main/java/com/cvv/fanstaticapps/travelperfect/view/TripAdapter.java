@@ -21,7 +21,6 @@ import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 /**
  * Created by Carla
@@ -112,7 +111,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         holder.image.getLayoutParams().width = mWidth;
 
         holder.title.setText(title);
-        Timber.d(imageUrl);
         Picasso.with(mContext)
                 .load(new File(imageUrl))
                 .centerCrop()

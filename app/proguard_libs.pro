@@ -10,3 +10,5 @@
 ## https://square.github.io/picasso/ ##
 
 -dontwarn com.squareup.okhttp.**
+
+-flattenpackagehierarchy

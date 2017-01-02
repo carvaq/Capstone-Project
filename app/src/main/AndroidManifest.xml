@@ -22,7 +22,7 @@
 		
 		<activity
 			android:name="com.cvv.fanstaticapps.travelperfect.view.activities.MainEditActivity"
-			android:label="@string/title_activity_create_trip"
+			android:label="@string/title_activity_edit_activity"
 			android:parentActivityName="com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -31,7 +31,7 @@
 		
 		<activity
 			android:name="com.cvv.fanstaticapps.travelperfect.view.activities.TripEditActivity"
-			android:label="@string/title_activity_create_trip"
+			android:label="@string/title_activity_edit_activity"
 			android:parentActivityName="com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"

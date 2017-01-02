@@ -1,5 +1,6 @@
 package com.cvv.fanstaticapps.travelperfect.model;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
@@ -13,8 +14,13 @@ public class Item {
     private int mNumberOf;
     private String mWhat;
     private boolean mDone;
+    private long mTripId;
 
-    public Item() {
+    public Item(int numberOf, String what, boolean done, long tripId) {
+        mNumberOf = numberOf;
+        mWhat = what;
+        mDone = done;
+        mTripId = tripId;
     }
 
     public Item(Cursor cursor) {
@@ -54,5 +60,14 @@ public class Item {
 
     public void setDone(boolean done) {
         mDone = done;
+    }
+
+    public ContentValues getContentValues() {
+        ContentValues contentValues = new ContentValues(4);
+        contentValues.put(TripContract.ListItemEntry.COLUMN_NUMBER_OF, mNumberOf);
+        contentValues.put(TripContract.ListItemEntry.COLUMN_WHAT, mWhat);
+        contentValues.put(TripContract.ListItemEntry.COLUMN_DONE, mDone);
+        contentValues.put(TripContract.ListItemEntry.COLUMN_TRIP_FK, mTripId);
+        return contentValues;
     }
 }

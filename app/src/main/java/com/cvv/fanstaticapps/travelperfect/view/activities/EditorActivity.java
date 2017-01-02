@@ -1,5 +1,8 @@
 package com.cvv.fanstaticapps.travelperfect.view.activities;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
@@ -8,11 +11,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
+import com.cvv.fanstaticapps.travelperfect.model.Item;
 import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.cvv.fanstaticapps.travelperfect.view.EditDialogHelper;
@@ -25,6 +30,9 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
@@ -216,8 +224,29 @@ public abstract class EditorActivity extends BaseActivity
         } else if (mTripBuilder.getDeparture() == 0) {
             mErrorDeparture.setVisibility(View.VISIBLE);
         } else {
-            getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
+            Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
+            long tripId = ContentUris.parseId(uri);
+            saveListItems(tripId);
+            finish();
         }
+    }
+
+    private void saveListItems(long tripId) {
+        List<ContentValues> contentValues = new ArrayList<>();
+        for (int i = 0; i < mItemContainer.getChildCount(); i++) {
+            View child = mItemContainer.getChildAt(i);
+            TextView name = (TextView) child.findViewById(R.id.name);
+            TextView numberOf = (TextView) child.findViewById(R.id.number_of);
+            CheckBox checkBox = (CheckBox) child.findViewById(R.id.checkbox);
+            int number = 0;
+            if (!TextUtils.isEmpty(numberOf.getText())) {
+                number = Integer.parseInt(numberOf.getText().toString());
+            }
+            Item item = new Item(number, name.getText().toString(), checkBox.isChecked(), tripId);
+            contentValues.add(item.getContentValues());
+        }
+        ContentValues[] contentValuesArray = new ContentValues[contentValues.size()];
+        getContentResolver().bulkInsert(TripContract.ListItemEntry.CONTENT_URI, contentValues.toArray(contentValuesArray));
     }
 
     @Override

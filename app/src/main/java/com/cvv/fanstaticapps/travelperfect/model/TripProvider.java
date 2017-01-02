@@ -163,6 +163,49 @@ public class TripProvider extends ContentProvider {
     }
 
     @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        int rowsInserted = 0;
+
+        switch (sUriMatcher.match(uri)) {
+
+            case LIST_ITEM:
+                rowsInserted = insertRows(values, db, rowsInserted, TripContract.ListItemEntry.TABLE_NAME);
+                break;
+            case REMINDER:
+                rowsInserted = insertRows(values, db, rowsInserted, TripContract.ReminderEntry.TABLE_NAME);
+                break;
+            case TRIP:
+                rowsInserted = insertRows(values, db, rowsInserted, TripContract.TripEntry.TABLE_NAME);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (rowsInserted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsInserted;
+    }
+
+    private int insertRows(@NonNull ContentValues[] values, SQLiteDatabase db, int rowsInserted, String tableName) {
+        db.beginTransaction();
+        try {
+            for (ContentValues value : values) {
+                long _id = db.insert(tableName, null, value);
+                if (_id != -1) {
+                    rowsInserted++;
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return rowsInserted;
+    }
+
+    @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int rowsAffected;

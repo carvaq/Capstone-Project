@@ -19,6 +19,7 @@ import com.cvv.fanstaticapps.travelperfect.view.AnimationUtils;
 import com.cvv.fanstaticapps.travelperfect.view.TripAdapter;
 
 import butterknife.BindView;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, TripAdapter.TripViewListener {
@@ -119,6 +120,11 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onDetailOpenClicked(Long id) {
+        Cursor cursor = getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null, null, null, null);
+        if (cursor == null) return;
+        while (cursor.moveToNext()) {
+            Timber.d("FK id: %s", cursor.getLong(cursor.getColumnIndex(TripContract.ListItemEntry.COLUMN_TRIP_FK)));
+        }
     }
 
     @Override

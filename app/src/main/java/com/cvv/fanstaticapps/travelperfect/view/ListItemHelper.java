@@ -82,8 +82,8 @@ public class ListItemHelper {
         Cursor cursor = mActivity.getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null,
                 where, new String[]{String.valueOf(tripId)}, null);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
                 Item item = new Item(cursor);
                 View view = LayoutInflater.from(mActivity).inflate(R.layout.item_list_item, mItemContainer, false);
                 TextView name = (TextView) view.findViewById(R.id.name);
@@ -92,7 +92,8 @@ public class ListItemHelper {
                 name.setText(item.getWhat());
                 numberOf.setText(String.valueOf(item.getNumberOf()));
                 checkBox.setChecked(item.isDone());
-            } while (cursor.moveToNext());
+                mItemContainer.addView(view);
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.cvv.fanstaticapps.travelperfect.view;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -15,7 +14,6 @@ import android.widget.TimePicker;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
-import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.cvv.fanstaticapps.travelperfect.view.activities.EditorActivity;
 
 import org.joda.time.DateTime;
@@ -29,7 +27,7 @@ import org.joda.time.format.DateTimeFormatter;
  */
 
 public class EditDialogHelper {
-    private Activity mActivity;
+    private EditorActivity mActivity;
 
     public EditDialogHelper(EditorActivity activity) {
         mActivity = activity;
@@ -41,10 +39,10 @@ public class EditDialogHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (DialogInterface.BUTTON_POSITIVE == which) {
-                    mActivity.getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, tripBuilder.getTripContentValues());
-                    //TODO Check minimum data filled
+                    mActivity.onSaveClicked();
+                } else {
+                    mActivity.finish();
                 }
-                mActivity.finish();
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
@@ -87,7 +85,7 @@ public class EditDialogHelper {
                 } else {
                     tripBuilder.setReturn(date.getMillis());
                 }
-                if (tripBuilder.getDeparture() > tripBuilder.getReturn()) {
+                if (tripBuilder.getReturn() > 0 && tripBuilder.getDeparture() > tripBuilder.getReturn()) {
                     tripBuilder.setDeparture(tripBuilder.getReturn());
                     date.withMillis(tripBuilder.getDeparture());
                 }
@@ -152,6 +150,10 @@ public class EditDialogHelper {
             dateTime = DateTime.now();
         }
         return dateTime;
+    }
+
+    public interface OnSaveClickListener {
+        void onSaveClicked();
     }
 
 }

@@ -60,6 +60,10 @@ public class TripBuilder {
         return mReturn;
     }
 
+    public String getTitle() {
+        return mTitle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

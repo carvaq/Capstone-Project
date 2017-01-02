@@ -19,4 +19,6 @@
 	<string name="label_number_of">Number</string>
 	<string name="label_name">Name</string>
 	<string name="btn_add_item">Add Item</string>
+	<string name="error_required_field">This is a required field</string>
+	<string name="label_name_of_place">Where are you going?</string>
 </resources>

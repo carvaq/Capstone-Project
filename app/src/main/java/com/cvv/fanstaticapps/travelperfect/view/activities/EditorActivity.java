@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.SwitchCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
+import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.cvv.fanstaticapps.travelperfect.view.EditDialogHelper;
 import com.cvv.fanstaticapps.travelperfect.view.PhotoTask;
 import com.cvv.fanstaticapps.travelperfect.view.UiUtils;
@@ -31,7 +33,7 @@ import butterknife.OnTextChanged;
 import timber.log.Timber;
 
 public abstract class EditorActivity extends BaseActivity
-        implements GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.OnConnectionFailedListener, EditDialogHelper.OnSaveClickListener {
 
     public static final String DATE_FORMAT = "dd. MMM yyyy";
     public static final String TIME_FORMAT = "HH:mm";
@@ -55,6 +57,12 @@ public abstract class EditorActivity extends BaseActivity
     TextView mReturnAdd;
     @BindView(R.id.item_container)
     LinearLayout mItemContainer;
+    @BindView(R.id.error_name)
+    TextView mErrorName;
+    @BindView(R.id.error_departure)
+    TextView mErrorDeparture;
+    @BindView(R.id.place_autocomplete_container)
+    View mAutoCompleteContainer;
 
     TripBuilder mTripBuilder = new TripBuilder();
 
@@ -95,6 +103,7 @@ public abstract class EditorActivity extends BaseActivity
             public void onPlaceSelected(Place place) {
                 Timber.d("Place: %s", place.getName());
                 processPlace(place);
+                mErrorName.setVisibility(View.GONE);
             }
 
             @Override
@@ -132,12 +141,14 @@ public abstract class EditorActivity extends BaseActivity
 
     @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void saveUserInput() {
+        mErrorName.setVisibility(View.GONE);
         mTripBuilder.setTitle(mEditText.getText().toString());
     }
 
     @OnClick(value = {R.id.departure_add, R.id.return_add})
     void onAddDateClicked(View view) {
         if (view.getId() == R.id.departure_add) {
+            mErrorDeparture.setVisibility(View.GONE);
             mDialogHelper.showDatePicker(mTripBuilder, mDepartureAdd, mDepartureDate, mDepartureTime);
         } else {
             mDialogHelper.showDatePicker(mTripBuilder, mReturnAdd, mReturnDate, mReturnTime);
@@ -190,19 +201,29 @@ public abstract class EditorActivity extends BaseActivity
     public void onCheckedChanged(boolean isChecked) {
         if (!isChecked) {
             mDialogHelper.showFeatureDisableDialog(mFeatureToggle);
-            findViewById(R.id.place_autocomplete_fragment).setVisibility(View.GONE);
+            mAutoCompleteContainer.setVisibility(View.GONE);
             mEditText.setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.place_autocomplete_fragment).setVisibility(View.VISIBLE);
+            mAutoCompleteContainer.setVisibility(View.VISIBLE);
             mEditText.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onSaveClicked() {
+        if (TextUtils.isEmpty(mTripBuilder.getTitle())) {
+            mErrorName.setVisibility(View.VISIBLE);
+        } else if (mTripBuilder.getDeparture() == 0) {
+            mErrorDeparture.setVisibility(View.VISIBLE);
+        } else {
+            getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
         }
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         mFeatureToggle.setVisibility(View.GONE);
-        findViewById(R.id.place_autocomplete_fragment).setVisibility(View.GONE);
+        mAutoCompleteContainer.setVisibility(View.GONE);
         mEditText.setVisibility(View.VISIBLE);
     }
-
 }

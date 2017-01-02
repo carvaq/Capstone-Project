@@ -5,7 +5,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:baselineAligned="false"
-	android:orientation="horizontal">
+	android:orientation="horizontal"
+	tools:showIn="@layout/content_editor">
 	
 	<LinearLayout
 		android:layout_width="0dp"
@@ -16,6 +17,11 @@
 		<TextView
 			style="@style/AppTheme.Label"
 			android:text="@string/label_departure"/>
+		
+		<TextView
+			android:id="@+id/error_departure"
+			android:text="@string/error_required_field"
+			style="@style/AppTheme.Error"/>
 		
 		<TextView
 			android:id="@+id/departure_date"

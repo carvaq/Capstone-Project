@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
-import android.provider.BaseColumns;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -68,12 +67,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
+            long itemId = TripAdapter.this.getItemId(getAdapterPosition());
             if (v.getId() == R.id.edit) {
-                mTripViewListener.onEditClicked(getItemId());
+                mTripViewListener.onEditClicked(itemId);
             } else if (v.getId() == R.id.done) {
-                mTripViewListener.onDoneClicked(getItemId());
+                mTripViewListener.onDoneClicked(itemId);
             } else {
-                mTripViewListener.onDetailOpenClicked(getItemId());
+                mTripViewListener.onDetailOpenClicked(itemId);
             }
         }
     }
@@ -125,7 +125,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     @Override
     public long getItemId(int position) {
         mCursor.moveToPosition(position);
-        return mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID));
+        return mCursor.getLong(MainActivity.IDX_COL_ID);
     }
 
     public void swapCursor(Cursor newCursor) {

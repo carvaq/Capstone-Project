@@ -1,26 +1,24 @@
 package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.content.ContentUris;
-import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
-import com.cvv.fanstaticapps.travelperfect.model.Item;
 import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.cvv.fanstaticapps.travelperfect.view.EditDialogHelper;
+import com.cvv.fanstaticapps.travelperfect.view.ListItemHelper;
 import com.cvv.fanstaticapps.travelperfect.view.PhotoTask;
 import com.cvv.fanstaticapps.travelperfect.view.UiUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -31,8 +29,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.joda.time.DateTime;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
@@ -41,11 +38,11 @@ import butterknife.OnTextChanged;
 import timber.log.Timber;
 
 public abstract class EditorActivity extends BaseActivity
-        implements GoogleApiClient.OnConnectionFailedListener, EditDialogHelper.OnSaveClickListener {
+        implements GoogleApiClient.OnConnectionFailedListener {
 
+    public static final String EXTRA_TRIP_ID = "trip_id";
     public static final String DATE_FORMAT = "dd. MMM yyyy";
     public static final String TIME_FORMAT = "HH:mm";
-
 
     @BindView(R.id.plain_name_of_place)
     EditText mEditText;
@@ -73,18 +70,12 @@ public abstract class EditorActivity extends BaseActivity
     View mAutoCompleteContainer;
 
     TripBuilder mTripBuilder = new TripBuilder();
+    private TripBuilder COMPARE_TRIP_BUILDER;
 
     private EditDialogHelper mDialogHelper;
+    private ListItemHelper mListItemHelper;
     private GoogleApiClient mGoogleApiClient;
-
-    private View.OnFocusChangeListener mOnFocusChangeListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                addNewItem();
-            }
-        }
-    };
+    private long mTripId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +88,16 @@ public abstract class EditorActivity extends BaseActivity
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+        if (savedInstanceState != null) {
+            mTripId = savedInstanceState.getLong(EXTRA_TRIP_ID, -1);
+        } else {
+            mTripId = getIntent().getLongExtra(EXTRA_TRIP_ID, -1);
+        }
     }
 
     @Override
     protected void onViewsInitialized() {
+        mListItemHelper = new ListItemHelper(this, mItemContainer);
         enableBackNavigation();
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -119,6 +116,31 @@ public abstract class EditorActivity extends BaseActivity
                 Timber.d("An error occurred: %s", status);
             }
         });
+        if (mTripId != -1) {
+            Cursor cursor = getContentResolver().query(TripContract.TripEntry.buildTripUri(mTripId), null, null, null, null);
+            COMPARE_TRIP_BUILDER = new TripBuilder(cursor);
+            mTripBuilder.copy(COMPARE_TRIP_BUILDER);
+            mListItemHelper.addListItems(mTripId);
+            autocompleteFragment.setText(mTripBuilder.getTitle());
+            mEditText.setText(mTripBuilder.getTitle());
+        } else {
+            COMPARE_TRIP_BUILDER = new TripBuilder();
+        }
+        setDateTimeInView(mTripBuilder.getDeparture(), mDepartureDate, mDepartureTime, mDepartureAdd);
+        setDateTimeInView(mTripBuilder.getReturn(), mReturnDate, mReturnTime, mReturnAdd);
+        mListItemHelper.addNewListItem();
+    }
+
+    private void setDateTimeInView(long timestamp, TextView dateView, TextView timeView, TextView addView) {
+        if (timestamp > 0) {
+            DateTime dateTime = new DateTime(timestamp);
+            timeView.setText(dateTime.toString(TIME_FORMAT));
+            dateView.setText(dateTime.toString(DATE_FORMAT));
+            addView.setVisibility(View.GONE);
+        } else {
+            dateView.setVisibility(View.GONE);
+            timeView.setVisibility(View.GONE);
+        }
     }
 
     private void processPlace(Place place) {
@@ -133,18 +155,6 @@ public abstract class EditorActivity extends BaseActivity
                 }
             }
         }.execute(place.getId());
-    }
-
-    void addNewItem() {
-        for (int i = 0; i < mItemContainer.getChildCount(); i++) {
-            View child = mItemContainer.getChildAt(i);
-            child.findViewById(R.id.number_of).setOnFocusChangeListener(null);
-            child.findViewById(R.id.name).setOnFocusChangeListener(null);
-        }
-        View view = LayoutInflater.from(this).inflate(R.layout.item_list_item, mItemContainer, false);
-        view.findViewById(R.id.number_of).setOnFocusChangeListener(mOnFocusChangeListener);
-        view.findViewById(R.id.name).setOnFocusChangeListener(mOnFocusChangeListener);
-        mItemContainer.addView(view, mItemContainer.getChildCount());
     }
 
     @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -181,21 +191,15 @@ public abstract class EditorActivity extends BaseActivity
         }
     }
 
-    abstract boolean hasTripChanges();
-
     @Override
     public void onBackPressed() {
-        if (hasTripChanges()) {
-            mDialogHelper.showSaveDialog(mTripBuilder);
-        } else {
-            super.onBackPressed();
-        }
+        saveTrip();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home && hasTripChanges()) {
-            mDialogHelper.showSaveDialog(mTripBuilder);
+        if (item.getItemId() == android.R.id.home) {
+            saveTrip();
             return true;
         } else if (item.getItemId() == R.id.action_discard) {
             NavUtils.navigateUpFromSameTask(this);
@@ -203,6 +207,12 @@ public abstract class EditorActivity extends BaseActivity
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(EXTRA_TRIP_ID, mTripId);
     }
 
     @OnCheckedChanged(R.id.feature_toggle)
@@ -217,36 +227,27 @@ public abstract class EditorActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onSaveClicked() {
-        if (TextUtils.isEmpty(mTripBuilder.getTitle())) {
+    public void saveTrip() {
+        if (TextUtils.isEmpty(mTripBuilder.getTitle()) && mTripBuilder.getDeparture() == 0) {
+            finish();
+        } else if (TextUtils.isEmpty(mTripBuilder.getTitle())) {
             mErrorName.setVisibility(View.VISIBLE);
         } else if (mTripBuilder.getDeparture() == 0) {
             mErrorDeparture.setVisibility(View.VISIBLE);
         } else {
-            Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
-            long tripId = ContentUris.parseId(uri);
-            saveListItems(tripId);
+            if (mTripId != -1) {
+                String where = TripContract.TripEntry._ID + "=?";
+                String[] selectionArgs = new String[]{String.valueOf(mTripId)};
+                getContentResolver().update(TripContract.TripEntry.CONTENT_URI,
+                        mTripBuilder.getTripContentValues(), where, selectionArgs);
+            } else {
+                Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
+                mTripId = ContentUris.parseId(uri);
+            }
+
+            mListItemHelper.saveListItems(mTripId);
             finish();
         }
-    }
-
-    private void saveListItems(long tripId) {
-        List<ContentValues> contentValues = new ArrayList<>();
-        for (int i = 0; i < mItemContainer.getChildCount(); i++) {
-            View child = mItemContainer.getChildAt(i);
-            TextView name = (TextView) child.findViewById(R.id.name);
-            TextView numberOf = (TextView) child.findViewById(R.id.number_of);
-            CheckBox checkBox = (CheckBox) child.findViewById(R.id.checkbox);
-            int number = 0;
-            if (!TextUtils.isEmpty(numberOf.getText())) {
-                number = Integer.parseInt(numberOf.getText().toString());
-            }
-            Item item = new Item(number, name.getText().toString(), checkBox.isChecked(), tripId);
-            contentValues.add(item.getContentValues());
-        }
-        ContentValues[] contentValuesArray = new ContentValues[contentValues.size()];
-        getContentResolver().bulkInsert(TripContract.ListItemEntry.CONTENT_URI, contentValues.toArray(contentValuesArray));
     }
 
     @Override

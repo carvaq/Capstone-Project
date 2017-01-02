@@ -28,6 +28,7 @@ public class MainActivity extends BaseActivity implements
     public static final int IDX_COL_RETURN = 2;
     public static final int IDX_COL_IMAGE_URL = 3;
     public static final int IDX_COL_ATTRIBUTIONS = 4;
+    public static final int IDX_COL_ID = 5;
 
     private static final int ID_LOADER = 123;
     private static final String[] MAIN_PROJECTION = new String[]{
@@ -35,7 +36,8 @@ public class MainActivity extends BaseActivity implements
             TripContract.TripEntry.COLUMN_DEPARTURE,
             TripContract.TripEntry.COLUMN_RETURN,
             TripContract.TripEntry.COLUMN_IMAGE_URL,
-            TripContract.TripEntry.COLUMN_ATTRIBUTIONS
+            TripContract.TripEntry.COLUMN_ATTRIBUTIONS,
+            TripContract.TripEntry._ID
     };
 
     @BindView(R.id.fab)
@@ -70,11 +72,11 @@ public class MainActivity extends BaseActivity implements
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
-                                    startActivity(new Intent(MainActivity.this, CreateTripActivity.class));
+                                    startActivity(new Intent(MainActivity.this, MainEditActivity.class));
                                 }
                             });
                 } else {
-                    startActivity(new Intent(MainActivity.this, CreateTripActivity.class));
+                    startActivity(new Intent(MainActivity.this, MainEditActivity.class));
                 }
             }
         });
@@ -117,17 +119,24 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onDetailOpenClicked(Long id) {
-
     }
 
     @Override
     public void onEditClicked(Long id) {
-
+        Intent intent = new Intent(this, MainEditActivity.class);
+        intent.putExtra(MainEditActivity.EXTRA_TRIP_ID, id);
+        startActivity(intent);
     }
 
     @Override
     public void onDoneClicked(Long id) {
-
+        String where = TripContract.TripEntry._ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+        getContentResolver().delete(TripContract.TripEntry.CONTENT_URI, where, selectionArgs);
+        where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
+        getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
+        where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
+        getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
     }
 
 }

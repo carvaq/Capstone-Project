@@ -33,26 +33,6 @@ public class EditDialogHelper {
         mActivity = activity;
     }
 
-
-    public void showSaveDialog(final TripBuilder tripBuilder) {
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (DialogInterface.BUTTON_POSITIVE == which) {
-                    mActivity.onSaveClicked();
-                } else {
-                    mActivity.finish();
-                }
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setMessage(R.string.dialog_save_before_exiting_text)
-                .setTitle(R.string.dialog_title_attention)
-                .setPositiveButton(R.string.btn_save, listener)
-                .setNegativeButton(R.string.btn_discard, listener)
-                .show();
-    }
-
     public void showFeatureDisableDialog(final SwitchCompat featureToggle) {
         if (UiUtils.featureToggleDialogAlreadyShown(mActivity)) {
             return;
@@ -150,10 +130,6 @@ public class EditDialogHelper {
             dateTime = DateTime.now();
         }
         return dateTime;
-    }
-
-    public interface OnSaveClickListener {
-        void onSaveClicked();
     }
 
 }

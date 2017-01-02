@@ -1,6 +1,7 @@
 package com.cvv.fanstaticapps.travelperfect.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 /**
  * Created by Carla
@@ -14,6 +15,18 @@ public class TripBuilder {
     private String mAttributions;
     private long mDeparture;
     private long mReturn;
+
+    public TripBuilder() {
+    }
+
+    public TripBuilder(Cursor cursor) {
+        cursor.moveToFirst();
+        mTitle = cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_NAME_OF_PLACE));
+        mDeparture = cursor.getLong(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_DEPARTURE));
+        mReturn = cursor.getLong(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_RETURN));
+        mFilePath = cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_IMAGE_URL));
+        mAttributions = cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_ATTRIBUTIONS));
+    }
 
     public TripBuilder setTitle(String title) {
         mTitle = title;
@@ -62,6 +75,14 @@ public class TripBuilder {
 
     public String getTitle() {
         return mTitle;
+    }
+
+    public void copy(TripBuilder tripBuilder) {
+        mTitle = tripBuilder.mTitle;
+        mDeparture = tripBuilder.mDeparture;
+        mReturn = tripBuilder.mReturn;
+        mFilePath = tripBuilder.mFilePath;
+        mAttributions = tripBuilder.mAttributions;
     }
 
     @Override

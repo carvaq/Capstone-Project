@@ -17,8 +17,11 @@ import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by Carla
@@ -109,10 +112,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         holder.image.getLayoutParams().width = mWidth;
 
         holder.title.setText(title);
+        Timber.d(imageUrl);
         Picasso.with(mContext)
-                .load(imageUrl)
-                .placeholder(R.drawable.ic_image)
+                .load(new File(imageUrl))
                 .centerCrop()
+                .resize(mWidth, mHeight)
+                .placeholder(R.drawable.ic_image)
                 .into(holder.image);
     }
 

@@ -70,7 +70,7 @@ public abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.Attrib
     private String saveToInternalStorage(Bitmap bitmapImage, String placeId) {
         ContextWrapper cw = new ContextWrapper(mContext);
         File directory = cw.getDir(DIR_PLACES, Context.MODE_PRIVATE);
-        File file = new File(directory, placeId + ".jpg");
+        File file = new File(directory, placeId + ".png");
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
@@ -80,7 +80,7 @@ public abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.Attrib
         } finally {
             closeSilently(fos);
         }
-        return file.getPath();
+        return file.getAbsolutePath();
     }
 
     private void closeSilently(FileOutputStream fos) {

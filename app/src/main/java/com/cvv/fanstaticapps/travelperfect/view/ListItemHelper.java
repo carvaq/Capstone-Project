@@ -1,21 +1,19 @@
 package com.cvv.fanstaticapps.travelperfect.view;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.Item;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Carla
@@ -43,7 +41,6 @@ public class ListItemHelper {
     }
 
     public void saveListItems(long tripId) {
-        List<ContentValues> contentValues = new ArrayList<>();
         for (int i = 0; i < mItemContainer.getChildCount(); i++) {
             View child = mItemContainer.getChildAt(i);
             TextView name = (TextView) child.findViewById(R.id.name);
@@ -55,21 +52,28 @@ public class ListItemHelper {
             }
             if (!TextUtils.isEmpty(name.getText())) {
                 Item item = new Item(number, name.getText().toString(), checkBox.isChecked(), tripId);
-                contentValues.add(item.getContentValues());
+                if (child.getTag(R.id.list_item_db_id) != null) {
+                    String where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
+                    String[] selectionArgs = new String[]{String.valueOf(child.getTag(R.id.list_item_db_id))};
+                    mActivity.getContentResolver().update(TripContract.ListItemEntry.CONTENT_URI,
+                            item.getContentValues(), where, selectionArgs);
+                } else {
+                    mActivity.getContentResolver().insert(TripContract.ListItemEntry.CONTENT_URI,
+                            item.getContentValues());
+                }
             }
-        }
-        if (!contentValues.isEmpty()) {
-            ContentValues[] contentValuesArray = new ContentValues[contentValues.size()];
-            contentValues.toArray(contentValuesArray);
-            mActivity.getContentResolver().bulkInsert(TripContract.ListItemEntry.CONTENT_URI, contentValuesArray);
         }
     }
 
     public void addNewListItem() {
         for (int i = 0; i < mItemContainer.getChildCount(); i++) {
             View child = mItemContainer.getChildAt(i);
-            child.findViewById(R.id.number_of).setOnFocusChangeListener(null);
-            child.findViewById(R.id.name).setOnFocusChangeListener(null);
+            TextView name = (TextView) child.findViewById(R.id.name);
+            TextView numberOf = (TextView) child.findViewById(R.id.number_of);
+            CheckBox checkBox = (CheckBox) child.findViewById(R.id.checkbox);
+            checkBox.setOnCheckedChangeListener(getOnCheckedChangeListener(name, numberOf));
+            numberOf.setOnFocusChangeListener(null);
+            name.setOnFocusChangeListener(null);
         }
         View view = LayoutInflater.from(mActivity).inflate(R.layout.item_list_item, mItemContainer, false);
         view.findViewById(R.id.number_of).setOnFocusChangeListener(mOnFocusChangeListener);
@@ -89,11 +93,32 @@ public class ListItemHelper {
                 TextView name = (TextView) view.findViewById(R.id.name);
                 TextView numberOf = (TextView) view.findViewById(R.id.number_of);
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+                checkBox.setOnCheckedChangeListener(getOnCheckedChangeListener(name, numberOf));
                 name.setText(item.getWhat());
                 numberOf.setText(String.valueOf(item.getNumberOf()));
                 checkBox.setChecked(item.isDone());
+                view.setTag(R.id.list_item_db_id, item.getId());
                 mItemContainer.addView(view);
             }
         }
     }
+
+    private CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener(final TextView name, final TextView numberOf) {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                name.setEnabled(!isChecked);
+                numberOf.setEnabled(!isChecked);
+                if (isChecked) {
+                    name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    numberOf.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    name.setPaintFlags(name.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                    numberOf.setPaintFlags(name.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+            }
+        };
+    }
+
+
 }

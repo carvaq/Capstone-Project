@@ -5,7 +5,7 @@ android {
 	compileSdkVersion 24
 	buildToolsVersion "25.0.2"
 	defaultConfig {
-		applicationId "com.cvv.birdsofonefeather.travelperfect"
+		applicationId "com.cvv.fanstaticapps.travelperfect"
 		minSdkVersion 18
 		targetSdkVersion 25
 		versionCode 1

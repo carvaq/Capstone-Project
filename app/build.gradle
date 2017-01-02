@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply from: 'config.gradle'
 
 android {
-	compileSdkVersion 24
+	compileSdkVersion 25
 	buildToolsVersion "25.0.2"
 	defaultConfig {
 		applicationId "com.cvv.fanstaticapps.travelperfect"
@@ -16,7 +16,17 @@ android {
 	buildTypes {
 		release {
 			minifyEnabled false
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard_libs.pro'
+			signingConfig signingConfigs.config
+		}
+		beta {
+			debuggable false
+			jniDebuggable false
+			signingConfig signingConfigs.config
+			renderscriptDebuggable false
+			minifyEnabled true
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard_libs.pro'
+			zipAlignEnabled true
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view.activities;
+package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,11 +11,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cvv.birdsofonefeather.travelperfect.R;
-import com.cvv.birdsofonefeather.travelperfect.model.TripBuilder;
-import com.cvv.birdsofonefeather.travelperfect.view.EditDialogHelper;
-import com.cvv.birdsofonefeather.travelperfect.view.PhotoTask;
-import com.cvv.birdsofonefeather.travelperfect.view.UiUtils;
+import com.cvv.fanstaticapps.travelperfect.R;
+import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
+import com.cvv.fanstaticapps.travelperfect.view.EditDialogHelper;
+import com.cvv.fanstaticapps.travelperfect.view.PhotoTask;
+import com.cvv.fanstaticapps.travelperfect.view.UiUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;

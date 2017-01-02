@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view;
+package com.cvv.fanstaticapps.travelperfect.view;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -13,10 +13,10 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.cvv.birdsofonefeather.travelperfect.R;
-import com.cvv.birdsofonefeather.travelperfect.model.TripBuilder;
-import com.cvv.birdsofonefeather.travelperfect.model.TripContract;
-import com.cvv.birdsofonefeather.travelperfect.view.activities.EditorActivity;
+import com.cvv.fanstaticapps.travelperfect.R;
+import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
+import com.cvv.fanstaticapps.travelperfect.model.TripContract;
+import com.cvv.fanstaticapps.travelperfect.view.activities.EditorActivity;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

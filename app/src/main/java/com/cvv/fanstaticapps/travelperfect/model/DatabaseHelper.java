@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.model;
+package com.cvv.fanstaticapps.travelperfect.model;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

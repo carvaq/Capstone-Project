@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view;
+package com.cvv.fanstaticapps.travelperfect.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cvv.birdsofonefeather.travelperfect.R;
-import com.cvv.birdsofonefeather.travelperfect.view.activities.MainActivity;
+import com.cvv.fanstaticapps.travelperfect.R;
+import com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;

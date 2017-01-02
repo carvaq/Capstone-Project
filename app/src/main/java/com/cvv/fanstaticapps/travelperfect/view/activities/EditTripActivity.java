@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view.activities;
+package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.view.View;
 

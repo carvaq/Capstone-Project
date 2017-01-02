@@ -1,8 +1,8 @@
-package com.cvv.birdsofonefeather.travelperfect.view.activities;
+package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.view.View;
 
-import com.cvv.birdsofonefeather.travelperfect.model.TripBuilder;
+import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 
 public class CreateTripActivity extends EditorActivity {
 

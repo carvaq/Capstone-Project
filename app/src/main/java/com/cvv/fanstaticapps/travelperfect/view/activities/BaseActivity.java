@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view.activities;
+package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.cvv.birdsofonefeather.travelperfect.R;
+import com.cvv.fanstaticapps.travelperfect.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

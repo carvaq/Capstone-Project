@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view.activities;
+package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.animation.Animator;
 import android.content.Intent;
@@ -13,10 +13,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.cvv.birdsofonefeather.travelperfect.R;
-import com.cvv.birdsofonefeather.travelperfect.model.TripContract;
-import com.cvv.birdsofonefeather.travelperfect.view.AnimationUtils;
-import com.cvv.birdsofonefeather.travelperfect.view.TripAdapter;
+import com.cvv.fanstaticapps.travelperfect.R;
+import com.cvv.fanstaticapps.travelperfect.model.TripContract;
+import com.cvv.fanstaticapps.travelperfect.view.AnimationUtils;
+import com.cvv.fanstaticapps.travelperfect.view.TripAdapter;
 
 import butterknife.BindView;
 

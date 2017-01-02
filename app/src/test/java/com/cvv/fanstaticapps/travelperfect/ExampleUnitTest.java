@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect;
+package com.cvv.fanstaticapps.travelperfect;
 
 import org.junit.Test;
 

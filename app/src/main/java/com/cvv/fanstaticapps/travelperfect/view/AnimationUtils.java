@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.view;
+package com.cvv.fanstaticapps.travelperfect.view;
 
 import android.animation.Animator;
 import android.os.Build;

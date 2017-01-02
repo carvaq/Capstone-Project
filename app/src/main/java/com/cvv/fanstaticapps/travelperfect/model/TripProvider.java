@@ -1,4 +1,4 @@
-package com.cvv.birdsofonefeather.travelperfect.model;
+package com.cvv.fanstaticapps.travelperfect.model;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

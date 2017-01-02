@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,18 +106,27 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             holder.attributions.setText(Html.fromHtml(attributions, Html.FROM_HTML_MODE_COMPACT));
         } else if (attributions != null) {
             holder.attributions.setText(Html.fromHtml(attributions));
+        } else {
+            holder.attributions.setText(null);
         }
 
         holder.image.getLayoutParams().height = mHeight;
         holder.image.getLayoutParams().width = mWidth;
 
         holder.title.setText(title);
-        Picasso.with(mContext)
-                .load(new File(imageUrl))
-                .centerCrop()
-                .resize(mWidth, mHeight)
-                .placeholder(R.drawable.ic_image)
-                .into(holder.image);
+        if (!TextUtils.isEmpty(imageUrl)) {
+            Picasso.with(mContext)
+                    .load(new File(imageUrl))
+                    .centerCrop()
+                    .resize(mWidth, mHeight)
+                    .placeholder(R.drawable.ic_image)
+                    .error(R.drawable.ic_image)
+                    .into(holder.image);
+        } else {
+            Picasso.with(mContext)
+                    .cancelRequest(holder.image);
+            holder.image.setImageResource(R.drawable.ic_image);
+        }
     }
 
     @Override

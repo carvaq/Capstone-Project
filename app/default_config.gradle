@@ -1,0 +1,13 @@
+android {
+	defaultConfig {
+		resValue "string", "places_api_key", "INSERT_YOUR_API_KEY"
+	}
+	signingConfigs {
+		config {
+			keyAlias 'default'
+			keyPassword 'default'
+			storeFile file('default_signing_key.jks')
+			storePassword 'default'
+		}
+	}
+}

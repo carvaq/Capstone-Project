@@ -7,7 +7,8 @@ The most stressful moments during a trip are at the start and at the end. You ar
 
 ## How to build
 To be able to build this project, two configurations have to be made:
-* The Places API key. You can get your own from [here](https://developers.google.com/places/android-api/)
+1. Rename default_config.gradle to config.gradle
+2 Replace dummy Places API key. You can get your own from [here](https://developers.google.com/places/android-api/)
 	```groovy
 	android {
 		defaultConfig {
@@ -15,16 +16,19 @@ To be able to build this project, two configurations have to be made:
 		}
 	}
 	```
-* The signing config for release and beta builds
-	```groovy
-		android {
-			signingConfigs {
-					config {
-						keyAlias ''
-						keyPassword ''
-						storeFile <file_to_keystore_file>
-						storePassword ''
-					}
-			}
-    }
-	```
+
+
+## License
+Copyright 2017 Caro Vaquero
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

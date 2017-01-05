@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
@@ -16,17 +15,13 @@ import com.cvv.fanstaticapps.travelperfect.view.fragments.NamePageFragment;
 
 import butterknife.BindView;
 
-public class CreateWizardActivity extends BaseActivity implements ViewPager.OnPageChangeListener, BaseFragment.OnUserInputSetListener {
+public class CreateWizardActivity extends BaseActivity implements BaseFragment.OnUserInputSetListener {
 
     private static final String EXTRA_CURRENT_POSITION = "current_position";
     private static final String EXTRA_TRIP_BUILDER = "trip_builder";
 
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
-    @BindView(R.id.left_button)
-    View mLeftButton;
-    @BindView(R.id.right_button)
-    View mRightButton;
 
     private TripBuilder mTripBuilder;
     private int mCurrentPosition;
@@ -46,7 +41,7 @@ public class CreateWizardActivity extends BaseActivity implements ViewPager.OnPa
 
     @Override
     protected void onViewsInitialized() {
-        final Fragment namePageFragment = NamePageFragment.newInstance();
+        final BaseFragment namePageFragment = NamePageFragment.newInstance();
 
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -64,7 +59,6 @@ public class CreateWizardActivity extends BaseActivity implements ViewPager.OnPa
             }
         });
 
-        mViewPager.addOnPageChangeListener(this);
         mViewPager.setCurrentItem(mCurrentPosition);
     }
 
@@ -76,26 +70,7 @@ public class CreateWizardActivity extends BaseActivity implements ViewPager.OnPa
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        mCurrentPosition = position;
-        switch (mCurrentPosition) {
-            case NamePageFragment.PAGE_POSITION:
-                mLeftButton.setVisibility(View.GONE);
-                mRightButton.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-    }
-
-    @Override
-    public void onNameOfPlaceSet(String nameOfPlace) {
+    public void onNameOfPlaceSet(String nameOfPlace, String attributions, String filePath) {
         mTripBuilder.setTitle(nameOfPlace);
     }
 

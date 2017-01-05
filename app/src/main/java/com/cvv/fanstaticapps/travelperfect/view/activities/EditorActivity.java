@@ -2,9 +2,7 @@ package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
-import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,26 +16,14 @@ import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.cvv.fanstaticapps.travelperfect.view.EditDialogHelper;
 import com.cvv.fanstaticapps.travelperfect.view.ListItemHelper;
-import com.cvv.fanstaticapps.travelperfect.view.PhotoTask;
-import com.cvv.fanstaticapps.travelperfect.view.UiUtils;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import org.joda.time.DateTime;
 
 import butterknife.BindView;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import timber.log.Timber;
 
-public abstract class EditorActivity extends BaseActivity
-        implements GoogleApiClient.OnConnectionFailedListener {
+public abstract class EditorActivity extends BaseActivity {
 
     public static final String EXTRA_TRIP_ID = "trip_id";
     public static final String DATE_FORMAT = "dd. MMM yyyy";
@@ -45,8 +31,6 @@ public abstract class EditorActivity extends BaseActivity
 
     @BindView(R.id.plain_name_of_place)
     EditText mEditText;
-    @BindView(R.id.feature_toggle)
-    SwitchCompat mFeatureToggle;
     @BindView(R.id.departure_date)
     TextView mDepartureDate;
     @BindView(R.id.departure_time)
@@ -69,11 +53,9 @@ public abstract class EditorActivity extends BaseActivity
     View mAutoCompleteContainer;
 
     TripBuilder mTripBuilder = new TripBuilder();
-    private TripBuilder COMPARE_TRIP_BUILDER;
 
     private EditDialogHelper mDialogHelper;
     private ListItemHelper mListItemHelper;
-    private GoogleApiClient mGoogleApiClient;
     private long mTripId;
 
     @Override
@@ -81,12 +63,7 @@ public abstract class EditorActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         mDialogHelper = new EditDialogHelper(this);
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
+
         if (savedInstanceState != null) {
             mTripId = savedInstanceState.getLong(EXTRA_TRIP_ID, -1);
         } else {
@@ -98,32 +75,11 @@ public abstract class EditorActivity extends BaseActivity
     protected void onViewsInitialized() {
         mListItemHelper = new ListItemHelper(this, mItemContainer);
         enableBackNavigation();
-
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                Timber.d("Place: %s", place.getName());
-                processPlace(place);
-                mErrorName.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Status status) {
-                Timber.d("An error occurred: %s", status);
-            }
-        });
         if (mTripId != -1) {
             Cursor cursor = getContentResolver().query(TripContract.TripEntry.buildTripUri(mTripId), null, null, null, null);
-            COMPARE_TRIP_BUILDER = new TripBuilder(cursor);
-            mTripBuilder.copy(COMPARE_TRIP_BUILDER);
+            mTripBuilder = new TripBuilder(cursor);
             mListItemHelper.addListItems(mTripId);
-            autocompleteFragment.setText(mTripBuilder.getTitle());
             mEditText.setText(mTripBuilder.getTitle());
-        } else {
-            COMPARE_TRIP_BUILDER = new TripBuilder();
         }
         setDateTimeInView(mTripBuilder.getDeparture(), mDepartureDate, mDepartureTime, mDepartureAdd);
         setDateTimeInView(mTripBuilder.getReturn(), mReturnDate, mReturnTime, mReturnAdd);
@@ -140,20 +96,6 @@ public abstract class EditorActivity extends BaseActivity
             dateView.setVisibility(View.GONE);
             timeView.setVisibility(View.GONE);
         }
-    }
-
-    private void processPlace(Place place) {
-        mTripBuilder.setTitle(place.getName().toString());
-        int displayWidth = UiUtils.getDisplayWidth(this);
-        new PhotoTask(EditorActivity.this, mGoogleApiClient, displayWidth) {
-            @Override
-            protected void onPostExecute(AttributedPhoto attributedPhoto) {
-                if (attributedPhoto != null) {
-                    mTripBuilder.setAttributions(attributedPhoto.attribution.toString());
-                    mTripBuilder.setFilePath(attributedPhoto.path);
-                }
-            }
-        }.execute(place.getId());
     }
 
     @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -221,18 +163,6 @@ public abstract class EditorActivity extends BaseActivity
         outState.putLong(EXTRA_TRIP_ID, mTripId);
     }
 
-    @OnCheckedChanged(R.id.feature_toggle)
-    public void onCheckedChanged(boolean isChecked) {
-        if (!isChecked) {
-            mDialogHelper.showFeatureDisableDialog(mFeatureToggle);
-            mAutoCompleteContainer.setVisibility(View.GONE);
-            mEditText.setVisibility(View.VISIBLE);
-        } else {
-            mAutoCompleteContainer.setVisibility(View.VISIBLE);
-            mEditText.setVisibility(View.GONE);
-        }
-    }
-
     public void saveTrip() {
         if (TextUtils.isEmpty(mTripBuilder.getTitle()) && mTripBuilder.getDeparture() == 0) {
             finish();
@@ -251,10 +181,4 @@ public abstract class EditorActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        mFeatureToggle.setVisibility(View.GONE);
-        mAutoCompleteContainer.setVisibility(View.GONE);
-        mEditText.setVisibility(View.VISIBLE);
-    }
 }

@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/wizardBackground1">
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/wizardBackground1"
+	android:gravity="center_horizontal"
+	android:orientation="vertical">
 	
+	<ImageView
+		android:id="@+id/img"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		app:srcCompat="@drawable/ic_beach_access"/>
 	
 	<android.support.v7.widget.CardView
 		android:id="@+id/place_container"
 		android:layout_width="300dp"
-		android:layout_height="wrap_content"
-		android:layout_centerInParent="true"
-		android:layout_marginTop="@dimen/wizard_image_text_separator">
+		android:layout_height="0dp"
+		android:layout_marginTop="@dimen/wizard_image_text_separator"
+		android:layout_weight="2">
 		
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:layout_gravity="center"
 			android:gravity="center_horizontal"
 			android:orientation="vertical"
 			android:padding="@dimen/frame_padding">
@@ -56,18 +66,15 @@
 		</LinearLayout>
 	</android.support.v7.widget.CardView>
 	
-	
-	<ImageView
-		android:id="@+id/img"
+	<ProgressBar
+		android:id="@+id/progressBar"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_above="@id/place_container"
-		android:layout_centerHorizontal="true"
-		app:srcCompat="@drawable/ic_beach_access"/>
+		android:layout_height="0dp"
+		android:layout_marginTop="@dimen/widget_padding"
+		android:layout_weight="1"/>
 	
 	<include
 		layout="@layout/wizard_button_bar"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/ideal_touch_size"
-		android:layout_alignParentBottom="true"/>
-</RelativeLayout>
+		android:layout_height="@dimen/ideal_touch_size"/>
+</LinearLayout>

@@ -28,7 +28,7 @@ public abstract class BaseFragment extends Fragment {
     @BindView(R.id.right_button)
     View mRightButton;
 
-    private OnUserInputSetListener mOnUserInputSetListener;
+    protected OnUserInputSetListener mOnUserInputSetListener;
     private Unbinder mUnbinder;
 
     @Override
@@ -60,7 +60,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public interface OnUserInputSetListener {
-        void onNameOfPlaceSet(String nameOfPlace);
+        void onNameOfPlaceSet(String nameOfPlace, String attributions, String filePath);
 
         void onDepartureSet(long departureDate);
 

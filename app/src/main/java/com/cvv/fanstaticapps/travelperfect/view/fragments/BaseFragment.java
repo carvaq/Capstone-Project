@@ -26,7 +26,7 @@ public abstract class BaseFragment extends Fragment {
     @BindView(R.id.skip_button)
     View mSkipButton;
     @BindView(R.id.right_button)
-    View mRightButton;
+    View mForwardButton;
 
     protected OnUserInputSetListener mOnUserInputSetListener;
     private Unbinder mUnbinder;
@@ -67,6 +67,25 @@ public abstract class BaseFragment extends Fragment {
         void onReturnSet(long returnDate);
 
         void onDone();
+    }
+
+    void enableButtons(boolean back, boolean skip, boolean forward) {
+        if (back) {
+            mBackButton.setVisibility(View.GONE);
+        } else {
+            mBackButton.setVisibility(View.VISIBLE);
+        }
+        if (skip) {
+            mSkipButton.setVisibility(View.GONE);
+        } else {
+            mSkipButton.setVisibility(View.VISIBLE);
+        }
+        if (forward) {
+            mForwardButton.setVisibility(View.GONE);
+        } else {
+            mForwardButton.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @OnClick(R.id.left_button)

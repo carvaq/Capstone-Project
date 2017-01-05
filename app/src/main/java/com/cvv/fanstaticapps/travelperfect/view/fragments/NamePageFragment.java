@@ -4,9 +4,12 @@ package com.cvv.fanstaticapps.travelperfect.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.view.PhotoTask;
@@ -19,6 +22,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import timber.log.Timber;
 
@@ -32,11 +36,20 @@ public class NamePageFragment extends BaseFragment
         implements GoogleApiClient.OnConnectionFailedListener {
 
     public static final int PAGE_POSITION = 0;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.error_name)
+    View mErrorMessage;
+    @BindView(R.id.plain_name_of_place)
+    EditText mEditText;
+
     private GoogleApiClient mGoogleApiClient;
 
     private String mNameOfPlace;
     private String mAttributions;
     private String mFilePath;
+    private boolean mTasksRunning;
 
     public static NamePageFragment newInstance() {
         return new NamePageFragment();
@@ -52,6 +65,8 @@ public class NamePageFragment extends BaseFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        enableButtons(false, false, true);
+        mProgressBar.setVisibility(View.GONE);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getActivity())
                 .addApi(Places.GEO_DATA_API)
@@ -81,19 +96,37 @@ public class NamePageFragment extends BaseFragment
         int displayWidth = UiUtils.getDisplayWidth(getActivity());
         new PhotoTask(getActivity(), mGoogleApiClient, displayWidth) {
             @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mTasksRunning = true;
+            }
+
+            @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 if (attributedPhoto != null && isAdded()) {
                     mAttributions = attributedPhoto.attribution.toString();
                     mFilePath = attributedPhoto.path;
                 }
-                mRightButton.setEnabled(true);
+                mTasksRunning = false;
+                mProgressBar.setVisibility(View.GONE);
             }
         }.execute(place.getId());
     }
 
     @OnClick(R.id.left_button)
     void onBackClicked() {
-        mOnUserInputSetListener.onNameOfPlaceSet(mNameOfPlace, mAttributions, mFilePath);
+        if (TextUtils.isEmpty(mNameOfPlace)) {
+            mNameOfPlace = mEditText.getText().toString();
+        }
+        if (TextUtils.isEmpty(mNameOfPlace)) {
+            mErrorMessage.setVisibility(View.VISIBLE);
+        }
+
+        if (mTasksRunning) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mOnUserInputSetListener.onNameOfPlaceSet(mNameOfPlace, mAttributions, mFilePath);
+        }
     }
 
     @Override

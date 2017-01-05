@@ -30,6 +30,13 @@
 			android:orientation="vertical"
 			android:padding="@dimen/frame_padding">
 			
+			<TextView
+				style="@style/AppTheme.Label"
+				android:layout_width="match_parent"
+				android:layout_marginBottom="@dimen/section_separator"
+				android:text="@string/label_name_of_place"/>
+			
+			
 			<fragment
 				android:id="@+id/place_autocomplete_fragment"
 				android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
@@ -63,11 +70,16 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:inputType="text"/>
+			
+			<TextView
+				android:id="@+id/error_name"
+				style="@style/AppTheme.Error"
+				android:text="@string/error_required_field"/>
 		</LinearLayout>
 	</android.support.v7.widget.CardView>
 	
 	<ProgressBar
-		android:id="@+id/progressBar"
+		android:id="@+id/progress_bar"
 		android:layout_width="wrap_content"
 		android:layout_height="0dp"
 		android:layout_marginTop="@dimen/widget_padding"

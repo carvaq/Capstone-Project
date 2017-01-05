@@ -10,7 +10,6 @@ import com.cvv.fanstaticapps.travelperfect.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -67,38 +66,27 @@ public abstract class BaseFragment extends Fragment {
         void onReturnSet(long returnDate);
 
         void onDone();
+
+        void onBackClicked();
     }
 
     void enableButtons(boolean back, boolean skip, boolean forward) {
         if (back) {
-            mBackButton.setVisibility(View.GONE);
-        } else {
             mBackButton.setVisibility(View.VISIBLE);
+        } else {
+            mBackButton.setVisibility(View.GONE);
         }
         if (skip) {
-            mSkipButton.setVisibility(View.GONE);
-        } else {
             mSkipButton.setVisibility(View.VISIBLE);
+        } else {
+            mSkipButton.setVisibility(View.GONE);
         }
         if (forward) {
-            mForwardButton.setVisibility(View.GONE);
-        } else {
             mForwardButton.setVisibility(View.VISIBLE);
+        } else {
+            mForwardButton.setVisibility(View.GONE);
         }
 
     }
 
-    @OnClick(R.id.left_button)
-    void onBackClicked() {
-    }
-
-
-    @OnClick(R.id.right_button)
-    void onForwardClicked() {
-    }
-
-
-    @OnClick(R.id.skip_button)
-    void onSkipClicked() {
-    }
 }

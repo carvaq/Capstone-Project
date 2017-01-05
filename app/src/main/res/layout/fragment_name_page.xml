@@ -9,74 +9,69 @@
 	android:orientation="vertical">
 	
 	<ImageView
-		android:id="@+id/img"
-		android:layout_width="wrap_content"
-		android:layout_height="0dp"
-		android:layout_weight="1"
+		style="@style/AppTheme.Wizard.Image"
 		app:srcCompat="@drawable/ic_beach_access"/>
 	
-	<android.support.v7.widget.CardView
-		android:id="@+id/place_container"
-		android:layout_width="300dp"
-		android:layout_height="0dp"
-		android:layout_marginTop="@dimen/wizard_image_text_separator"
-		android:layout_weight="2">
+	<FrameLayout
+		style="@style/AppTheme.Wizard.Card">
 		
-		<LinearLayout
+		<android.support.v7.widget.CardView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:gravity="center_horizontal"
-			android:orientation="vertical"
-			android:padding="@dimen/frame_padding">
+			android:layout_height="wrap_content">
 			
-			<TextView
-				style="@style/AppTheme.Label"
-				android:layout_width="match_parent"
-				android:layout_marginBottom="@dimen/section_separator"
-				android:text="@string/label_name_of_place"/>
-			
-			
-			<fragment
-				android:id="@+id/place_autocomplete_fragment"
-				android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"/>
-			
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/frame_padding"
-				android:text="@string/google_search_text"
-				android:textSize="12sp"/>
-			
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="@dimen/widget_padding"
-				android:layout_marginTop="@dimen/widget_padding"
-				android:text="@string/label_or"
-				android:textAllCaps="true"
-				android:textSize="20sp"/>
-			
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/plain_search_text"
-				android:textSize="12sp"/>
-			
-			<EditText
-				android:id="@+id/plain_name_of_place"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:inputType="text"/>
-			
-			<TextView
-				android:id="@+id/error_name"
-				style="@style/AppTheme.Error"
-				android:text="@string/error_required_field"/>
-		</LinearLayout>
-	</android.support.v7.widget.CardView>
+			<LinearLayout
+				style="@style/AppTheme.Wizard.CardContent">
+				
+				<TextView
+					style="@style/AppTheme.Label"
+					android:layout_width="match_parent"
+					android:layout_marginBottom="@dimen/section_separator"
+					android:layout_marginTop="@dimen/widget_padding"
+					android:text="@string/label_name_of_place"
+					android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+				
+				
+				<fragment
+					android:id="@+id/place_autocomplete_fragment"
+					android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"/>
+				
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="@dimen/frame_padding"
+					android:text="@string/google_search_text"
+					android:textSize="12sp"/>
+				
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="@dimen/widget_padding"
+					android:layout_marginTop="@dimen/widget_padding"
+					android:text="@string/label_or"
+					android:textAllCaps="true"
+					android:textSize="20sp"/>
+				
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/plain_search_text"
+					android:textSize="12sp"/>
+				
+				<EditText
+					android:id="@+id/plain_name_of_place"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:inputType="text"/>
+				
+				<TextView
+					android:id="@+id/error_name"
+					style="@style/AppTheme.Error"
+					android:text="@string/error_required_field"/>
+			</LinearLayout>
+		</android.support.v7.widget.CardView>
+	</FrameLayout>
 	
 	<ProgressBar
 		android:id="@+id/progress_bar"

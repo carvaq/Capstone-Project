@@ -1,10 +1,9 @@
 package com.cvv.fanstaticapps.travelperfect.view;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.cvv.fanstaticapps.travelperfect.R;
-import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.view.activities.EditorActivity;
 
 import org.joda.time.DateTime;
@@ -26,55 +24,27 @@ import org.joda.time.format.DateTimeFormatter;
  * Project: Capstone-Project
  */
 
-public class EditDialogHelper {
-    private EditorActivity mActivity;
+public class DateDialogHelper {
+    private Activity mActivity;
 
-    public EditDialogHelper(EditorActivity activity) {
+    public DateDialogHelper(Activity activity) {
         mActivity = activity;
     }
 
-    public void showFeatureDisableDialog(final SwitchCompat featureToggle) {
-        if (UiUtils.featureToggleDialogAlreadyShown(mActivity)) {
-            return;
-        }
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (DialogInterface.BUTTON_NEGATIVE == which) {
-                    featureToggle.setChecked(true);
-                    UiUtils.setFeatureDialogShownPref(mActivity);
-                }
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setMessage(R.string.google_search_text)
-                .setTitle(R.string.dialog_title_attention)
-                .setPositiveButton(R.string.btn_yes, listener)
-                .setNegativeButton(R.string.btn_no, listener)
-                .show();
-    }
-
-    public void showDatePicker(final TripBuilder tripBuilder, final View addButton, final TextView dateView, final TextView timeView) {
+    public void showDatePicker(final View addButton, final TextView dateView, final TextView timeView, final OnDatetimeSetListener datetimeSetListener) {
         final DateTimeFormatter formatter = DateTimeFormat.forPattern(EditorActivity.DATE_FORMAT);
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 DateTime date = new DateTime(year, month, dayOfMonth, 0, 0);
-                if (dateView.getId() == R.id.departure_date) {
-                    tripBuilder.setDeparture(date.getMillis());
-                } else {
-                    tripBuilder.setReturn(date.getMillis());
-                }
-                if (tripBuilder.getReturn() > 0 && tripBuilder.getDeparture() > tripBuilder.getReturn()) {
-                    tripBuilder.setDeparture(tripBuilder.getReturn());
-                    date.withMillis(tripBuilder.getDeparture());
-                }
                 dateView.setText(date.toString(formatter));
                 addButton.setVisibility(View.GONE);
                 dateView.setVisibility(View.VISIBLE);
                 if (timeView != null) {
-                    showTimePicker(tripBuilder, timeView);
+                    showTimePicker(timeView, date.getMillis(), datetimeSetListener);
                     timeView.setVisibility(View.VISIBLE);
+                } else {
+                    datetimeSetListener.onTimestampDefined(date.getMillis(), dateView.getId() == R.id.departure_date);
                 }
             }
         };
@@ -85,24 +55,16 @@ public class EditDialogHelper {
         datePickerDialog.show();
     }
 
-    public void showTimePicker(final TripBuilder tripBuilder, final TextView timeView) {
+    public void showTimePicker(final TextView timeView, final long timestamp, final OnDatetimeSetListener datetimeSetListener) {
         final DateTimeFormatter formatter = DateTimeFormat.forPattern(EditorActivity.TIME_FORMAT);
         TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                DateTime time;
-                if (timeView.getId() == R.id.departure_time) {
-                    time = new DateTime(tripBuilder.getDeparture())
-                            .withHourOfDay(hourOfDay)
-                            .withMinuteOfHour(minute);
-                    tripBuilder.setDeparture(time.getMillis());
-                } else {
-                    time = new DateTime(tripBuilder.getReturn())
-                            .withHourOfDay(hourOfDay)
-                            .withMinuteOfHour(minute);
-                    tripBuilder.setReturn(time.getMillis());
-                }
+                DateTime time = new DateTime(timestamp)
+                        .withHourOfDay(hourOfDay)
+                        .withMinuteOfHour(minute);
                 timeView.setText(time.toString(formatter));
+                datetimeSetListener.onTimestampDefined(time.getMillis(), timeView.getId() == R.id.departure_time);
             }
         };
         DateTime dateTime = getDateTime(timeView, formatter);
@@ -130,6 +92,11 @@ public class EditDialogHelper {
             dateTime = DateTime.now();
         }
         return dateTime;
+    }
+
+
+    public interface OnDatetimeSetListener {
+        void onTimestampDefined(long timestamp, boolean departure);
     }
 
 }

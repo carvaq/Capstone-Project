@@ -11,7 +11,9 @@ import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.cvv.fanstaticapps.travelperfect.view.fragments.BaseFragment;
+import com.cvv.fanstaticapps.travelperfect.view.fragments.DeparturePageFragment;
 import com.cvv.fanstaticapps.travelperfect.view.fragments.NamePageFragment;
+import com.cvv.fanstaticapps.travelperfect.view.fragments.ReturnPageFragment;
 
 import butterknife.BindView;
 
@@ -42,6 +44,8 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
     @Override
     protected void onViewsInitialized() {
         final BaseFragment namePageFragment = NamePageFragment.newInstance();
+        final BaseFragment departurePageFragment = DeparturePageFragment.newInstance();
+        final BaseFragment returnPageFragment = ReturnPageFragment.newInstance();
 
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -49,13 +53,17 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
                 switch (position) {
                     case NamePageFragment.PAGE_POSITION:
                         return namePageFragment;
+                    case DeparturePageFragment.PAGE_POSITION:
+                        return departurePageFragment;
+                    case ReturnPageFragment.PAGE_POSITION:
+                        return returnPageFragment;
                 }
                 return null;
             }
 
             @Override
             public int getCount() {
-                return 1;
+                return 2;
             }
         });
 
@@ -69,24 +77,49 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
         outState.putParcelable(EXTRA_TRIP_BUILDER, mTripBuilder);
     }
 
+    private void createTripAndShowDetail() {
+        Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
+        long tripId = ContentUris.parseId(uri);
+    }
+
+    private void nextPage() {
+        mCurrentPosition++;
+        mViewPager.setCurrentItem(mCurrentPosition);
+    }
+
+    private void previousPage() {
+        mCurrentPosition--;
+        mViewPager.setCurrentItem(mCurrentPosition);
+    }
+
     @Override
     public void onNameOfPlaceSet(String nameOfPlace, String attributions, String filePath) {
         mTripBuilder.setTitle(nameOfPlace);
+        mTripBuilder.setAttributions(attributions);
+        mTripBuilder.setFilePath(filePath);
+        nextPage();
     }
 
     @Override
     public void onDepartureSet(long departureDate) {
         mTripBuilder.setDeparture(departureDate);
+        nextPage();
     }
 
     @Override
     public void onReturnSet(long returnDate) {
-        mTripBuilder.setDeparture(returnDate);
+        mTripBuilder.setReturn(returnDate);
+        createTripAndShowDetail();
     }
 
     @Override
     public void onDone() {
-        Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
-        long tripId = ContentUris.parseId(uri);
+        createTripAndShowDetail();
     }
+
+    @Override
+    public void onBackClicked() {
+        previousPage();
+    }
+
 }

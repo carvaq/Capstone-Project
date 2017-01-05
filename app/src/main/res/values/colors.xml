@@ -7,10 +7,7 @@
 	<color name="greyBackground">#ececec</color>
 	
 	
-	<color name="wizardBackground1">#6A1B9A</color>
-	<color name="wizardBackground1Dark">#4a148c</color>
-	<color name="wizardBackground2">#FF8F00</color>
-	<color name="wizardBackground2Dark">#FF6F00</color>
-	<color name="wizardBackground3">#004D40</color>
-	<color name="wizardBackground3Dark">#00838F</color>
+	<color name="wizardBackground1">#4a148c</color>
+	<color name="wizardBackground2">#FF6F00</color>
+	<color name="wizardBackground3">#00838F</color>
 </resources>

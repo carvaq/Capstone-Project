@@ -3,7 +3,6 @@ package com.cvv.fanstaticapps.travelperfect.view.activities;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
-import com.cvv.fanstaticapps.travelperfect.view.EditDialogHelper;
+import com.cvv.fanstaticapps.travelperfect.view.DateDialogHelper;
 import com.cvv.fanstaticapps.travelperfect.view.ListItemHelper;
 
 import org.joda.time.DateTime;
@@ -23,7 +22,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public abstract class EditorActivity extends BaseActivity {
+public abstract class EditorActivity extends BaseActivity implements DateDialogHelper.OnDatetimeSetListener {
 
     public static final String EXTRA_TRIP_ID = "trip_id";
     public static final String DATE_FORMAT = "dd. MMM yyyy";
@@ -35,8 +34,6 @@ public abstract class EditorActivity extends BaseActivity {
     TextView mDepartureDate;
     @BindView(R.id.departure_time)
     TextView mDepartureTime;
-    @BindView(R.id.departure_add)
-    TextView mDepartureAdd;
     @BindView(R.id.return_date)
     TextView mReturnDate;
     @BindView(R.id.return_time)
@@ -45,16 +42,10 @@ public abstract class EditorActivity extends BaseActivity {
     TextView mReturnAdd;
     @BindView(R.id.item_container)
     LinearLayout mItemContainer;
-    @BindView(R.id.error_name)
-    TextView mErrorName;
-    @BindView(R.id.error_departure)
-    TextView mErrorDeparture;
-    @BindView(R.id.place_autocomplete_container)
-    View mAutoCompleteContainer;
 
     TripBuilder mTripBuilder = new TripBuilder();
 
-    private EditDialogHelper mDialogHelper;
+    private DateDialogHelper mDialogHelper;
     private ListItemHelper mListItemHelper;
     private long mTripId;
 
@@ -62,7 +53,7 @@ public abstract class EditorActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        mDialogHelper = new EditDialogHelper(this);
+        mDialogHelper = new DateDialogHelper(this);
 
         if (savedInstanceState != null) {
             mTripId = savedInstanceState.getLong(EXTRA_TRIP_ID, -1);
@@ -81,17 +72,19 @@ public abstract class EditorActivity extends BaseActivity {
             mListItemHelper.addListItems(mTripId);
             mEditText.setText(mTripBuilder.getTitle());
         }
-        setDateTimeInView(mTripBuilder.getDeparture(), mDepartureDate, mDepartureTime, mDepartureAdd);
-        setDateTimeInView(mTripBuilder.getReturn(), mReturnDate, mReturnTime, mReturnAdd);
+        setDateTimeInView(mTripBuilder.getDeparture(), mDepartureDate, mDepartureTime);
+        setDateTimeInView(mTripBuilder.getReturn(), mReturnDate, mReturnTime);
+        if (mTripBuilder.getReturn() > 0) {
+            mReturnAdd.setVisibility(View.GONE);
+        }
         mListItemHelper.addNewListItem();
     }
 
-    private void setDateTimeInView(long timestamp, TextView dateView, TextView timeView, TextView addView) {
+    private void setDateTimeInView(long timestamp, TextView dateView, TextView timeView) {
         if (timestamp > 0) {
             DateTime dateTime = new DateTime(timestamp);
             timeView.setText(dateTime.toString(TIME_FORMAT));
             dateView.setText(dateTime.toString(DATE_FORMAT));
-            addView.setVisibility(View.GONE);
         } else {
             dateView.setVisibility(View.GONE);
             timeView.setVisibility(View.GONE);
@@ -100,35 +93,29 @@ public abstract class EditorActivity extends BaseActivity {
 
     @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void saveUserInput() {
-        mErrorName.setVisibility(View.GONE);
         mTripBuilder.setTitle(mEditText.getText().toString());
     }
 
-    @OnClick(value = {R.id.departure_add, R.id.return_add})
-    void onAddDateClicked(View view) {
-        if (view.getId() == R.id.departure_add) {
-            mErrorDeparture.setVisibility(View.GONE);
-            mDialogHelper.showDatePicker(mTripBuilder, mDepartureAdd, mDepartureDate, mDepartureTime);
-        } else {
-            mDialogHelper.showDatePicker(mTripBuilder, mReturnAdd, mReturnDate, mReturnTime);
-        }
+    @OnClick(value = {R.id.return_add})
+    void onAddDateClicked() {
+        mDialogHelper.showDatePicker(mReturnAdd, mReturnDate, mReturnTime, this);
     }
 
     @OnClick(value = {R.id.departure_date, R.id.return_date})
     void onChangedDateClicked(View view) {
         if (view.getId() == R.id.departure_date) {
-            mDialogHelper.showDatePicker(mTripBuilder, mDepartureAdd, mDepartureDate, null);
+            mDialogHelper.showDatePicker(null, mDepartureDate, null, this);
         } else {
-            mDialogHelper.showDatePicker(mTripBuilder, mReturnAdd, mReturnDate, null);
+            mDialogHelper.showDatePicker(mReturnAdd, mReturnDate, null, this);
         }
     }
 
     @OnClick(value = {R.id.departure_time, R.id.return_time})
     void onChangeTimeClicked(View view) {
         if (view.getId() == R.id.departure_time) {
-            mDialogHelper.showTimePicker(mTripBuilder, mDepartureTime);
+            mDialogHelper.showTimePicker(mDepartureTime, mTripBuilder.getDeparture(), this);
         } else {
-            mDialogHelper.showTimePicker(mTripBuilder, mReturnTime);
+            mDialogHelper.showTimePicker(mReturnTime, mTripBuilder.getReturn(), this);
         }
     }
 
@@ -164,21 +151,21 @@ public abstract class EditorActivity extends BaseActivity {
     }
 
     public void saveTrip() {
-        if (TextUtils.isEmpty(mTripBuilder.getTitle()) && mTripBuilder.getDeparture() == 0) {
-            finish();
-        } else if (TextUtils.isEmpty(mTripBuilder.getTitle())) {
-            mErrorName.setVisibility(View.VISIBLE);
-        } else if (mTripBuilder.getDeparture() == 0) {
-            mErrorDeparture.setVisibility(View.VISIBLE);
-        } else {
-            String where = TripContract.TripEntry._ID + "=?";
-            String[] selectionArgs = new String[]{String.valueOf(mTripId)};
-            getContentResolver().update(TripContract.TripEntry.CONTENT_URI,
-                    mTripBuilder.getTripContentValues(), where, selectionArgs);
+        String where = TripContract.TripEntry._ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(mTripId)};
+        getContentResolver().update(TripContract.TripEntry.CONTENT_URI,
+                mTripBuilder.getTripContentValues(), where, selectionArgs);
 
-            mListItemHelper.saveListItems(mTripId);
-            finish();
-        }
+        mListItemHelper.saveListItems(mTripId);
+        finish();
     }
 
+    @Override
+    public void onTimestampDefined(long timestamp, boolean departure) {
+        if (departure) {
+            mTripBuilder.setDeparture(timestamp);
+        } else {
+            mTripBuilder.setReturn(timestamp);
+        }
+    }
 }

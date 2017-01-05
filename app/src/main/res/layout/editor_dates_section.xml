@@ -19,11 +19,6 @@
 			android:text="@string/label_departure"/>
 		
 		<TextView
-			android:id="@+id/error_departure"
-			android:text="@string/error_required_field"
-			style="@style/AppTheme.Error"/>
-		
-		<TextView
 			android:id="@+id/departure_date"
 			style="@style/AppTheme.TextWithImage"
 			android:drawableStart="@drawable/ic_calendar"

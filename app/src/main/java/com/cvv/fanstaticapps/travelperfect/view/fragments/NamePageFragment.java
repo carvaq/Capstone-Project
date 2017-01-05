@@ -113,8 +113,8 @@ public class NamePageFragment extends BaseFragment
         }.execute(place.getId());
     }
 
-    @OnClick(R.id.left_button)
-    void onBackClicked() {
+    @OnClick(R.id.right_button)
+    void onForwardClicked() {
         if (TextUtils.isEmpty(mNameOfPlace)) {
             mNameOfPlace = mEditText.getText().toString();
         }

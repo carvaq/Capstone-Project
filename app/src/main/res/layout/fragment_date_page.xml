@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/container"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/wizardBackground2"
               android:gravity="center_horizontal"
-
               android:orientation="vertical">
 	
 	<ImageView
-		style="@style/AppTheme.Wizard.Image"
-		app:srcCompat="@drawable/ic_return_wizard"/>
+		android:id="@+id/icon"
+		style="@style/AppTheme.Wizard.Image"/>
 	
 	<FrameLayout
 		style="@style/AppTheme.Wizard.Card">
 		
 		<android.support.v7.widget.CardView
-			android:id="@+id/place_container"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 			
@@ -25,34 +22,40 @@
 				style="@style/AppTheme.Wizard.CardContent">
 				
 				<TextView
+					android:id="@+id/title"
 					style="@style/AppTheme.Label"
 					android:layout_width="match_parent"
 					android:layout_marginTop="@dimen/widget_padding"
-					android:text="@string/btn_add_return"
 					android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 				
-				
 				<TextView
-					android:id="@+id/error_return"
+					android:id="@+id/error"
 					style="@style/AppTheme.Error"
 					android:text="@string/error_required_field"/>
 				
 				<TextView
-					android:id="@+id/return_date"
+					android:id="@+id/date"
 					style="@style/AppTheme.TextWithImage"
 					android:drawableStart="@drawable/ic_calendar"
-					tools:text="12.12.201"/>
+					android:visibility="gone"/>
 				
 				<TextView
 					android:id="@+id/return_time"
 					style="@style/AppTheme.TextWithImage"
 					android:drawableStart="@drawable/ic_clock"
-					tools:text="12:12"/>
+					android:visibility="gone"/>
+				
+				<TextView
+					android:id="@+id/departure_time"
+					style="@style/AppTheme.TextWithImage"
+					android:drawableStart="@drawable/ic_clock"
+					android:visibility="gone"/>
 				
 				<ImageView
-					android:id="@+id/return_add"
+					android:id="@+id/add"
 					android:layout_width="@dimen/ideal_touch_size"
 					android:layout_height="@dimen/ideal_touch_size"
+					android:layout_marginTop="@dimen/section_separator"
 					android:adjustViewBounds="true"
 					app:srcCompat="@drawable/ic_add_colored"/>
 			</LinearLayout>

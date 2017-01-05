@@ -1,10 +1,13 @@
 package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.content.ContentUris;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 
 import com.cvv.fanstaticapps.travelperfect.R;
@@ -27,6 +30,8 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
 
     private TripBuilder mTripBuilder;
     private int mCurrentPosition;
+    private int[] mStatusBarColor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,11 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
         } else {
             mTripBuilder = new TripBuilder();
         }
+        mStatusBarColor = new int[]{
+                ContextCompat.getColor(this, R.color.wizardBackground1),
+                ContextCompat.getColor(this, R.color.wizardBackground2),
+                ContextCompat.getColor(this, R.color.wizardBackground3)
+        };
     }
 
     @Override
@@ -63,11 +73,11 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         });
 
-        mViewPager.setCurrentItem(mCurrentPosition);
+        updateViewPager();
     }
 
     @Override
@@ -80,16 +90,27 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
     private void createTripAndShowDetail() {
         Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
         long tripId = ContentUris.parseId(uri);
+        Intent intent = new Intent(this, TripEditActivity.class);
+        intent.putExtra(EditorActivity.EXTRA_TRIP_ID, tripId);
+        startActivity(intent);
+        finish();
     }
 
     private void nextPage() {
         mCurrentPosition++;
+        updateViewPager();
+    }
+
+    private void updateViewPager() {
         mViewPager.setCurrentItem(mCurrentPosition);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(mStatusBarColor[mCurrentPosition]);
+        }
     }
 
     private void previousPage() {
         mCurrentPosition--;
-        mViewPager.setCurrentItem(mCurrentPosition);
+        updateViewPager();
     }
 
     @Override

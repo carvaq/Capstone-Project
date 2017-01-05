@@ -7,7 +7,8 @@
 	<string name="dialog_title_attention">Attention!</string>
 	<string name="btn_discard">Discard</string>
 	<string name="label_use_google_for_search">Use Google</string>
-	<string name="dialog_disabling_google_search_text">The search powered by Google will give you more exact name. If you disable it, you will not get an image associated to your trip. Do you still want to disable it?? </string>
+	<string name="google_search_text">You can search your next trip destination with Google</string>
+	<string name="plain_search_text">You can just type your next destination</string>
 	<string name="btn_yes">Yes</string>
 	<string name="btn_no">No, keep it activated</string>
 	<string name="label_departure">Departure</string>
@@ -19,4 +20,8 @@
 	<string name="btn_add_item">Add Item</string>
 	<string name="error_required_field">This is a required field</string>
 	<string name="label_name_of_place">Where are you going?</string>
+	<string name="label_or">or</string>
+	<string name="btn_back">Back</string>
+	<string name="btn_next">Next</string>
+	<string name="btn_skip"><u>Skip</u></string>
 </resources>

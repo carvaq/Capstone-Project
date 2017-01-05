@@ -2,6 +2,8 @@ package com.cvv.fanstaticapps.travelperfect.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Carla
@@ -9,7 +11,7 @@ import android.database.Cursor;
  * Project: Capstone-Project
  */
 
-public class TripBuilder {
+public class TripBuilder implements Parcelable {
     private String mTitle;
     private String mFilePath;
     private String mAttributions;
@@ -28,29 +30,44 @@ public class TripBuilder {
         mAttributions = cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_ATTRIBUTIONS));
     }
 
-    public TripBuilder setTitle(String title) {
+    protected TripBuilder(Parcel in) {
+        mTitle = in.readString();
+        mFilePath = in.readString();
+        mAttributions = in.readString();
+        mDeparture = in.readLong();
+        mReturn = in.readLong();
+    }
+
+    public static final Creator<TripBuilder> CREATOR = new Creator<TripBuilder>() {
+        @Override
+        public TripBuilder createFromParcel(Parcel in) {
+            return new TripBuilder(in);
+        }
+
+        @Override
+        public TripBuilder[] newArray(int size) {
+            return new TripBuilder[size];
+        }
+    };
+
+    public void setTitle(String title) {
         mTitle = title;
-        return this;
     }
 
-    public TripBuilder setFilePath(String filePath) {
+    public void setFilePath(String filePath) {
         mFilePath = filePath;
-        return this;
     }
 
-    public TripBuilder setAttributions(String attributions) {
+    public void setAttributions(String attributions) {
         mAttributions = attributions;
-        return this;
     }
 
-    public TripBuilder setDeparture(long departure) {
+    public void setDeparture(long departure) {
         mDeparture = departure;
-        return this;
     }
 
-    public TripBuilder setReturn(long aReturn) {
+    public void setReturn(long aReturn) {
         mReturn = aReturn;
-        return this;
     }
 
     public ContentValues getTripContentValues() {
@@ -112,5 +129,19 @@ public class TripBuilder {
                 ", mDeparture=" + mDeparture +
                 ", mReturn=" + mReturn +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTitle);
+        dest.writeString(mFilePath);
+        dest.writeString(mAttributions);
+        dest.writeLong(mDeparture);
+        dest.writeLong(mReturn);
     }
 }

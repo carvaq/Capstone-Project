@@ -1,8 +1,6 @@
 package com.cvv.fanstaticapps.travelperfect.view.activities;
 
-import android.content.ContentUris;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
@@ -151,8 +149,8 @@ public abstract class EditorActivity extends BaseActivity
             @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 if (attributedPhoto != null) {
-                    mTripBuilder.setAttributions(attributedPhoto.attribution.toString())
-                            .setFilePath(attributedPhoto.path);
+                    mTripBuilder.setAttributions(attributedPhoto.attribution.toString());
+                    mTripBuilder.setFilePath(attributedPhoto.path);
                 }
             }
         }.execute(place.getId());
@@ -243,15 +241,10 @@ public abstract class EditorActivity extends BaseActivity
         } else if (mTripBuilder.getDeparture() == 0) {
             mErrorDeparture.setVisibility(View.VISIBLE);
         } else {
-            if (mTripId != -1) {
-                String where = TripContract.TripEntry._ID + "=?";
-                String[] selectionArgs = new String[]{String.valueOf(mTripId)};
-                getContentResolver().update(TripContract.TripEntry.CONTENT_URI,
-                        mTripBuilder.getTripContentValues(), where, selectionArgs);
-            } else {
-                Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
-                mTripId = ContentUris.parseId(uri);
-            }
+            String where = TripContract.TripEntry._ID + "=?";
+            String[] selectionArgs = new String[]{String.valueOf(mTripId)};
+            getContentResolver().update(TripContract.TripEntry.CONTENT_URI,
+                    mTripBuilder.getTripContentValues(), where, selectionArgs);
 
             mListItemHelper.saveListItems(mTripId);
             finish();

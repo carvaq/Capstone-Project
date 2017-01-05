@@ -11,7 +11,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
@@ -19,6 +18,7 @@ import com.cvv.fanstaticapps.travelperfect.view.AnimationUtils;
 import com.cvv.fanstaticapps.travelperfect.view.TripAdapter;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements
@@ -64,26 +64,24 @@ public class MainActivity extends BaseActivity implements
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    AnimationUtils.fabReveal(mFab, findViewById(R.id.reveal_effect),
-                            new AnimationUtils.AnimationAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                    startActivity(new Intent(MainActivity.this, MainEditActivity.class));
-                                }
-                            });
-                } else {
-                    startActivity(new Intent(MainActivity.this, MainEditActivity.class));
-                }
-            }
-        });
-
         getSupportLoaderManager().initLoader(ID_LOADER, null, this);
 
+    }
+
+    @OnClick(R.id.fab)
+    void onAddTripClicked() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            AnimationUtils.fabReveal(mFab, findViewById(R.id.reveal_effect),
+                    new AnimationUtils.AnimationAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            startActivity(new Intent(MainActivity.this, CreateWizardActivity.class));
+                        }
+                    });
+        } else {
+            startActivity(new Intent(MainActivity.this, CreateWizardActivity.class));
+        }
     }
 
 

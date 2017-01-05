@@ -47,7 +47,7 @@ public class EditDialogHelper {
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setMessage(R.string.dialog_disabling_google_search_text)
+        builder.setMessage(R.string.google_search_text)
                 .setTitle(R.string.dialog_title_attention)
                 .setPositiveButton(R.string.btn_yes, listener)
                 .setNegativeButton(R.string.btn_no, listener)

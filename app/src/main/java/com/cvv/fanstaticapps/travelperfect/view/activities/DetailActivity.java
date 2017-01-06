@@ -165,12 +165,14 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
     }
 
     public void saveTrip() {
+        int currentProgress = mListItemHelper.saveListItems(mTripId);
+        mTripBuilder.setProgress(currentProgress);
+
         String where = TripContract.TripEntry._ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(mTripId)};
         getContentResolver().update(TripContract.TripEntry.CONTENT_URI,
                 mTripBuilder.getTripContentValues(), where, selectionArgs);
 
-        mListItemHelper.saveListItems(mTripId);
         finish();
     }
 

@@ -38,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         TripContract.TripEntry.COLUMN_NAME_OF_PLACE + " TEXT NOT NULL, " +
                         TripContract.TripEntry.COLUMN_DEPARTURE + " REAL NOT NULL, " +
                         TripContract.TripEntry.COLUMN_RETURN + " REAL, " +
+                        TripContract.TripEntry.COLUMN_PROGRESS + " INTEGER, " +
                         TripContract.TripEntry.COLUMN_IMAGE_URL + " TEXT, " +
                         TripContract.TripEntry.COLUMN_ATTRIBUTIONS + " TEXT);");
     }

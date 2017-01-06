@@ -28,7 +28,8 @@ public class MainActivity extends BaseActivity implements
     public static final int IDX_COL_RETURN = 2;
     public static final int IDX_COL_IMAGE_URL = 3;
     public static final int IDX_COL_ATTRIBUTIONS = 4;
-    public static final int IDX_COL_ID = 5;
+    public static final int IDX_COL_PROGRESS = 5;
+    public static final int IDX_COL_ID = 6;
 
     private static final int ID_LOADER = 123;
     private static final String[] MAIN_PROJECTION = new String[]{
@@ -37,6 +38,7 @@ public class MainActivity extends BaseActivity implements
             TripContract.TripEntry.COLUMN_RETURN,
             TripContract.TripEntry.COLUMN_IMAGE_URL,
             TripContract.TripEntry.COLUMN_ATTRIBUTIONS,
+            TripContract.TripEntry.COLUMN_PROGRESS,
             TripContract.TripEntry._ID
     };
 

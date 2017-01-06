@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
@@ -55,6 +56,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         TextView dates;
         @BindView(R.id.attributions)
         TextView attributions;
+        @BindView(R.id.progress_bar)
+        ProgressBar mProgressBar;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -86,11 +89,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         long returnDate = mCursor.getLong(MainActivity.IDX_COL_RETURN);
         String imageUrl = mCursor.getString(MainActivity.IDX_COL_IMAGE_URL);
         String attributions = mCursor.getString(MainActivity.IDX_COL_ATTRIBUTIONS);
+        int progress = mCursor.getInt(MainActivity.IDX_COL_PROGRESS);
 
         applyDate(holder, departureDate, returnDate);
         applyAttributions(holder, attributions);
 
         holder.title.setText(title);
+        holder.mProgressBar.setProgress(progress);
         applyImage(holder, imageUrl);
     }
 

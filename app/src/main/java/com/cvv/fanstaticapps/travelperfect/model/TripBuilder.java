@@ -17,6 +17,7 @@ public class TripBuilder implements Parcelable {
     private String mAttributions;
     private long mDeparture;
     private long mReturn;
+    private int mProgress;
 
     public TripBuilder() {
     }
@@ -28,6 +29,7 @@ public class TripBuilder implements Parcelable {
         mReturn = cursor.getLong(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_RETURN));
         mFilePath = cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_IMAGE_URL));
         mAttributions = cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_ATTRIBUTIONS));
+        mProgress = cursor.getInt(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_PROGRESS));
     }
 
     protected TripBuilder(Parcel in) {
@@ -36,6 +38,7 @@ public class TripBuilder implements Parcelable {
         mAttributions = in.readString();
         mDeparture = in.readLong();
         mReturn = in.readLong();
+        mProgress = in.readInt();
     }
 
     public static final Creator<TripBuilder> CREATOR = new Creator<TripBuilder>() {
@@ -90,6 +93,14 @@ public class TripBuilder implements Parcelable {
         mReturn = aReturn;
     }
 
+    public int getProgress() {
+        return mProgress;
+    }
+
+    public void setProgress(int progress) {
+        mProgress = progress;
+    }
+
     public ContentValues getTripContentValues() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TripContract.TripEntry.COLUMN_NAME_OF_PLACE, mTitle);
@@ -97,6 +108,7 @@ public class TripBuilder implements Parcelable {
         contentValues.put(TripContract.TripEntry.COLUMN_RETURN, mReturn);
         contentValues.put(TripContract.TripEntry.COLUMN_IMAGE_URL, mFilePath);
         contentValues.put(TripContract.TripEntry.COLUMN_ATTRIBUTIONS, mAttributions);
+        contentValues.put(TripContract.TripEntry.COLUMN_PROGRESS, mProgress);
         return contentValues;
     }
 
@@ -128,6 +140,7 @@ public class TripBuilder implements Parcelable {
                 ", mAttributions='" + mAttributions + '\'' +
                 ", mDeparture=" + mDeparture +
                 ", mReturn=" + mReturn +
+                ", mProgress=" + mProgress +
                 '}';
     }
 
@@ -143,5 +156,6 @@ public class TripBuilder implements Parcelable {
         dest.writeString(mAttributions);
         dest.writeLong(mDeparture);
         dest.writeLong(mReturn);
+        dest.writeInt(mProgress);
     }
 }

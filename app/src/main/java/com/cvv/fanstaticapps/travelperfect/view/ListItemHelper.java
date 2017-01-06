@@ -40,7 +40,9 @@ public class ListItemHelper {
         mItemContainer = itemContainer;
     }
 
-    public void saveListItems(long tripId) {
+    public int saveListItems(long tripId) {
+        double itemsNotDone = 0;
+        int totalItems = 0;
         for (int i = 0; i < mItemContainer.getChildCount(); i++) {
             View child = mItemContainer.getChildAt(i);
             TextView name = (TextView) child.findViewById(R.id.name);
@@ -51,6 +53,10 @@ public class ListItemHelper {
                 number = Integer.parseInt(numberOf.getText().toString());
             }
             if (!TextUtils.isEmpty(name.getText())) {
+                totalItems++;
+                if (!checkBox.isChecked()) {
+                    itemsNotDone++;
+                }
                 Item item = new Item(number, name.getText().toString(), checkBox.isChecked(), tripId);
                 if (child.getTag(R.id.list_item_db_id) != null) {
                     String where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
@@ -62,6 +68,11 @@ public class ListItemHelper {
                             item.getContentValues());
                 }
             }
+        }
+        if (totalItems == 0) {
+            return 100;
+        } else {
+            return (int) ((itemsNotDone / totalItems) * 100);
         }
     }
 

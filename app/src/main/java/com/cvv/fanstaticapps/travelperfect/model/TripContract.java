@@ -32,6 +32,7 @@ public class TripContract {
         public static final String COLUMN_RETURN = "return";
         public static final String COLUMN_IMAGE_URL = "imageUrl";
         public static final String COLUMN_ATTRIBUTIONS = "attributions";
+        public static final String COLUMN_PROGRESS = "progress";
 
         public static final String CONTENT_TYPE =
                 CONTENT_TYPE_DIR + CONTENT_URI + "/" + PATH_TRIP;

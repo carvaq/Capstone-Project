@@ -74,12 +74,10 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
     protected void onViewsInitialized() {
         mListItemHelper = new ListItemHelper(this, mItemContainer);
         enableBackNavigation();
-        if (mTripId != -1) {
-            Cursor cursor = getContentResolver().query(TripContract.TripEntry.buildTripUri(mTripId), null, null, null, null);
-            mTripBuilder = new TripBuilder(cursor);
-            mListItemHelper.addListItems(mTripId);
-            mEditText.setText(mTripBuilder.getTitle());
-        }
+        Cursor cursor = getContentResolver().query(TripContract.TripEntry.buildTripUri(mTripId), null, null, null, null);
+        mTripBuilder = new TripBuilder(cursor);
+        mListItemHelper.addListItems(mTripId);
+        mEditText.setText(mTripBuilder.getTitle());
         setDateTimeInView(mTripBuilder.getDeparture(), mDepartureDate, mDepartureTime);
         setDateTimeInView(mTripBuilder.getReturn(), mReturnDate, mReturnTime);
         if (mTripBuilder.getReturn() > 0) {

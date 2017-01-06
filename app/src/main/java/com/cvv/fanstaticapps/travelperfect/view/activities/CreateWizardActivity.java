@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 
@@ -57,7 +57,7 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
         final BaseFragment departurePageFragment = DeparturePageFragment.newInstance();
         final BaseFragment returnPageFragment = ReturnPageFragment.newInstance();
 
-        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+        mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {

@@ -78,5 +78,6 @@ public abstract class DatePageFragment extends BaseFragment implements DateDialo
     public void onTimestampDefined(long timestamp, boolean departure) {
         mTimestamp = timestamp;
         mError.setVisibility(View.GONE);
+        mAdd.setVisibility(View.GONE);
     }
 }

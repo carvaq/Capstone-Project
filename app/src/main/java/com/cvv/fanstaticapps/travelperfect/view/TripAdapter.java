@@ -86,22 +86,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         long returnDate = mCursor.getLong(MainActivity.IDX_COL_RETURN);
         String imageUrl = mCursor.getString(MainActivity.IDX_COL_IMAGE_URL);
         String attributions = mCursor.getString(MainActivity.IDX_COL_ATTRIBUTIONS);
-        if (returnDate != 0) {
-            holder.dates.setText(
-                    DateUtils.formatDateRange(mContext, departureDate, returnDate, DateUtils.FORMAT_SHOW_DATE));
-        } else {
-            holder.dates.setText(
-                    DateUtils.formatDateTime(mContext, departureDate, DateUtils.FORMAT_SHOW_DATE));
-        }
-        if (attributions != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.attributions.setText(Html.fromHtml(attributions, Html.FROM_HTML_MODE_COMPACT));
-        } else if (attributions != null) {
-            holder.attributions.setText(Html.fromHtml(attributions));
-        } else {
-            holder.attributions.setText(null);
-        }
+
+        applyDate(holder, departureDate, returnDate);
+        applyAttributions(holder, attributions);
 
         holder.title.setText(title);
+        applyImage(holder, imageUrl);
+    }
+
+    private void applyImage(ViewHolder holder, String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
             holder.image.setVisibility(View.VISIBLE);
             Picasso.with(mContext)
@@ -115,6 +108,30 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             Picasso.with(mContext)
                     .cancelRequest(holder.image);
             holder.image.setVisibility(View.GONE);
+        }
+    }
+
+    private void applyDate(ViewHolder holder, long departureDate, long returnDate) {
+        if (returnDate != 0) {
+            holder.dates.setText(
+                    DateUtils.formatDateRange(mContext, departureDate, returnDate, DateUtils.FORMAT_SHOW_DATE));
+        } else {
+            holder.dates.setText(
+                    DateUtils.formatDateTime(mContext, departureDate, DateUtils.FORMAT_SHOW_DATE));
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void applyAttributions(ViewHolder holder, String attributions) {
+        if (attributions != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.attributions.setText(Html.fromHtml(attributions, Html.FROM_HTML_MODE_COMPACT));
+            holder.attributions.setVisibility(View.VISIBLE);
+        } else if (attributions != null) {
+            holder.attributions.setText(Html.fromHtml(attributions));
+            holder.attributions.setVisibility(View.VISIBLE);
+        } else {
+            holder.attributions.setVisibility(View.GONE);
+            holder.attributions.setText(null);
         }
     }
 

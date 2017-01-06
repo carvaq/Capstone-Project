@@ -18,4 +18,5 @@
 	<string name="btn_next">Next</string>
 	<string name="btn_skip"><u>Skip</u></string>
 	<string name="label_status">Status</string>
+	<string name="btn_delete">Delete</string>
 </resources>

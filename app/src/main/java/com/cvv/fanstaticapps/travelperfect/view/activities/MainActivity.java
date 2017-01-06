@@ -72,17 +72,6 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-
-    private void deleteTrip(Long id) {
-        String where = TripContract.TripEntry._ID + "=?";
-        String[] selectionArgs = new String[]{String.valueOf(id)};
-        getContentResolver().delete(TripContract.TripEntry.CONTENT_URI, where, selectionArgs);
-        where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
-        getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
-        where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
-        getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
-    }
-
     private void setUpItemTouchHelper() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 

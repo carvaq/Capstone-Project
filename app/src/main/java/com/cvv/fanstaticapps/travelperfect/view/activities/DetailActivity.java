@@ -141,7 +141,7 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_editor, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
@@ -152,6 +152,9 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
             return true;
         } else if (item.getItemId() == R.id.action_discard) {
             NavUtils.navigateUpFromSameTask(this);
+            return true;
+        } else if (item.getItemId() == R.id.action_delete) {
+            deleteTrip(mTripId);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

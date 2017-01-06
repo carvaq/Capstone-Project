@@ -127,8 +127,8 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onEditClicked(Long id) {
-        Intent intent = new Intent(this, MainEditActivity.class);
-        intent.putExtra(MainEditActivity.EXTRA_TRIP_ID, id);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_TRIP_ID, id);
         startActivity(intent);
     }
 

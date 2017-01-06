@@ -3,10 +3,12 @@ package com.cvv.fanstaticapps.travelperfect.view.activities;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,8 +17,12 @@ import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.cvv.fanstaticapps.travelperfect.view.DateDialogHelper;
 import com.cvv.fanstaticapps.travelperfect.view.ListItemHelper;
+import com.cvv.fanstaticapps.travelperfect.view.UiUtils;
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,6 +48,8 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
     TextView mReturnAdd;
     @BindView(R.id.item_container)
     LinearLayout mItemContainer;
+    @BindView(R.id.image)
+    ImageView mImage;
 
     TripBuilder mTripBuilder = new TripBuilder();
 
@@ -78,6 +86,12 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
             mReturnAdd.setVisibility(View.GONE);
         }
         mListItemHelper.addNewListItem();
+        mImage.getLayoutParams().height = UiUtils.getProportionalHeight(UiUtils.getDisplayWidth(this));
+        if (!TextUtils.isEmpty(mTripBuilder.getFilePath())) {
+            Picasso.with(this)
+                    .load(new File(mTripBuilder.getFilePath()))
+                    .into(mImage);
+        }
     }
 
     private void setDateTimeInView(long timestamp, TextView dateView, TextView timeView) {
@@ -98,15 +112,15 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
 
     @OnClick(value = {R.id.return_add})
     void onAddDateClicked() {
-        mDialogHelper.showDatePicker(mReturnAdd, mReturnDate, mReturnTime, this);
+        mDialogHelper.showDatePicker(mReturnDate, mReturnTime, this);
     }
 
     @OnClick(value = {R.id.departure_date, R.id.return_date})
     void onChangedDateClicked(View view) {
         if (view.getId() == R.id.departure_date) {
-            mDialogHelper.showDatePicker(null, mDepartureDate, null, this);
+            mDialogHelper.showDatePicker(mDepartureDate, null, this);
         } else {
-            mDialogHelper.showDatePicker(mReturnAdd, mReturnDate, null, this);
+            mDialogHelper.showDatePicker(mReturnDate, null, this);
         }
     }
 
@@ -166,6 +180,7 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
             mTripBuilder.setDeparture(timestamp);
         } else {
             mTripBuilder.setReturn(timestamp);
+            mReturnAdd.setVisibility(View.GONE);
         }
     }
 }

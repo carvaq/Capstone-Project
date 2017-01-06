@@ -54,12 +54,12 @@ public abstract class DatePageFragment extends BaseFragment implements DateDialo
 
     @OnClick(R.id.date)
     void onDateClicked() {
-        mDateDialogHelper.showDatePicker(mAdd, mDate, null, this);
+        mDateDialogHelper.showDatePicker(mDate, null, this);
     }
 
     @OnClick(R.id.add)
     void addDateTime() {
-        mDateDialogHelper.showDatePicker(mAdd, mDate, getTimeView(), this);
+        mDateDialogHelper.showDatePicker(mDate, getTimeView(), this);
     }
 
     @OnClick(value = {R.id.departure_time, R.id.return_time})

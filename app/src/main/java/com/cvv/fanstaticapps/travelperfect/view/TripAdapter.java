@@ -66,6 +66,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             edit.setOnClickListener(this);
             done.setOnClickListener(this);
             itemView.setOnClickListener(this);
+
+            image.getLayoutParams().height = mHeight;
+            image.getLayoutParams().width = mWidth;
         }
 
         @Override
@@ -110,11 +113,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             holder.attributions.setText(null);
         }
 
-        holder.image.getLayoutParams().height = mHeight;
-        holder.image.getLayoutParams().width = mWidth;
-
         holder.title.setText(title);
         if (!TextUtils.isEmpty(imageUrl)) {
+            holder.image.setVisibility(View.VISIBLE);
             Picasso.with(mContext)
                     .load(new File(imageUrl))
                     .centerCrop()
@@ -125,7 +126,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         } else {
             Picasso.with(mContext)
                     .cancelRequest(holder.image);
-            holder.image.setImageResource(R.drawable.ic_image);
+            holder.image.setVisibility(View.GONE);
         }
     }
 

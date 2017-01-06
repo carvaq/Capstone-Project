@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -31,14 +33,14 @@ public class DateDialogHelper {
         mActivity = activity;
     }
 
-    public void showDatePicker(final View addButton, final TextView dateView, final TextView timeView, final OnDatetimeSetListener datetimeSetListener) {
+    public void showDatePicker(@NonNull final TextView dateView,
+                               @Nullable final TextView timeView, @NonNull final OnDatetimeSetListener datetimeSetListener) {
         final DateTimeFormatter formatter = DateTimeFormat.forPattern(DetailActivity.DATE_FORMAT);
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 DateTime date = new DateTime(year, month, dayOfMonth, 0, 0);
                 dateView.setText(date.toString(formatter));
-                addButton.setVisibility(View.GONE);
                 dateView.setVisibility(View.VISIBLE);
                 if (timeView != null) {
                     showTimePicker(timeView, date.getMillis(), datetimeSetListener);
@@ -55,7 +57,7 @@ public class DateDialogHelper {
         datePickerDialog.show();
     }
 
-    public void showTimePicker(final TextView timeView, final long timestamp, final OnDatetimeSetListener datetimeSetListener) {
+    public void showTimePicker(@NonNull final TextView timeView, final long timestamp, final OnDatetimeSetListener datetimeSetListener) {
         final DateTimeFormatter formatter = DateTimeFormat.forPattern(DetailActivity.TIME_FORMAT);
         TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
             @Override

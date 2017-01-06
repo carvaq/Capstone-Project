@@ -50,20 +50,40 @@ public class TripBuilder implements Parcelable {
         }
     };
 
+    public String getTitle() {
+        return mTitle;
+    }
+
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    public String getFilePath() {
+        return mFilePath;
     }
 
     public void setFilePath(String filePath) {
         mFilePath = filePath;
     }
 
+    public String getAttributions() {
+        return mAttributions;
+    }
+
     public void setAttributions(String attributions) {
         mAttributions = attributions;
     }
 
+    public long getDeparture() {
+        return mDeparture;
+    }
+
     public void setDeparture(long departure) {
         mDeparture = departure;
+    }
+
+    public long getReturn() {
+        return mReturn;
     }
 
     public void setReturn(long aReturn) {
@@ -78,26 +98,6 @@ public class TripBuilder implements Parcelable {
         contentValues.put(TripContract.TripEntry.COLUMN_IMAGE_URL, mFilePath);
         contentValues.put(TripContract.TripEntry.COLUMN_ATTRIBUTIONS, mAttributions);
         return contentValues;
-    }
-
-    public long getDeparture() {
-        return mDeparture;
-    }
-
-    public long getReturn() {
-        return mReturn;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void copy(TripBuilder tripBuilder) {
-        mTitle = tripBuilder.mTitle;
-        mDeparture = tripBuilder.mDeparture;
-        mReturn = tripBuilder.mReturn;
-        mFilePath = tripBuilder.mFilePath;
-        mAttributions = tripBuilder.mAttributions;
     }
 
     @Override

@@ -29,12 +29,6 @@
 			style="@style/AppTheme.TextWithImage"
 			android:drawableStart="@drawable/ic_clock"
 			tools:text="12:12"/>
-		
-		<Button
-			android:id="@+id/departure_add"
-			style="@style/AppTheme.ButtonWithImage"
-			android:drawableStart="@drawable/ic_add_colored"
-			android:text="@string/btn_add_departure"/>
 	
 	</LinearLayout>
 	

@@ -58,9 +58,9 @@
 				<TextView
 					android:id="@+id/departure_time"
 					style="@style/AppTheme.TextWithImage"
-					tools:text="12:39"
 					android:drawableStart="@drawable/ic_clock"
 					android:visibility="gone"
+					tools:text="12:39"
 					tools:visibility="visible"/>
 				
 				<ImageView

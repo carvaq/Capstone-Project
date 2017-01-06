@@ -5,5 +5,5 @@
 	<dimen name="icon_size">24dp</dimen>
 	<dimen name="ideal_touch_size">48dp</dimen>
 	<dimen name="section_separator">24dp</dimen>
-	<dimen name="wizard_image_text_separator">48dp</dimen>
+	<dimen name="wizard_image_text_separator">36dp</dimen>
 </resources>

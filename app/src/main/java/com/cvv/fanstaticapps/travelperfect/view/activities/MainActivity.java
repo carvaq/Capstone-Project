@@ -19,7 +19,6 @@ import com.cvv.fanstaticapps.travelperfect.view.TripAdapter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, TripAdapter.TripViewListener {
@@ -85,6 +84,16 @@ public class MainActivity extends BaseActivity implements
     }
 
 
+    private void deleteTrip(Long id) {
+        String where = TripContract.TripEntry._ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+        getContentResolver().delete(TripContract.TripEntry.CONTENT_URI, where, selectionArgs);
+        where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
+        getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
+        where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
+        getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER) {
@@ -119,28 +128,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onDetailOpenClicked(Long id) {
         Cursor cursor = getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null, null, null, null);
-        if (cursor == null) return;
-        while (cursor.moveToNext()) {
-            Timber.d("FK id: %s", cursor.getLong(cursor.getColumnIndex(TripContract.ListItemEntry.COLUMN_TRIP_FK)));
+        if (cursor != null && cursor.moveToFirst()) {
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(DetailActivity.EXTRA_TRIP_ID, id);
+            startActivity(intent);
         }
-    }
-
-    @Override
-    public void onEditClicked(Long id) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_TRIP_ID, id);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onDoneClicked(Long id) {
-        String where = TripContract.TripEntry._ID + "=?";
-        String[] selectionArgs = new String[]{String.valueOf(id)};
-        getContentResolver().delete(TripContract.TripEntry.CONTENT_URI, where, selectionArgs);
-        where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
-        getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
-        where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
-        getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
     }
 
 }

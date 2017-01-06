@@ -53,18 +53,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         TextView title;
         @BindView(R.id.dates)
         TextView dates;
-        @BindView(R.id.edit)
-        TextView edit;
-        @BindView(R.id.done)
-        TextView done;
         @BindView(R.id.attributions)
         TextView attributions;
 
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            edit.setOnClickListener(this);
-            done.setOnClickListener(this);
             itemView.setOnClickListener(this);
 
             image.getLayoutParams().height = mHeight;
@@ -74,13 +68,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         @Override
         public void onClick(View v) {
             long itemId = TripAdapter.this.getItemId(getAdapterPosition());
-            if (v.getId() == R.id.edit) {
-                mTripViewListener.onEditClicked(itemId);
-            } else if (v.getId() == R.id.done) {
-                mTripViewListener.onDoneClicked(itemId);
-            } else {
-                mTripViewListener.onDetailOpenClicked(itemId);
-            }
+            mTripViewListener.onDetailOpenClicked(itemId);
         }
     }
 
@@ -149,9 +137,5 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     public interface TripViewListener {
         void onDetailOpenClicked(Long id);
-
-        void onEditClicked(Long id);
-
-        void onDoneClicked(Long id);
     }
 }

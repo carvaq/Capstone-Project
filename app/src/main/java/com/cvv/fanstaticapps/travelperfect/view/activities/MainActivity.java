@@ -11,6 +11,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
@@ -23,24 +24,8 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, TripAdapter.TripViewListener {
 
-    public static final int IDX_COL_NAME_OF_PLACE = 0;
-    public static final int IDX_COL_DEPARTURE = 1;
-    public static final int IDX_COL_RETURN = 2;
-    public static final int IDX_COL_IMAGE_URL = 3;
-    public static final int IDX_COL_ATTRIBUTIONS = 4;
-    public static final int IDX_COL_PROGRESS = 5;
-    public static final int IDX_COL_ID = 6;
-
     private static final int ID_LOADER = 123;
-    private static final String[] MAIN_PROJECTION = new String[]{
-            TripContract.TripEntry.COLUMN_NAME_OF_PLACE,
-            TripContract.TripEntry.COLUMN_DEPARTURE,
-            TripContract.TripEntry.COLUMN_RETURN,
-            TripContract.TripEntry.COLUMN_IMAGE_URL,
-            TripContract.TripEntry.COLUMN_ATTRIBUTIONS,
-            TripContract.TripEntry.COLUMN_PROGRESS,
-            TripContract.TripEntry._ID
-    };
+
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
@@ -64,6 +49,8 @@ public class MainActivity extends BaseActivity implements
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        setUpItemTouchHelper();
 
         getSupportLoaderManager().initLoader(ID_LOADER, null, this);
 
@@ -96,6 +83,25 @@ public class MainActivity extends BaseActivity implements
         getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
     }
 
+    private void setUpItemTouchHelper() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                long id = mAdapter.getItemId(viewHolder.getAdapterPosition());
+                deleteTrip(id);
+            }
+
+        };
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER) {
@@ -104,7 +110,7 @@ public class MainActivity extends BaseActivity implements
 
             return new CursorLoader(this,
                     queryUri,
-                    MAIN_PROJECTION,
+                    TripAdapter.TRIP_PROJECTION,
                     null,
                     null,
                     sortOrder);

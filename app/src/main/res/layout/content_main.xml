@@ -6,6 +6,8 @@
 	android:id="@+id/recycle_view"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:paddingEnd="@dimen/frame_padding"
+	android:paddingStart="@dimen/frame_padding"
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
 	tools:context="com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity"
 	tools:showIn="@layout/activity_main"/>

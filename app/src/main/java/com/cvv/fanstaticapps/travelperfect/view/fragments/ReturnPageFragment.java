@@ -54,6 +54,7 @@ public class ReturnPageFragment extends DatePageFragment {
     void onForwardClicked() {
         if (mTimestamp > 0) {
             mOnUserInputSetListener.onReturnSet(mTimestamp);
+        } else {
             mOnUserInputSetListener.onDone();
         }
     }

@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
-import com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity;
+import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -31,6 +31,24 @@ import butterknife.ButterKnife;
  */
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
+
+    private static final int IDX_COL_NAME_OF_PLACE = 0;
+    private static final int IDX_COL_DEPARTURE = 1;
+    private static final int IDX_COL_RETURN = 2;
+    private static final int IDX_COL_IMAGE_URL = 3;
+    private static final int IDX_COL_ATTRIBUTIONS = 4;
+    private static final int IDX_COL_PROGRESS = 5;
+    private static final int IDX_COL_ID = 6;
+
+    public static final String[] TRIP_PROJECTION = new String[]{
+            TripContract.TripEntry.COLUMN_NAME_OF_PLACE,
+            TripContract.TripEntry.COLUMN_DEPARTURE,
+            TripContract.TripEntry.COLUMN_RETURN,
+            TripContract.TripEntry.COLUMN_IMAGE_URL,
+            TripContract.TripEntry.COLUMN_ATTRIBUTIONS,
+            TripContract.TripEntry.COLUMN_PROGRESS,
+            TripContract.TripEntry._ID
+    };
 
     private Cursor mCursor;
     private TripViewListener mTripViewListener;
@@ -84,12 +102,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
 
-        String title = mCursor.getString(MainActivity.IDX_COL_NAME_OF_PLACE);
-        long departureDate = mCursor.getLong(MainActivity.IDX_COL_DEPARTURE);
-        long returnDate = mCursor.getLong(MainActivity.IDX_COL_RETURN);
-        String imageUrl = mCursor.getString(MainActivity.IDX_COL_IMAGE_URL);
-        String attributions = mCursor.getString(MainActivity.IDX_COL_ATTRIBUTIONS);
-        int progress = mCursor.getInt(MainActivity.IDX_COL_PROGRESS);
+        String title = mCursor.getString(IDX_COL_NAME_OF_PLACE);
+        long departureDate = mCursor.getLong(IDX_COL_DEPARTURE);
+        long returnDate = mCursor.getLong(IDX_COL_RETURN);
+        String imageUrl = mCursor.getString(IDX_COL_IMAGE_URL);
+        String attributions = mCursor.getString(IDX_COL_ATTRIBUTIONS);
+        int progress = mCursor.getInt(IDX_COL_PROGRESS);
 
         applyDate(holder, departureDate, returnDate);
         applyAttributions(holder, attributions);
@@ -149,7 +167,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     @Override
     public long getItemId(int position) {
         mCursor.moveToPosition(position);
-        return mCursor.getLong(MainActivity.IDX_COL_ID);
+        return mCursor.getLong(IDX_COL_ID);
     }
 
     public void swapCursor(Cursor newCursor) {

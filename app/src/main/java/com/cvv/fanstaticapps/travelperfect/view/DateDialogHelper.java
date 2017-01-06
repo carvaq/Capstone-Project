@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.cvv.fanstaticapps.travelperfect.R;
-import com.cvv.fanstaticapps.travelperfect.view.activities.EditorActivity;
+import com.cvv.fanstaticapps.travelperfect.view.activities.DetailActivity;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -32,7 +32,7 @@ public class DateDialogHelper {
     }
 
     public void showDatePicker(final View addButton, final TextView dateView, final TextView timeView, final OnDatetimeSetListener datetimeSetListener) {
-        final DateTimeFormatter formatter = DateTimeFormat.forPattern(EditorActivity.DATE_FORMAT);
+        final DateTimeFormatter formatter = DateTimeFormat.forPattern(DetailActivity.DATE_FORMAT);
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -56,7 +56,7 @@ public class DateDialogHelper {
     }
 
     public void showTimePicker(final TextView timeView, final long timestamp, final OnDatetimeSetListener datetimeSetListener) {
-        final DateTimeFormatter formatter = DateTimeFormat.forPattern(EditorActivity.TIME_FORMAT);
+        final DateTimeFormatter formatter = DateTimeFormat.forPattern(DetailActivity.TIME_FORMAT);
         TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {

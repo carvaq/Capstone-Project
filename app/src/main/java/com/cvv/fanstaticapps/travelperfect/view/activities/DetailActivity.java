@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public abstract class EditorActivity extends BaseActivity implements DateDialogHelper.OnDatetimeSetListener {
+public class DetailActivity extends BaseActivity implements DateDialogHelper.OnDatetimeSetListener {
 
     public static final String EXTRA_TRIP_ID = "trip_id";
     public static final String DATE_FORMAT = "dd. MMM yyyy";
@@ -52,7 +52,7 @@ public abstract class EditorActivity extends BaseActivity implements DateDialogH
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editor);
+        setContentView(R.layout.activity_detail);
         mDialogHelper = new DateDialogHelper(this);
 
         if (savedInstanceState != null) {

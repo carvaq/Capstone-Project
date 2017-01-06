@@ -14,6 +14,7 @@ import android.view.ViewAnimationUtils;
  */
 
 public class AnimationUtils {
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static void fabReveal(FloatingActionButton fab, final View view, AnimationAdapter animationAdapter) {
 
@@ -22,12 +23,7 @@ public class AnimationUtils {
         view.setVisibility(View.VISIBLE);
         Animator anim = ViewAnimationUtils.createCircularReveal(view, (int) fab.getX(), (int) fab.getY(), 0, finalRadius);
         anim.addListener(animationAdapter);
-        anim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
+        anim.addListener(new AnimationAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 view.postDelayed(new Runnable() {
@@ -36,16 +32,6 @@ public class AnimationUtils {
                         view.setVisibility(View.INVISIBLE);
                     }
                 }, 200);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
             }
         });
         anim.start();

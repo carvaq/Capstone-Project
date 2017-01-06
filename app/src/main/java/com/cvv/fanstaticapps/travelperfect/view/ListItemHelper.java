@@ -22,6 +22,9 @@ import com.cvv.fanstaticapps.travelperfect.model.TripContract;
  */
 
 public class ListItemHelper {
+
+    private static final String WHERE_TRIP_FK = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
+
     private Activity mActivity;
     private final LinearLayout mItemContainer;
 
@@ -41,7 +44,7 @@ public class ListItemHelper {
     }
 
     public int saveListItems(long tripId) {
-        double itemsNotDone = 0;
+        double itemsDone = 0;
         int totalItems = 0;
         for (int i = 0; i < mItemContainer.getChildCount(); i++) {
             View child = mItemContainer.getChildAt(i);
@@ -54,25 +57,28 @@ public class ListItemHelper {
             }
             if (!TextUtils.isEmpty(name.getText())) {
                 totalItems++;
-                if (!checkBox.isChecked()) {
-                    itemsNotDone++;
+                if (checkBox.isChecked()) {
+                    itemsDone++;
                 }
-                Item item = new Item(number, name.getText().toString(), checkBox.isChecked(), tripId);
-                if (child.getTag(R.id.list_item_db_id) != null) {
-                    String where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
-                    String[] selectionArgs = new String[]{String.valueOf(child.getTag(R.id.list_item_db_id))};
-                    mActivity.getContentResolver().update(TripContract.ListItemEntry.CONTENT_URI,
-                            item.getContentValues(), where, selectionArgs);
-                } else {
-                    mActivity.getContentResolver().insert(TripContract.ListItemEntry.CONTENT_URI,
-                            item.getContentValues());
-                }
+                saveListItem(tripId, child, name, checkBox, number);
             }
         }
         if (totalItems == 0) {
             return 100;
         } else {
-            return (int) ((itemsNotDone / totalItems) * 100);
+            return (int) ((itemsDone / totalItems) * 100);
+        }
+    }
+
+    private void saveListItem(long tripId, View child, TextView name, CheckBox checkBox, int number) {
+        Item item = new Item(number, name.getText().toString(), checkBox.isChecked(), tripId);
+        if (child.getTag(R.id.list_item_db_id) != null) {
+            String[] selectionArgs = new String[]{String.valueOf(child.getTag(R.id.list_item_db_id))};
+            mActivity.getContentResolver().update(TripContract.ListItemEntry.CONTENT_URI,
+                    item.getContentValues(), WHERE_TRIP_FK, selectionArgs);
+        } else {
+            mActivity.getContentResolver().insert(TripContract.ListItemEntry.CONTENT_URI,
+                    item.getContentValues());
         }
     }
 
@@ -93,9 +99,8 @@ public class ListItemHelper {
     }
 
     public void addListItems(long tripId) {
-        String where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
         Cursor cursor = mActivity.getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null,
-                where, new String[]{String.valueOf(tripId)}, null);
+                WHERE_TRIP_FK, new String[]{String.valueOf(tripId)}, null);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {

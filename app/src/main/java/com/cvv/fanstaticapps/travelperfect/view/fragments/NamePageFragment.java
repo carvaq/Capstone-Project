@@ -24,6 +24,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import timber.log.Timber;
 
 /**
@@ -51,6 +52,8 @@ public class NamePageFragment extends BaseFragment
     private String mFilePath;
     private boolean mTasksRunning;
 
+    private PlaceAutocompleteFragment mPlaceAutocompleteFragment;
+
     public static NamePageFragment newInstance() {
         return new NamePageFragment();
     }
@@ -66,7 +69,7 @@ public class NamePageFragment extends BaseFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         enableButtons(false, false, true);
-        mProgressBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.INVISIBLE);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getActivity())
                 .addApi(Places.GEO_DATA_API)
@@ -74,14 +77,14 @@ public class NamePageFragment extends BaseFragment
                 .enableAutoManage(getActivity(), this)
                 .build();
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getActivity()
+        mPlaceAutocompleteFragment = (PlaceAutocompleteFragment) getActivity()
                 .getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        mPlaceAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 Timber.d("Place: %s", place.getName());
                 processPlace(place);
+                mEditText.getText().clear();
             }
 
             @Override
@@ -89,6 +92,11 @@ public class NamePageFragment extends BaseFragment
                 Timber.d("An error occurred: %s", status);
             }
         });
+    }
+
+    @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void inPLainNameSet() {
+        mPlaceAutocompleteFragment.setText(null);
     }
 
     private void processPlace(final Place place) {
@@ -108,7 +116,7 @@ public class NamePageFragment extends BaseFragment
                     mFilePath = attributedPhoto.path;
                 }
                 mTasksRunning = false;
-                mProgressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.INVISIBLE);
             }
         }.execute(place.getId());
     }
@@ -131,6 +139,5 @@ public class NamePageFragment extends BaseFragment
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 }

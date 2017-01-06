@@ -1,5 +1,16 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.nillith.autoversion'
+
 apply from: 'config.gradle'
+
+
+autoVersion {
+	major 1
+	minor 0
+	patch 0
+//    build 0
+}
+
 
 android {
 	compileSdkVersion 25
@@ -8,8 +19,10 @@ android {
 		applicationId "com.cvv.fanstaticapps.travelperfect"
 		minSdkVersion 18
 		targetSdkVersion 25
-		versionCode 3
-		versionName "1.0"
+		
+		versionCode autoVersion.code // same as build.
+		versionName autoVersion.name // same as "$major.$minor.$patch.$build"
+		
 		vectorDrawables.useSupportLibrary = true
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 	}

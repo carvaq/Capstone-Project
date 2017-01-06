@@ -23,7 +23,6 @@
 		
 		<activity
 			android:name=".view.activities.DetailActivity"
-			android:label="@string/title_activity_edit_activity"
 			android:parentActivityName=".view.activities.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"

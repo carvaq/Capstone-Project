@@ -105,7 +105,9 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
 
     @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void saveUserInput() {
-        mTripBuilder.setTitle(mEditText.getText().toString());
+        if (!TextUtils.isEmpty(mEditText.getText())) {
+            mTripBuilder.setTitle(mEditText.getText().toString());
+        }
     }
 
     @OnClick(value = {R.id.return_add})

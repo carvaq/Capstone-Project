@@ -36,7 +36,6 @@ public class DeparturePageFragment extends DatePageFragment {
 
         mContainer.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.wizardBackground2));
         mTitle.setText(R.string.btn_add_departure);
-        mIcon.setImageResource(R.drawable.ic_departure_wizard);
         mAdd.setContentDescription(getString(R.string.btn_add_departure));
     }
 

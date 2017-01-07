@@ -1,83 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/container"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_horizontal"
-              android:orientation="vertical"
-              tools:background="@android:color/holo_red_dark">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                tools:background="@color/wizardBackground2">
 	
-	<FrameLayout style="@style/AppTheme.Wizard.Image">
-		
-		<ImageView
-			android:id="@+id/icon"
-			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:adjustViewBounds="true"
-			tools:src="@drawable/ic_departure_wizard"/>
-	</FrameLayout>
-	
-	<FrameLayout
-		style="@style/AppTheme.Wizard.Card">
-		
-		<android.support.v7.widget.CardView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-			
-			<LinearLayout
-				style="@style/AppTheme.Wizard.CardContent"
-				android:paddingBottom="@dimen/section_separator">
-				
-				<TextView
-					android:id="@+id/title"
-					style="@style/AppTheme.Label"
-					android:layout_width="match_parent"
-					android:layout_marginBottom="@dimen/section_separator"
-					android:layout_marginTop="@dimen/widget_padding"
-					android:maxLines="2"
-					android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-					tools:text="Title of the text"/>
-				
-				<include
-					android:id="@+id/date"
-					layout="@layout/date_view"
-					android:visibility="gone"/>
-				
-				<include
-					android:id="@+id/return_time"
-					layout="@layout/time_view"
-					android:visibility="gone"/>
-				
-				<include
-					android:id="@+id/departure_time"
-					layout="@layout/time_view"
-					android:visibility="gone"/>
-				
-				<ImageView
-					android:id="@+id/add"
-					android:layout_width="@dimen/ideal_touch_size"
-					android:layout_height="@dimen/ideal_touch_size"
-					android:layout_marginTop="@dimen/section_separator"
-					android:adjustViewBounds="true"
-					android:background="@drawable/selection_bg"
-					app:srcCompat="@drawable/ic_add_colored"/>
-				
-				<TextView
-					android:id="@+id/error"
-					style="@style/AppTheme.Error"
-					android:text="@string/error_required_field"
-					tools:visibility="visible"/>
-			</LinearLayout>
-		
-		</android.support.v7.widget.CardView>
-	</FrameLayout>
-	
-	<android.support.v4.widget.Space
+	<ImageView
+		android:id="@+id/calendar"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1"/>
+		android:layout_height="wrap_content"
+		android:adjustViewBounds="true"
+		tools:src="@drawable/ic_wizard_calendar"/>
 	
-	<include layout="@layout/wizard_button_bar"/>
-</LinearLayout>
+	<ImageView
+		android:id="@+id/arrow"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:adjustViewBounds="true"
+		tools:src="@drawable/ic_wizard_arrow"/>
+	
+	<android.support.v7.widget.CardView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true">
+		
+		<LinearLayout
+			style="@style/AppTheme.Wizard.CardContainer">
+			
+			<TextView
+				android:id="@+id/title"
+				style="@style/AppTheme.Wizard.Label"
+				tools:text="Title of the text"/>
+			
+			<include
+				android:id="@+id/date"
+				layout="@layout/date_view"
+				android:visibility="gone"/>
+			
+			<include
+				android:id="@+id/return_time"
+				layout="@layout/time_view"
+				android:visibility="gone"/>
+			
+			<include
+				android:id="@+id/departure_time"
+				layout="@layout/time_view"
+				android:visibility="gone"/>
+			
+			<ImageView
+				android:id="@+id/add"
+				android:layout_width="@dimen/ideal_touch_size"
+				android:layout_height="@dimen/ideal_touch_size"
+				android:layout_marginTop="@dimen/section_separator"
+				android:adjustViewBounds="true"
+				android:background="@drawable/selection_bg"
+				app:srcCompat="@drawable/ic_add_colored"/>
+			
+			<TextView
+				android:id="@+id/error"
+				style="@style/AppTheme.Error"
+				android:text="@string/error_required_field"
+				android:visibility="invisible"
+				tools:visibility="visible"/>
+		</LinearLayout>
+	
+	</android.support.v7.widget.CardView>
+	
+	<include
+		android:id="@+id/navigation_bar"
+		layout="@layout/wizard_button_bar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

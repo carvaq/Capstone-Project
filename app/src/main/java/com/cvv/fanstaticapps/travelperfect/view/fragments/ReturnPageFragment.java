@@ -35,7 +35,8 @@ public class ReturnPageFragment extends DatePageFragment {
 
         mContainer.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.wizardBackground3));
         mTitle.setText(R.string.btn_add_return);
-        mIcon.setImageResource(R.drawable.ic_return_wizard);
+        mCalendar.setScaleX(-1);
+        mArrow.setScaleX(-1);
         mAdd.setContentDescription(getString(R.string.btn_add_return));
     }
 

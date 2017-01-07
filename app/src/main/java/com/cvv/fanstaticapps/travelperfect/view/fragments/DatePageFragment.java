@@ -24,8 +24,10 @@ public abstract class DatePageFragment extends BaseFragment implements DateDialo
 
     @BindView(R.id.container)
     View mContainer;
-    @BindView(R.id.icon)
-    ImageView mIcon;
+    @BindView(R.id.calendar)
+    ImageView mCalendar;
+    @BindView(R.id.arrow)
+    ImageView mArrow;
     @BindView(R.id.error)
     TextView mError;
     @BindView(R.id.date)
@@ -77,7 +79,7 @@ public abstract class DatePageFragment extends BaseFragment implements DateDialo
     @Override
     public void onTimestampDefined(long timestamp, boolean departure) {
         mTimestamp = timestamp;
-        mError.setVisibility(View.GONE);
+        mError.setVisibility(View.INVISIBLE);
         mAdd.setVisibility(View.GONE);
     }
 }

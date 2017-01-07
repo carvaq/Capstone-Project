@@ -5,7 +5,6 @@
 	style="@style/AppTheme.TextWithImage"
 	android:background="@drawable/selection_bg"
 	android:drawableStart="@drawable/ic_calendar"
-	android:visibility="gone"
 	tools:text="01. Dez 21"
 	tools:visibility="visible"
 	tools:showIn="@layout/fragment_date_page"/>

@@ -5,7 +5,6 @@
 	style="@style/AppTheme.TextWithImage"
 	android:background="@drawable/selection_bg"
 	android:drawableStart="@drawable/ic_clock"
-	android:visibility="gone"
 	tools:text="12:39"
 	tools:visibility="visible"
 	tools:showIn="@layout/fragment_date_page"/>

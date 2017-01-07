@@ -34,23 +34,26 @@
 					android:id="@+id/title"
 					style="@style/AppTheme.Label"
 					android:layout_width="match_parent"
-					android:maxLines="2"
 					android:layout_marginBottom="@dimen/section_separator"
 					android:layout_marginTop="@dimen/widget_padding"
+					android:maxLines="2"
 					android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
 					tools:text="Title of the text"/>
 				
 				<include
 					android:id="@+id/date"
-					layout="@layout/date_view"/>
+					layout="@layout/date_view"
+					android:visibility="gone"/>
 				
 				<include
 					android:id="@+id/return_time"
-					layout="@layout/time_view"/>
+					layout="@layout/time_view"
+					android:visibility="gone"/>
 				
 				<include
 					android:id="@+id/departure_time"
-					layout="@layout/time_view"/>
+					layout="@layout/time_view"
+					android:visibility="gone"/>
 				
 				<ImageView
 					android:id="@+id/add"

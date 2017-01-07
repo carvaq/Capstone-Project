@@ -1,6 +1,7 @@
 package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.animation.Animator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -95,14 +97,26 @@ public class MainActivity extends BaseActivity implements
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
-    private void deleteTrip(Long id) {
-        String where = TripContract.TripEntry._ID + "=?";
-        String[] selectionArgs = new String[]{String.valueOf(id)};
-        getContentResolver().delete(TripContract.TripEntry.CONTENT_URI, where, selectionArgs);
-        where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
-        getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
-        where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
-        getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
+    private void deleteTrip(final Long id) {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    String where = TripContract.TripEntry._ID + "=?";
+                    String[] selectionArgs = new String[]{String.valueOf(id)};
+                    getContentResolver().delete(TripContract.TripEntry.CONTENT_URI, where, selectionArgs);
+                    where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
+                    getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
+                    where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
+                    getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
+                }
+            }
+        };
+        new AlertDialog.Builder(this, R.style.AppTheme_Dialog)
+                .setMessage(R.string.dialog_delete_message)
+                .setNegativeButton(R.string.btn_cancel, listener)
+                .setPositiveButton(R.string.btn_delete, listener)
+                .show();
     }
 
     @Override
@@ -156,5 +170,4 @@ public class MainActivity extends BaseActivity implements
         intent.putExtra(DetailActivity.EXTRA_TRIP_ID, id);
         startActivityForResult(intent, REQUEST_CODE);
     }
-
 }

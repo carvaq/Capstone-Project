@@ -72,6 +72,7 @@
 			<EditText
 				android:id="@+id/plain_name_of_place"
 				android:layout_width="match_parent"
+				android:imeOptions="actionNext"
 				android:layout_height="match_parent"
 				android:inputType="text"/>
 			

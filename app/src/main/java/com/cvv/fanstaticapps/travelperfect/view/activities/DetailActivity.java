@@ -84,10 +84,14 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
             mReturnAdd.setVisibility(View.GONE);
         }
         mListItemHelper.addNewListItem();
-        mImage.getLayoutParams().height = UiUtils.getProportionalHeight(UiUtils.getDisplayWidth(this));
+        int width = UiUtils.getDisplayWidth(this);
+        int height = UiUtils.getProportionalHeight(width);
+        mToolbar.getLayoutParams().height = height;
         if (!TextUtils.isEmpty(mTripBuilder.getFilePath())) {
             Picasso.with(this)
                     .load(new File(mTripBuilder.getFilePath()))
+                    .centerCrop()
+                    .resize(width, height)
                     .into(mImage);
         }
     }

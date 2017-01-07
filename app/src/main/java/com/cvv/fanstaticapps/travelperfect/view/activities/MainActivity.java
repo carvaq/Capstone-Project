@@ -12,6 +12,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
@@ -31,6 +32,8 @@ public class MainActivity extends BaseActivity implements
     FloatingActionButton mFab;
     @BindView(R.id.recycle_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.empty_screen_message)
+    View mEmptyScreenMessage;
 
     private TripAdapter mAdapter;
     private int mLastSelectedPosition;
@@ -110,6 +113,11 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data.getCount() > 0) {
+            mEmptyScreenMessage.setVisibility(View.GONE);
+        } else {
+            mEmptyScreenMessage.setVisibility(View.VISIBLE);
+        }
         mAdapter.swapCursor(data);
         if (mLastSelectedPosition == RecyclerView.NO_POSITION) {
             mLastSelectedPosition = 0;

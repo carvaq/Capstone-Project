@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
+<FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/recycle_view"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:paddingEnd="@dimen/frame_padding"
 	android:paddingStart="@dimen/frame_padding"
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
 	tools:context="com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity"
-	tools:showIn="@layout/activity_main"/>
+	tools:showIn="@layout/activity_main">
+	
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/recycle_view"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+	
+	<TextView
+		android:id="@+id/empty_screen_message"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:text="@string/hint_empty_screen"
+		android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+		android:textColor="@color/hintColor"
+		android:visibility="gone"
+		tools:visibility="visible"/>
+</FrameLayout>

@@ -19,4 +19,5 @@
 	<string name="btn_skip"><u>Skip</u></string>
 	<string name="label_status">Status</string>
 	<string name="btn_delete">Delete</string>
+	<string name="hint_empty_screen">You don\'t have any trips yet. Click on the + icon in the corner on the bottom to add a new one.</string>
 </resources>

@@ -7,8 +7,8 @@
 	<color name="colorPressed">#804caf50</color>
 	<color name="scrim">#a0795548</color>
 	
-	<color name="greyIcon">#acacac</color>
-	<color name="greyBackground">#ececec</color>
+	<color name="hintColor">#acacac</color>
+	<color name="placeholderBackground">#ececec</color>
 	
 	<color name="wizardBackground1">#4a148c</color>
 	<color name="wizardBackground2">#FF6F00</color>

@@ -34,34 +34,23 @@
 					android:id="@+id/title"
 					style="@style/AppTheme.Label"
 					android:layout_width="match_parent"
+					android:maxLines="2"
 					android:layout_marginBottom="@dimen/section_separator"
 					android:layout_marginTop="@dimen/widget_padding"
 					android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
 					tools:text="Title of the text"/>
 				
-				<TextView
+				<include
 					android:id="@+id/date"
-					style="@style/AppTheme.TextWithImage"
-					android:drawableStart="@drawable/ic_calendar"
-					android:visibility="gone"
-					tools:text="01. Dez 21"
-					tools:visibility="visible"/>
+					layout="@layout/date_view"/>
 				
-				<TextView
+				<include
 					android:id="@+id/return_time"
-					style="@style/AppTheme.TextWithImage"
-					android:drawableStart="@drawable/ic_clock"
-					android:visibility="gone"
-					tools:text="12:39"
-					tools:visibility="visible"/>
+					layout="@layout/time_view"/>
 				
-				<TextView
+				<include
 					android:id="@+id/departure_time"
-					style="@style/AppTheme.TextWithImage"
-					android:drawableStart="@drawable/ic_clock"
-					android:visibility="gone"
-					tools:text="12:39"
-					tools:visibility="visible"/>
+					layout="@layout/time_view"/>
 				
 				<ImageView
 					android:id="@+id/add"
@@ -69,6 +58,7 @@
 					android:layout_height="@dimen/ideal_touch_size"
 					android:layout_marginTop="@dimen/section_separator"
 					android:adjustViewBounds="true"
+					android:background="@drawable/selection_bg"
 					app:srcCompat="@drawable/ic_add_colored"/>
 				
 				<TextView

@@ -26,6 +26,7 @@
 					style="@style/AppTheme.Label"
 					android:layout_width="match_parent"
 					android:layout_marginBottom="@dimen/section_separator"
+					android:maxLines="2"
 					android:layout_marginTop="@dimen/widget_padding"
 					android:text="@string/label_name_of_place"
 					android:textAppearance="@style/TextAppearance.AppCompat.Large"/>

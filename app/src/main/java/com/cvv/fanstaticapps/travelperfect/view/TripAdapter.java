@@ -67,23 +67,25 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.image)
-        ImageView image;
+        ImageView mImage;
         @BindView(R.id.title)
-        TextView title;
+        TextView mTitle;
         @BindView(R.id.dates)
-        TextView dates;
+        TextView mDates;
         @BindView(R.id.attributions)
-        TextView attributions;
+        TextView mAttributions;
         @BindView(R.id.progress_bar)
         ProgressBar mProgressBar;
+        @BindView(R.id.clickable_content)
+        View mClickableGame;
 
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
+            mClickableGame.setOnClickListener(this);
 
-            image.getLayoutParams().height = mHeight;
-            image.getLayoutParams().width = mWidth;
+            mImage.getLayoutParams().height = mHeight;
+            mImage.getLayoutParams().width = mWidth;
         }
 
         @Override
@@ -112,34 +114,34 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         applyDate(holder, departureDate, returnDate);
         applyAttributions(holder, attributions);
 
-        holder.title.setText(title);
+        holder.mTitle.setText(title);
         holder.mProgressBar.setProgress(progress);
         applyImage(holder, imageUrl);
     }
 
     private void applyImage(ViewHolder holder, String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
-            holder.image.setVisibility(View.VISIBLE);
+            holder.mImage.setVisibility(View.VISIBLE);
             Picasso.with(mContext)
                     .load(new File(imageUrl))
                     .centerCrop()
                     .resize(mWidth, mHeight)
                     .placeholder(R.drawable.ic_image)
                     .error(R.drawable.ic_image)
-                    .into(holder.image);
+                    .into(holder.mImage);
         } else {
             Picasso.with(mContext)
-                    .cancelRequest(holder.image);
-            holder.image.setVisibility(View.GONE);
+                    .cancelRequest(holder.mImage);
+            holder.mImage.setVisibility(View.GONE);
         }
     }
 
     private void applyDate(ViewHolder holder, long departureDate, long returnDate) {
         if (returnDate != 0) {
-            holder.dates.setText(
+            holder.mDates.setText(
                     DateUtils.formatDateRange(mContext, departureDate, returnDate, DateUtils.FORMAT_SHOW_DATE));
         } else {
-            holder.dates.setText(
+            holder.mDates.setText(
                     DateUtils.formatDateTime(mContext, departureDate, DateUtils.FORMAT_SHOW_DATE));
         }
     }
@@ -147,14 +149,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     @SuppressWarnings("deprecation")
     private void applyAttributions(ViewHolder holder, String attributions) {
         if (attributions != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.attributions.setText(Html.fromHtml(attributions, Html.FROM_HTML_MODE_COMPACT));
-            holder.attributions.setVisibility(View.VISIBLE);
+            holder.mAttributions.setText(Html.fromHtml(attributions, Html.FROM_HTML_MODE_COMPACT));
+            holder.mAttributions.setVisibility(View.VISIBLE);
         } else if (attributions != null) {
-            holder.attributions.setText(Html.fromHtml(attributions));
-            holder.attributions.setVisibility(View.VISIBLE);
+            holder.mAttributions.setText(Html.fromHtml(attributions));
+            holder.mAttributions.setVisibility(View.VISIBLE);
         } else {
-            holder.attributions.setVisibility(View.GONE);
-            holder.attributions.setText(null);
+            holder.mAttributions.setVisibility(View.GONE);
+            holder.mAttributions.setText(null);
         }
     }
 

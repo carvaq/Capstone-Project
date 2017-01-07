@@ -4,13 +4,15 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_marginTop="@dimen/frame_padding"
 	android:layout_marginBottom="@dimen/frame_padding"
+	android:layout_marginTop="@dimen/frame_padding"
 	android:minHeight="96dp">
 	
 	<LinearLayout
+		android:id="@+id/clickable_content"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:foreground="@drawable/selection_bg"
 		android:orientation="vertical">
 		
 		<FrameLayout
@@ -36,14 +38,14 @@
 		</FrameLayout>
 		
 		<ProgressBar
+			android:id="@+id/progress_bar"
 			style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="10dp"
-			android:id="@+id/progress_bar"
 			android:layout_gravity="bottom"
 			android:max="100"
-			tools:progress="50"
-			android:scaleY="2"/>
+			android:scaleY="2"
+			tools:progress="50"/>
 		
 		<TextView
 			android:id="@+id/title"

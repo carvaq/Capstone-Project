@@ -18,17 +18,13 @@
 			style="@style/AppTheme.Label"
 			android:text="@string/label_departure"/>
 		
-		<TextView
+		<include
 			android:id="@+id/departure_date"
-			style="@style/AppTheme.TextWithImage"
-			android:drawableStart="@drawable/ic_calendar"
-			tools:text="12.12.201"/>
+			layout="@layout/date_view"/>
 		
-		<TextView
+		<include
 			android:id="@+id/departure_time"
-			style="@style/AppTheme.TextWithImage"
-			android:drawableStart="@drawable/ic_clock"
-			tools:text="12:12"/>
+			layout="@layout/time_view"/>
 	
 	</LinearLayout>
 	
@@ -47,12 +43,14 @@
 		<TextView
 			android:id="@+id/return_date"
 			style="@style/AppTheme.TextWithImage"
+			android:background="@drawable/selection_bg"
 			android:drawableEnd="@drawable/ic_calendar"
 			tools:text="12.12.201"/>
 		
 		<TextView
 			android:id="@+id/return_time"
 			style="@style/AppTheme.TextWithImage"
+			android:background="@drawable/selection_bg"
 			android:drawableEnd="@drawable/ic_clock"
 			tools:text="12:12"/>
 		

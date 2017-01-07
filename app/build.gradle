@@ -32,7 +32,7 @@ android {
 	}
 }
 
-def playServices = "10.0.1"
+def playServices = "9.8.0"
 
 dependencies {
 	

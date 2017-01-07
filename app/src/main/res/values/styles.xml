@@ -35,6 +35,7 @@
 	</style>
 	
 	<style name="AppTheme.Label">
+		<item name="android:maxLines">1</item>
 		<item name="android:layout_marginTop">@dimen/section_separator</item>
 		<item name="android:textAllCaps">true</item>
 		<item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>

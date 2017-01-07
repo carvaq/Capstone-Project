@@ -1,15 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.nillith.autoversion'
+apply plugin: 'com.github.triplet.play'
 
 apply from: 'config.gradle'
-
-
-autoVersion {
-	major 1
-	minor 0
-	patch 0
-}
-
 
 android {
 	compileSdkVersion 25
@@ -19,8 +11,8 @@ android {
 		minSdkVersion 18
 		targetSdkVersion 25
 		
-		versionCode autoVersion.code // same as build.
-		versionName autoVersion.name // same as "$major.$minor.$patch.$build"
+		versionCode 5
+		versionName "1.0"
 		
 		vectorDrawables.useSupportLibrary = true
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

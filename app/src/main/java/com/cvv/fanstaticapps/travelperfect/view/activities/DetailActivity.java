@@ -1,5 +1,6 @@
 package com.cvv.fanstaticapps.travelperfect.view.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -30,7 +31,9 @@ import butterknife.OnTextChanged;
 
 public class DetailActivity extends BaseActivity implements DateDialogHelper.OnDatetimeSetListener {
 
+    public static final int RESULT_DELETE = 123;
     public static final String EXTRA_TRIP_ID = "trip_id";
+    public static final String EXTRA_DISCARD_EQUALS_DELETE = "delete_as_discard";
     public static final String DATE_FORMAT = "dd. MMM yyyy";
     public static final String TIME_FORMAT = "HH:mm";
 
@@ -56,6 +59,7 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
     private DateDialogHelper mDialogHelper;
     private ListItemHelper mListItemHelper;
     private long mTripId;
+    private boolean mDeleteAsDiscard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +69,10 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
 
         if (savedInstanceState != null) {
             mTripId = savedInstanceState.getLong(EXTRA_TRIP_ID, -1);
+            mDeleteAsDiscard = savedInstanceState.getBoolean(EXTRA_DISCARD_EQUALS_DELETE, false);
         } else {
             mTripId = getIntent().getLongExtra(EXTRA_TRIP_ID, -1);
+            mDeleteAsDiscard = getIntent().getBooleanExtra(EXTRA_DISCARD_EQUALS_DELETE, false);
         }
     }
 
@@ -146,6 +152,9 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        if (mDeleteAsDiscard) {
+            menu.findItem(R.id.action_delete).setVisible(false);
+        }
         return true;
     }
 
@@ -154,11 +163,15 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
         if (item.getItemId() == android.R.id.home) {
             saveTrip();
             return true;
+        } else if (item.getItemId() == R.id.action_delete ||
+                (item.getItemId() == R.id.action_discard && mDeleteAsDiscard)) {
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_TRIP_ID, mTripId);
+            setResult(RESULT_DELETE, intent);
+            finish();
+            return true;
         } else if (item.getItemId() == R.id.action_discard) {
             NavUtils.navigateUpFromSameTask(this);
-            return true;
-        } else if (item.getItemId() == R.id.action_delete) {
-            deleteTrip(mTripId);
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -169,6 +182,7 @@ public class DetailActivity extends BaseActivity implements DateDialogHelper.OnD
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(EXTRA_TRIP_ID, mTripId);
+        outState.putBoolean(EXTRA_DISCARD_EQUALS_DELETE, mDeleteAsDiscard);
     }
 
     public void saveTrip() {

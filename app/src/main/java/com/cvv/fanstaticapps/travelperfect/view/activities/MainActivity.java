@@ -26,7 +26,8 @@ public class MainActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, TripAdapter.TripViewListener {
 
     private static final int ID_LOADER = 123;
-
+    private static final int WAIT_PERIOD_MS = 7000;
+    private static final int REQUEST_CODE = 432;
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
@@ -67,11 +68,11 @@ public class MainActivity extends BaseActivity implements
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            startActivity(new Intent(MainActivity.this, CreateWizardActivity.class));
+                            startActivityForResult(new Intent(MainActivity.this, CreateWizardActivity.class), REQUEST_CODE);
                         }
                     });
         } else {
-            startActivity(new Intent(MainActivity.this, CreateWizardActivity.class));
+            startActivityForResult(new Intent(MainActivity.this, CreateWizardActivity.class), REQUEST_CODE);
         }
     }
 
@@ -92,6 +93,25 @@ public class MainActivity extends BaseActivity implements
         };
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    private void deleteTrip(Long id) {
+        String where = TripContract.TripEntry._ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+        getContentResolver().delete(TripContract.TripEntry.CONTENT_URI, where, selectionArgs);
+        where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
+        getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
+        where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
+        getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == DetailActivity.RESULT_DELETE
+                && data.hasExtra(DetailActivity.EXTRA_TRIP_ID)) {
+            deleteTrip(data.getLongExtra(DetailActivity.EXTRA_TRIP_ID, -1));
+        }
     }
 
     @Override
@@ -132,12 +152,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onDetailOpenClicked(Long id) {
-        Cursor cursor = getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra(DetailActivity.EXTRA_TRIP_ID, id);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_TRIP_ID, id);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
 }

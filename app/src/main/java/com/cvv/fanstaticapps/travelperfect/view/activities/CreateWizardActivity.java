@@ -91,6 +91,8 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
         Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
         long tripId = ContentUris.parseId(uri);
         Intent intent = new Intent(this, DetailActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        intent.putExtra(DetailActivity.EXTRA_DISCARD_EQUALS_DELETE, true);
         intent.putExtra(DetailActivity.EXTRA_TRIP_ID, tripId);
         startActivity(intent);
         finish();

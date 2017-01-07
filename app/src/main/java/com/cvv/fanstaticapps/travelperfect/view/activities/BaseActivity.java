@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.cvv.fanstaticapps.travelperfect.R;
-import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,16 +48,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    protected void deleteTrip(Long id) {
-        String where = TripContract.TripEntry._ID + "=?";
-        String[] selectionArgs = new String[]{String.valueOf(id)};
-        getContentResolver().delete(TripContract.TripEntry.CONTENT_URI, where, selectionArgs);
-        where = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
-        getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
-        where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
-        getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
     }
 
 }

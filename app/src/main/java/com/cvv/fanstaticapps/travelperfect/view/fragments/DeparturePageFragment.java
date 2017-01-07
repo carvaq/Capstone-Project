@@ -40,6 +40,11 @@ public class DeparturePageFragment extends DatePageFragment {
     }
 
     @Override
+    public boolean canGoForward() {
+        return mTimestamp > 0;
+    }
+
+    @Override
     protected TextView getTimeView() {
         return mDepartureTime;
     }
@@ -47,7 +52,7 @@ public class DeparturePageFragment extends DatePageFragment {
 
     @OnClick(R.id.right_button)
     void onForwardClicked() {
-        if (mTimestamp > 0) {
+        if (canGoForward()) {
             mOnUserInputSetListener.onDepartureSet(mTimestamp);
         } else {
             mError.setVisibility(View.VISIBLE);

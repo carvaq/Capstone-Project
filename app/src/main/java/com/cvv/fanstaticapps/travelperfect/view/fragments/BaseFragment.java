@@ -58,6 +58,8 @@ public abstract class BaseFragment extends Fragment {
         mUnbinder.unbind();
     }
 
+    public abstract boolean canGoForward();
+
     public interface OnUserInputSetListener {
         void onNameOfPlaceSet(String nameOfPlace, String attributions, String filePath);
 

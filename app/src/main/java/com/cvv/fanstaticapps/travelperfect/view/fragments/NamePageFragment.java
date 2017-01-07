@@ -94,6 +94,24 @@ public class NamePageFragment extends BaseFragment
         });
     }
 
+    @Override
+    public boolean canGoForward() {
+        if (TextUtils.isEmpty(mNameOfPlace)) {
+            mNameOfPlace = mEditText.getText().toString();
+        }
+        if (TextUtils.isEmpty(mNameOfPlace)) {
+            mErrorMessage.setVisibility(View.VISIBLE);
+            return false;
+        }
+
+        if (mTasksRunning) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            return true;
+        }
+        return false;
+    }
+
     @OnTextChanged(value = R.id.plain_name_of_place, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void inPLainNameSet() {
         mPlaceAutocompleteFragment.setText(null);
@@ -123,16 +141,7 @@ public class NamePageFragment extends BaseFragment
 
     @OnClick(R.id.right_button)
     void onForwardClicked() {
-        if (TextUtils.isEmpty(mNameOfPlace)) {
-            mNameOfPlace = mEditText.getText().toString();
-        }
-        if (TextUtils.isEmpty(mNameOfPlace)) {
-            mErrorMessage.setVisibility(View.VISIBLE);
-        }
-
-        if (mTasksRunning) {
-            mProgressBar.setVisibility(View.VISIBLE);
-        } else {
+        if (canGoForward()) {
             mOnUserInputSetListener.onNameOfPlaceSet(mNameOfPlace, mAttributions, mFilePath);
         }
     }

@@ -41,6 +41,11 @@ public class ReturnPageFragment extends DatePageFragment {
     }
 
     @Override
+    public boolean canGoForward() {
+        return true;
+    }
+
+    @Override
     protected TextView getTimeView() {
         return mReturnTime;
     }

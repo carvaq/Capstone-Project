@@ -29,16 +29,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-        onViewsInitialized();
-    }
-
-    protected abstract void onViewsInitialized();
-
-    void enableBackNavigation() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.cvv.fanstaticapps.travelperfect.view.fragments;
 
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,10 @@ public class BaseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
+    }
+
+    protected ContentResolver getContentResolver() {
+        return getActivity().getContentResolver();
     }
 
     @Override

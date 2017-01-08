@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
@@ -55,7 +56,9 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
     }
 
     @Override
-    protected void onViewsInitialized() {
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
         final WizardFragment namePageFragment = NamePageFragment.newInstance();
         final WizardFragment departurePageFragment = DeparturePageFragment.newInstance();
         final WizardFragment returnPageFragment = ReturnPageFragment.newInstance();

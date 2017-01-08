@@ -1,10 +1,14 @@
 package com.cvv.fanstaticapps.travelperfect.view.activities;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.view.fragments.DetailFragment;
+
+import butterknife.BindView;
 
 public class DetailActivity extends BaseActivity {
 
@@ -12,6 +16,10 @@ public class DetailActivity extends BaseActivity {
 
     public static final String DATE_FORMAT = "dd. MMM yyyy";
     public static final String TIME_FORMAT = "HH:mm";
+
+    @Nullable
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private DetailFragment mDetailFragment;
 
@@ -23,15 +31,18 @@ public class DetailActivity extends BaseActivity {
         if (savedInstanceState == null) {
             long tripId = getIntent().getLongExtra(DetailFragment.ARGS_TRIP_ID, -1);
             boolean deleteAsDiscard = getIntent().getBooleanExtra(DetailFragment.ARGS_DISCARD_EQUALS_DELETE, false);
-            mDetailFragment.initialize(tripId, deleteAsDiscard, false);
+            mDetailFragment.initialize(tripId, deleteAsDiscard);
         }
     }
 
     @Override
-    protected void onViewsInitialized() {
-        enableBackNavigation();
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

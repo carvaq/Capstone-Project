@@ -31,6 +31,7 @@ import org.joda.time.DateTime;
 
 import java.io.File;
 
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -45,7 +46,9 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
 
     public static final String ARGS_TRIP_ID = "trip_id";
     public static final String ARGS_DISCARD_EQUALS_DELETE = "delete_as_discard";
-    public static final String ARGS_DUAL_PANE = "dual_pane";
+
+    @BindBool(R.bool.dual_pane)
+    boolean mDualPane;
 
     @BindView(R.id.plain_name_of_place)
     EditText mEditText;
@@ -76,7 +79,15 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
 
     private long mTripId;
     private boolean mDeleteAsDiscard;
-    private boolean mDualPane;
+
+    public static DetailFragment newInstance(long tripId, boolean deleteAsDiscard) {
+        Bundle args = new Bundle();
+        args.putLong(ARGS_TRIP_ID, tripId);
+        args.putBoolean(ARGS_DISCARD_EQUALS_DELETE, deleteAsDiscard);
+        DetailFragment fragment = new DetailFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -91,12 +102,18 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         mDialogHelper = new DateDialogHelper(getActivity());
         mListItemHelper = new ListItemHelper(getActivity(), mItemContainer);
 
+
         if (savedInstanceState != null) {
-            mTripId = savedInstanceState.getLong(ARGS_TRIP_ID, -1);
-            mDeleteAsDiscard = savedInstanceState.getBoolean(ARGS_DISCARD_EQUALS_DELETE, false);
-            mDualPane = savedInstanceState.getBoolean(ARGS_DUAL_PANE, false);
-            initialize(mTripId, mDeleteAsDiscard, false);
+            readBundle(savedInstanceState);
+        } else if (getArguments() != null) {
+            readBundle(getArguments());
         }
+    }
+
+    private void readBundle(Bundle bundle) {
+        mTripId = bundle.getLong(ARGS_TRIP_ID, -1);
+        mDeleteAsDiscard = bundle.getBoolean(ARGS_DISCARD_EQUALS_DELETE, false);
+        initialize(mTripId, mDeleteAsDiscard);
     }
 
     private void setDateTimeInView(long timestamp, TextView dateView, TextView timeView) {
@@ -172,7 +189,6 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         super.onSaveInstanceState(outState);
         outState.putLong(ARGS_TRIP_ID, mTripId);
         outState.putBoolean(ARGS_DISCARD_EQUALS_DELETE, mDeleteAsDiscard);
-        outState.putBoolean(ARGS_DUAL_PANE, mDualPane);
     }
 
 
@@ -182,7 +198,7 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
 
         String where = TripContract.TripEntry._ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(mTripId)};
-        getActivity().getContentResolver()
+        getContentResolver()
                 .update(TripContract.TripEntry.CONTENT_URI,
                         mTripBuilder.getTripContentValues(), where, selectionArgs);
 
@@ -199,12 +215,11 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         }
     }
 
-    public void initialize(long tripId, boolean deleteAsDiscard, boolean dualPane) {
+    public void initialize(long tripId, boolean deleteAsDiscard) {
         mTripId = tripId;
         mDeleteAsDiscard = deleteAsDiscard;
-        mDualPane = dualPane;
 
-        Cursor cursor = getActivity().getContentResolver().query(TripContract.TripEntry.buildTripUri(mTripId), null, null, null, null);
+        Cursor cursor = getContentResolver().query(TripContract.TripEntry.buildTripUri(mTripId), null, null, null, null);
         mTripBuilder = new TripBuilder(cursor);
         mListItemHelper.addListItems(mTripId);
         mEditText.setText(mTripBuilder.getTitle());
@@ -214,21 +229,22 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
             mReturnAdd.setVisibility(View.GONE);
         }
         mListItemHelper.addNewListItem();
-        setUpToolbar(dualPane);
+
+        if (!mDualPane) {
+            setUpToolbar();
+        }
     }
 
-    private void setUpToolbar(boolean dualPane) {
-        if (!dualPane) {
-            int width = UiUtils.getDisplayWidth(getActivity());
-            int height = UiUtils.getProportionalHeight(width);
-            mToolbar.getLayoutParams().height = height;
-            if (!TextUtils.isEmpty(mTripBuilder.getFilePath())) {
-                Picasso.with(getActivity())
-                        .load(new File(mTripBuilder.getFilePath()))
-                        .centerCrop()
-                        .resize(width, height)
-                        .into(mImage);
-            }
+    private void setUpToolbar() {
+        int width = UiUtils.getDisplayWidth(getActivity());
+        int height = UiUtils.getProportionalHeight(width);
+        mToolbar.getLayoutParams().height = height;
+        if (!TextUtils.isEmpty(mTripBuilder.getFilePath())) {
+            Picasso.with(getActivity())
+                    .load(new File(mTripBuilder.getFilePath()))
+                    .centerCrop()
+                    .resize(width, height)
+                    .into(mImage);
         }
     }
 }

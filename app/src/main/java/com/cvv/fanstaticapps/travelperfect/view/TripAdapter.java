@@ -61,7 +61,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         mTripViewListener = tripViewListener;
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
-        mWidth = UiUtils.getDisplayWidth((Activity) context);
+        mWidth = (3 * UiUtils.getDisplayWidth((Activity) context)) / 8;
         mHeight = UiUtils.getProportionalHeight(mWidth);
     }
 

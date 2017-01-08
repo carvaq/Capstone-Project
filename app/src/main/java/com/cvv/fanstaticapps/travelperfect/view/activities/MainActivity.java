@@ -20,6 +20,7 @@ import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
 import com.cvv.fanstaticapps.travelperfect.view.AnimationUtils;
 import com.cvv.fanstaticapps.travelperfect.view.TripAdapter;
+import com.cvv.fanstaticapps.travelperfect.view.fragments.DetailFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -123,8 +124,8 @@ public class MainActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == DetailActivity.RESULT_DELETE
-                && data.hasExtra(DetailActivity.EXTRA_TRIP_ID)) {
-            deleteTrip(data.getLongExtra(DetailActivity.EXTRA_TRIP_ID, -1));
+                && data.hasExtra(DetailFragment.ARGS_TRIP_ID)) {
+            deleteTrip(data.getLongExtra(DetailFragment.ARGS_TRIP_ID, -1));
         }
     }
 
@@ -167,7 +168,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onDetailOpenClicked(Long id) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_TRIP_ID, id);
+        intent.putExtra(DetailFragment.ARGS_TRIP_ID, id);
         startActivityForResult(intent, REQUEST_CODE);
     }
 }

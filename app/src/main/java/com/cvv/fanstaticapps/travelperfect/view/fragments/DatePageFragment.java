@@ -20,7 +20,7 @@ import butterknife.OnClick;
  * Project: Capstone-Project
  */
 
-public abstract class DatePageFragment extends BaseFragment implements DateDialogHelper.OnDatetimeSetListener {
+public abstract class DatePageFragment extends WizardFragment implements DateDialogHelper.OnDatetimeSetListener {
 
     @BindView(R.id.container)
     View mContainer;

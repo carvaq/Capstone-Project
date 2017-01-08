@@ -33,7 +33,7 @@ import timber.log.Timber;
  * Project: Capstone-Project
  */
 
-public class NamePageFragment extends BaseFragment
+public class NamePageFragment extends WizardFragment
         implements GoogleApiClient.OnConnectionFailedListener {
 
     public static final int PAGE_POSITION = 0;

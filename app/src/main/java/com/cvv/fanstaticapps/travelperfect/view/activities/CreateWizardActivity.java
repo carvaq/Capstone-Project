@@ -15,14 +15,15 @@ import android.view.View;
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.model.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.model.TripContract;
-import com.cvv.fanstaticapps.travelperfect.view.fragments.BaseFragment;
 import com.cvv.fanstaticapps.travelperfect.view.fragments.DeparturePageFragment;
+import com.cvv.fanstaticapps.travelperfect.view.fragments.DetailFragment;
 import com.cvv.fanstaticapps.travelperfect.view.fragments.NamePageFragment;
 import com.cvv.fanstaticapps.travelperfect.view.fragments.ReturnPageFragment;
+import com.cvv.fanstaticapps.travelperfect.view.fragments.WizardFragment;
 
 import butterknife.BindView;
 
-public class CreateWizardActivity extends BaseActivity implements BaseFragment.OnUserInputSetListener {
+public class CreateWizardActivity extends BaseActivity implements WizardFragment.OnUserInputSetListener {
 
     private static final String EXTRA_CURRENT_POSITION = "current_position";
     private static final String EXTRA_TRIP_BUILDER = "trip_builder";
@@ -55,9 +56,9 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
 
     @Override
     protected void onViewsInitialized() {
-        final BaseFragment namePageFragment = NamePageFragment.newInstance();
-        final BaseFragment departurePageFragment = DeparturePageFragment.newInstance();
-        final BaseFragment returnPageFragment = ReturnPageFragment.newInstance();
+        final WizardFragment namePageFragment = NamePageFragment.newInstance();
+        final WizardFragment departurePageFragment = DeparturePageFragment.newInstance();
+        final WizardFragment returnPageFragment = ReturnPageFragment.newInstance();
 
         mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -100,8 +101,8 @@ public class CreateWizardActivity extends BaseActivity implements BaseFragment.O
         long tripId = ContentUris.parseId(uri);
         Intent intent = new Intent(this, DetailActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        intent.putExtra(DetailActivity.EXTRA_DISCARD_EQUALS_DELETE, true);
-        intent.putExtra(DetailActivity.EXTRA_TRIP_ID, tripId);
+        intent.putExtra(DetailFragment.ARGS_DISCARD_EQUALS_DELETE, true);
+        intent.putExtra(DetailFragment.ARGS_TRIP_ID, tripId);
         startActivity(intent);
         finish();
     }

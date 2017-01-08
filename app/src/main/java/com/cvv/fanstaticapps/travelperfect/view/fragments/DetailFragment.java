@@ -62,6 +62,7 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     @BindView(R.id.item_container)
     LinearLayout mItemContainer;
     @BindView(R.id.image)
+    @Nullable
     ImageView mImage;
     @BindView(R.id.toolbar)
     @Nullable

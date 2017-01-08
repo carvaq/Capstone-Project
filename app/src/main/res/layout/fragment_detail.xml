@@ -4,9 +4,16 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	tools:context="com.cvv.fanstaticapps.travelperfect.view.activities.DetailActivity">
 	
 	<include layout="@layout/app_bar_detail"/>
 	
-	<include layout="@layout/content_detail"/>
+	<android.support.v4.widget.NestedScrollView
+		android:layout_width="match_parent"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior"
+		android:layout_height="wrap_content">
+		
+		<include layout="@layout/content_detail"/>
+	</android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

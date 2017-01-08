@@ -1,0 +1,4 @@
+<resources>
+	<dimen name="frame_padding">64dp</dimen>
+	<dimen name="card_view_padding">64dp</dimen>
+</resources>

@@ -1,73 +1,80 @@
 <resources>
-	
-	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorAccent">@color/colorAccent</item>
-	</style>
-	
-	<style name="AppTheme.Dialog" parent="Base.Theme.AppCompat.Light.Dialog">
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorAccent">@color/colorAccent</item>
-	</style>
-	
-	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-	
-	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-	
-	<style name="AppTheme.ButtonWithImage" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-		<item name="android:padding">@dimen/frame_padding</item>
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:drawablePadding">@dimen/widget_padding</item>
-	</style>
-	
-	
-	<style name="AppTheme.TextWithImage">
-		<item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:drawablePadding">@dimen/widget_padding</item>
-		<item name="android:padding">@dimen/widget_padding</item>
-		<item name="android:gravity">center_vertical</item>
-	</style>
-	
-	<style name="AppTheme.Label">
-		<item name="android:maxLines">1</item>
-		<item name="android:layout_marginTop">@dimen/section_separator</item>
-		<item name="android:textAllCaps">true</item>
-		<item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:textStyle">bold</item>
-	</style>
-	
-	<style name="AppTheme.Error">
-		<item name="android:visibility">gone</item>
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
-		<item name="android:textColor">@android:color/holo_red_dark</item>
-	</style>
-	
-	<style name="AppTheme.Wizard"/>
-	
-	<style name="AppTheme.Wizard.Label" parent="AppTheme.Label">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_marginBottom">@dimen/section_separator</item>
-		<item name="android:layout_marginTop">@dimen/widget_padding</item>
-		<item name="android:maxLines">2</item>
-		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
-	</style>
-	
-	<style name="AppTheme.Wizard.CardContainer">
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:gravity">center</item>
-		<item name="android:minWidth">@dimen/min_wizard_width</item>
-		<item name="android:orientation">vertical</item>
-		<item name="android:padding">@dimen/frame_padding</item>
-	</style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="AppTheme.ButtonWithImage" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:padding">@dimen/frame_padding</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">@dimen/widget_padding</item>
+    </style>
+
+
+    <style name="AppTheme.TextWithImage">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">@dimen/widget_padding</item>
+        <item name="android:padding">@dimen/widget_padding</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="AppTheme.Label">
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginTop">@dimen/section_separator</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Error">
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+    </style>
+
+    <style name="AppTheme.Wizard"/>
+
+    <style name="AppTheme.Wizard.Label" parent="AppTheme.Label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginBottom">@dimen/section_separator</item>
+        <item name="android:layout_marginTop">@dimen/widget_padding</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
+    </style>
+
+    <style name="AppTheme.Wizard.CardContainer">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">@dimen/min_wizard_width</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/frame_padding</item>
+    </style>
+
+    <style name="AppTheme.Wizard.Card">
+        <item name="android:id">@id/card_view</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
 </resources>

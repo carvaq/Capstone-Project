@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:baselineAligned="false"
-	android:gravity="center_vertical">
-	
-	<FrameLayout
-		android:layout_width="0dp"
-		android:layout_height="@dimen/ideal_touch_size"
-		android:layout_weight="1">
-		
-		<TextView
-			android:id="@+id/left_button"
-			style="@style/AppTheme.ButtonWithImage"
-			android:drawableStart="@drawable/ic_arrow_back"
-			android:text="@string/btn_back"
-			android:textColor="@android:color/white"/>
-	</FrameLayout>
-	
-	<FrameLayout
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:layout_weight="1">
-		
-		<TextView
-			android:id="@+id/skip_button"
-			style="@style/AppTheme.ButtonWithImage"
-			android:layout_gravity="center_horizontal"
-			android:text="@string/btn_skip"
-			android:textColor="@android:color/white"/>
-	</FrameLayout>
-	
-	<FrameLayout
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:layout_weight="1">
-		
-		<TextView
-			android:id="@+id/right_button"
-			style="@style/AppTheme.ButtonWithImage"
-			android:layout_gravity="end"
-			android:drawableEnd="@drawable/ic_arrow_forward"
-			android:text="@string/btn_next"
-			android:textColor="@android:color/white"/>
-	</FrameLayout>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigation_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:minWidth="400dp">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="@dimen/ideal_touch_size"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/left_button"
+            style="@style/AppTheme.ButtonWithImage"
+            android:drawableStart="@drawable/ic_arrow_back"
+            android:text="@string/btn_back"
+            android:textColor="@android:color/white"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/skip_button"
+            style="@style/AppTheme.ButtonWithImage"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/btn_skip"
+            android:textColor="@android:color/white"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/right_button"
+            style="@style/AppTheme.ButtonWithImage"
+            android:layout_gravity="end"
+            android:drawableEnd="@drawable/ic_arrow_forward"
+            android:text="@string/btn_next"
+            android:textColor="@android:color/white"/>
+    </FrameLayout>
 </LinearLayout>

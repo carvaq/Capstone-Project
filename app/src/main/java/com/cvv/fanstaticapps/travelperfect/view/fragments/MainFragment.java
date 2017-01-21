@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
@@ -49,6 +50,8 @@ public class MainFragment extends BaseFragment implements
     View mEmptyScreenMessage;
     @BindView(R.id.reveal_effect)
     View mRevealEffect;
+
+    private Handler mHandler = new Handler();
 
     private TripAdapter mAdapter;
     private int mLastSelectedPosition;
@@ -181,10 +184,23 @@ public class MainFragment extends BaseFragment implements
         if (mLastSelectedPosition == RecyclerView.NO_POSITION) {
             mLastSelectedPosition = 0;
         }
+
         if (mDualPane) {
-            mRecyclerView.findViewHolderForAdapterPosition(mLastSelectedPosition);
+            openDetailFragment(data);
         }
         mRecyclerView.smoothScrollToPosition(mLastSelectedPosition);
+    }
+
+    private void openDetailFragment(final Cursor cursor) {
+        if (cursor != null && cursor.moveToPosition(mLastSelectedPosition)) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    long id = cursor.getLong(TripAdapter.IDX_COL_ID);
+                    ((MainActivity) getActivity()).onItemSelected(id);
+                }
+            });
+        }
     }
 
     @Override

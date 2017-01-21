@@ -38,7 +38,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     private static final int IDX_COL_IMAGE_URL = 3;
     private static final int IDX_COL_ATTRIBUTIONS = 4;
     private static final int IDX_COL_PROGRESS = 5;
-    private static final int IDX_COL_ID = 6;
+    public static final int IDX_COL_ID = 6;
 
     public static final String[] TRIP_PROJECTION = new String[]{
             TripContract.TripEntry.COLUMN_NAME_OF_PLACE,

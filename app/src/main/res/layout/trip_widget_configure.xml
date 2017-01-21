@@ -3,25 +3,20 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:padding="16dp">
+              android:padding="@dimen/frame_padding">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/configure"/>
+        style="@style/TextAppearance.AppCompat.Large"
+        android:text="@string/choose_your_trip"/>
 
-    <EditText
-        android:id="@+id/appwidget_text"
+    <LinearLayout
+        android:id="@+id/appwidget_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"/>
-
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/add_widget"/>
+        android:layout_marginTop="@dimen/section_separator"
+        android:orientation="vertical"/>
 
 </LinearLayout>

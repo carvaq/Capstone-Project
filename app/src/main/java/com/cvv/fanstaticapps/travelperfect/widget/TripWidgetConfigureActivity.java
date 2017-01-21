@@ -4,64 +4,48 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cvv.fanstaticapps.travelperfect.R;
+import com.cvv.fanstaticapps.travelperfect.database.TripContract;
 
 /**
  * The configuration screen for the {@link TripWidget TripWidget} AppWidget.
  */
-public class TripWidgetConfigureActivity extends AppCompatActivity {
+public class TripWidgetConfigureActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String PREFS_NAME = "com.cvv.fanstaticapps.travelperfect.widget.TripWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    EditText mAppWidgetText;
-
-    View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            final Context context = TripWidgetConfigureActivity.this;
-
-            // When the button is clicked, store the string locally
-            String widgetText = mAppWidgetText.getText().toString();
-            saveTitlePref(context, mAppWidgetId, widgetText);
-
-            // It is the responsibility of the configuration activity to update the app widget
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            TripWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
-
-            // Make sure we pass back the original appWidgetId
-            Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, resultValue);
-            finish();
-        }
+    private static final int ID_LOADER = 123;
+    private static final String[] TRIP_PROJECTION = new String[]{
+            TripContract.TripEntry.COLUMN_NAME_OF_PLACE,
+            TripContract.TripEntry._ID
     };
 
-    public TripWidgetConfigureActivity() {
-        super();
-    }
+    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveTitlePref(Context context, int appWidgetId, String text) {
+    private LinearLayout mAppWidgetList;
+
+    static void saveTripIdPref(Context context, int appWidgetId, long id) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
+        prefs.putLong(PREF_PREFIX_KEY + appWidgetId, id);
         prefs.apply();
     }
 
-    // Read the prefix from the SharedPreferences object for this widget.
-    // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
+    static long loadTitlePref(Context context, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
-        if (titleValue != null) {
-            return titleValue;
-        } else {
-            return context.getString(R.string.appwidget_text);
-        }
+        return prefs.getLong(PREF_PREFIX_KEY + appWidgetId, 0);
     }
 
     static void deleteTitlePref(Context context, int appWidgetId) {
@@ -79,8 +63,7 @@ public class TripWidgetConfigureActivity extends AppCompatActivity {
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.trip_widget_configure);
-        mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
-        findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
+        mAppWidgetList = (LinearLayout) findViewById(R.id.appwidget_list);
 
         // Find the widget id from the intent.
         Intent intent = getIntent();
@@ -96,7 +79,64 @@ public class TripWidgetConfigureActivity extends AppCompatActivity {
             return;
         }
 
-        mAppWidgetText.setText(loadTitlePref(TripWidgetConfigureActivity.this, mAppWidgetId));
+        getSupportLoaderManager().initLoader(ID_LOADER, null, this);
     }
+
+    private void addView(Cursor cursor) {
+        TextView title = (TextView) getLayoutInflater()
+                .inflate(R.layout.item_widget_trip_configuration, mAppWidgetList, false);
+        title.setText(cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_NAME_OF_PLACE)));
+        final long id = cursor.getLong(cursor.getColumnIndex(TripContract.TripEntry._ID));
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = TripWidgetConfigureActivity.this;
+                saveTripIdPref(context, mAppWidgetId, id);
+
+                // It is the responsibility of the configuration activity to update the app widget
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                TripWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
+
+                // Make sure we pass back the original appWidgetId
+                Intent resultValue = new Intent();
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                setResult(RESULT_OK, resultValue);
+                finish();
+
+            }
+        });
+        mAppWidgetList.addView(title);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri queryUri = TripContract.TripEntry.CONTENT_URI;
+        String sortOrder = TripContract.TripEntry.COLUMN_DEPARTURE + " ASC";
+
+        return new CursorLoader(this,
+                queryUri,
+                TRIP_PROJECTION,
+                null,
+                null,
+                sortOrder);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null && data.getCount() > 0) {
+            while (data.moveToNext()) {
+                addView(data);
+            }
+        } else {
+            Toast.makeText(TripWidgetConfigureActivity.this, R.string.widget_no_trips_message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
 }
 

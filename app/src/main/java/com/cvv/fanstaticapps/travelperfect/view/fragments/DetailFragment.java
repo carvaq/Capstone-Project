@@ -70,6 +70,9 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     @BindView(R.id.toolbar)
     @Nullable
     Toolbar mToolbar;
+    @BindView(R.id.inner_toolbar)
+    @Nullable
+    Toolbar mInnerToolbar;
 
 
     TripBuilder mTripBuilder = new TripBuilder();
@@ -93,6 +96,7 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_detail, container, false);
     }
 
@@ -160,7 +164,19 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_detail, menu);
+        if (mDualPane) {
+            mInnerToolbar.inflateMenu(R.menu.menu_detail);
+            mInnerToolbar.getMenu().findItem(R.id.action_discard).setVisible(false);
+            mInnerToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+
+                @Override
+                public boolean onMenuItemClick(MenuItem arg0) {
+                    return onOptionsItemSelected(arg0);
+                }
+            });
+        } else {
+            inflater.inflate(R.menu.menu_detail, menu);
+        }
         if (mDeleteAsDiscard) {
             menu.findItem(R.id.action_delete).setVisible(false);
         }

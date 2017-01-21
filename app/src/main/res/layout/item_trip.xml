@@ -20,22 +20,24 @@
 			android:layout_height="wrap_content"
 			tools:visibility="visible">
 			
-			<TextView
-				android:id="@+id/attributions"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_gravity="bottom"
-				android:gravity="end|bottom"
-				tools:text="A very fancy fotograph"/>
-			
 			<ImageView
 				android:id="@+id/image"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:adjustViewBounds="true"
 				android:background="@color/placeholderBackground"
 				tools:layout_height="200dp"
 				tools:src="@drawable/ic_image"/>
+			
+			<TextView
+				android:id="@+id/attributions"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="end|bottom"
+				android:background="@color/hintBackgroundColor"
+				android:gravity="end|bottom"
+				android:paddingEnd="8dp"
+				android:paddingStart="8dp"
+				tools:text="A very fancy fotograph"/>
 		</FrameLayout>
 		
 		<ProgressBar

@@ -7,6 +7,7 @@
 	<color name="colorPressed">#804caf50</color>
 	<color name="scrim">#a0795548</color>
 	
+	<color name="hintBackgroundColor">#80ffffff</color>
 	<color name="hintColor">#acacac</color>
 	<color name="placeholderBackground">#ececec</color>
 	

@@ -27,6 +27,7 @@ import com.cvv.fanstaticapps.travelperfect.view.activities.CreateWizardActivity;
 import com.cvv.fanstaticapps.travelperfect.view.activities.DetailActivity;
 import com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity;
 
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -35,6 +36,9 @@ public class MainFragment extends BaseFragment implements
 
     private static final int ID_LOADER = 123;
     public static final int REQUEST_CODE = 432;
+
+    @BindBool(R.bool.dual_pane)
+    boolean mDualPane;
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
@@ -59,7 +63,7 @@ public class MainFragment extends BaseFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new TripAdapter(getActivity(), this);
+        mAdapter = new TripAdapter(getActivity(), this, mDualPane);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 

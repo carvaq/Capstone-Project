@@ -35,6 +35,7 @@ public class MainFragment extends BaseFragment implements
         LoaderManager.LoaderCallbacks<Cursor>, TripAdapter.TripViewListener {
 
     private static final int ID_LOADER = 123;
+    private static final String LAST_SELECTED_POSITION = "lastSelectedPos";
     public static final int REQUEST_CODE = 432;
 
     @BindBool(R.bool.dual_pane)
@@ -63,6 +64,9 @@ public class MainFragment extends BaseFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null) {
+            mLastSelectedPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
+        }
         mAdapter = new TripAdapter(getActivity(), this, mDualPane);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -135,6 +139,12 @@ public class MainFragment extends BaseFragment implements
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(LAST_SELECTED_POSITION, mLastSelectedPosition);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == DetailActivity.RESULT_DELETE
@@ -171,6 +181,9 @@ public class MainFragment extends BaseFragment implements
         if (mLastSelectedPosition == RecyclerView.NO_POSITION) {
             mLastSelectedPosition = 0;
         }
+        if (mDualPane) {
+            mRecyclerView.findViewHolderForAdapterPosition(mLastSelectedPosition);
+        }
         mRecyclerView.smoothScrollToPosition(mLastSelectedPosition);
     }
 
@@ -180,7 +193,8 @@ public class MainFragment extends BaseFragment implements
     }
 
     @Override
-    public void onDetailOpenClicked(Long id) {
+    public void onDetailOpenClicked(Long id, int position) {
         ((MainActivity) getActivity()).onItemSelected(id);
+        mLastSelectedPosition = position;
     }
 }

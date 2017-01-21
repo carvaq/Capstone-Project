@@ -94,8 +94,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            long itemId = TripAdapter.this.getItemId(getAdapterPosition());
-            mTripViewListener.onDetailOpenClicked(itemId);
+            int position = getAdapterPosition();
+            long itemId = TripAdapter.this.getItemId(position);
+            mTripViewListener.onDetailOpenClicked(itemId, position);
         }
     }
 
@@ -182,6 +183,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     }
 
     public interface TripViewListener {
-        void onDetailOpenClicked(Long id);
+        void onDetailOpenClicked(Long id, int position);
     }
 }

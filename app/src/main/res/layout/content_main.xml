@@ -8,7 +8,7 @@
 	android:paddingEnd="@dimen/frame_padding"
 	android:paddingStart="@dimen/frame_padding"
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
-	tools:context="com.cvv.fanstaticapps.travelperfect.view.activities.MainActivity"
+	tools:context="com.cvv.fanstaticapps.travelperfect.ui.activities.MainActivity"
 	tools:showIn="@layout/fragment_main">
 	
 	<android.support.v7.widget.RecyclerView

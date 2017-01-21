@@ -7,4 +7,5 @@
 	<dimen name="section_separator">24dp</dimen>
 	<dimen name="wizard_image_text_separator">36dp</dimen>
 	<dimen name="card_view_padding">16dp</dimen>
+	<dimen name="dual_pane_padding">32dp</dimen>
 </resources>

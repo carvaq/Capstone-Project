@@ -121,10 +121,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
         holder.mTitle.setText(title);
         holder.mProgressBar.setProgress(progress);
-        applyImage(holder, imageUrl);
+        applyImage(holder, imageUrl, title);
     }
 
-    private void applyImage(ViewHolder holder, String imageUrl) {
+    private void applyImage(ViewHolder holder, String imageUrl, String title) {
         if (!TextUtils.isEmpty(imageUrl)) {
             holder.mImage.setVisibility(View.VISIBLE);
             Picasso.with(mContext)
@@ -134,6 +134,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                     .placeholder(R.drawable.ic_image)
                     .error(R.drawable.ic_image)
                     .into(holder.mImage);
+            holder.mImage.setContentDescription(title);
         } else {
             Picasso.with(mContext)
                     .cancelRequest(holder.mImage);

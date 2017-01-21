@@ -78,7 +78,8 @@ public class MainFragment extends BaseFragment implements
 
     @OnClick(R.id.fab)
     void onAddTripClicked() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+        //We don't want the reveal effect in dual pane. Is a bit overwhelming getting hit with that much green...
+        if (!mDualPane && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             AnimationUtils.fabReveal(mFab, mRevealEffect,
                     new AnimationUtils.AnimationAdapter() {
                         @Override

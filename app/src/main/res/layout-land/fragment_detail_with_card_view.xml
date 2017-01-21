@@ -25,15 +25,15 @@
 				android:layout_height="wrap_content"
 				android:minWidth="400dp"
 				android:orientation="vertical"
-				android:paddingTop="@dimen/card_view_padding">
+				android:paddingTop="@dimen/fragment_content_padding">
 				
 				<EditText
 					android:id="@+id/plain_name_of_place"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_horizontal"
-					android:layout_marginEnd="@dimen/card_view_padding"
-					android:layout_marginStart="@dimen/card_view_padding"
+					android:layout_marginEnd="@dimen/fragment_content_padding"
+					android:layout_marginStart="@dimen/fragment_content_padding"
 					android:hint="@string/label_name_of_place"
 					android:imeOptions="actionNext"/>
 				

@@ -15,7 +15,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			android:paddingTop="@dimen/card_view_padding">
+			android:paddingTop="@dimen/fragment_content_padding">
 			
 			<android.support.v7.widget.Toolbar
 				android:id="@+id/toolbar"
@@ -31,8 +31,8 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_horizontal"
-					android:layout_marginEnd="@dimen/card_view_padding"
-					android:layout_marginStart="@dimen/card_view_padding"
+					android:layout_marginEnd="@dimen/fragment_content_padding"
+					android:layout_marginStart="@dimen/fragment_content_padding"
 					android:hint="@string/label_name_of_place"
 					android:imeOptions="actionNext"/>
 			</android.support.v7.widget.Toolbar>

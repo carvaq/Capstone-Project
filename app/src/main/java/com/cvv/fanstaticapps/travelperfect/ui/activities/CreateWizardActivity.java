@@ -7,11 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.database.TripBuilder;
@@ -22,15 +19,10 @@ import com.cvv.fanstaticapps.travelperfect.ui.fragments.NamePageFragment;
 import com.cvv.fanstaticapps.travelperfect.ui.fragments.ReturnPageFragment;
 import com.cvv.fanstaticapps.travelperfect.ui.fragments.WizardFragment;
 
-import butterknife.BindView;
-
 public class CreateWizardActivity extends BaseActivity implements WizardFragment.OnUserInputSetListener {
 
     private static final String EXTRA_CURRENT_POSITION = "current_position";
     private static final String EXTRA_TRIP_BUILDER = "trip_builder";
-
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
 
     private TripBuilder mTripBuilder;
     private int mCurrentPosition;
@@ -59,37 +51,7 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        final WizardFragment namePageFragment = NamePageFragment.newInstance();
-        final WizardFragment departurePageFragment = DeparturePageFragment.newInstance();
-        final WizardFragment returnPageFragment = ReturnPageFragment.newInstance();
-
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                switch (position) {
-                    case NamePageFragment.PAGE_POSITION:
-                        return namePageFragment;
-                    case DeparturePageFragment.PAGE_POSITION:
-                        return departurePageFragment;
-                    case ReturnPageFragment.PAGE_POSITION:
-                        return returnPageFragment;
-                }
-                return null;
-            }
-
-            @Override
-            public int getCount() {
-                return 3;
-            }
-        });
-        mViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-
-        updateViewPager();
+        updateCurrentFragment();
     }
 
     @Override
@@ -112,19 +74,54 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
 
     private void nextPage() {
         mCurrentPosition++;
-        updateViewPager();
+        updateCurrentFragment();
     }
 
-    private void updateViewPager() {
-        mViewPager.setCurrentItem(mCurrentPosition);
+    private void updateCurrentFragment() {
+        Fragment fragment = getCurrentFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        if (mCurrentPosition != 0) {
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .addToBackStack(fragment.toString());
+
+        }
+        fragmentTransaction
+                .add(R.id.fragment_wizard_container, fragment)
+                .commit();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(mStatusBarColor[mCurrentPosition]);
         }
     }
 
+    @Nullable
+    private Fragment getCurrentFragment() {
+        switch (mCurrentPosition) {
+            case NamePageFragment.PAGE_POSITION:
+                return NamePageFragment.newInstance();
+            case DeparturePageFragment.PAGE_POSITION:
+                return DeparturePageFragment.newInstance();
+            case ReturnPageFragment.PAGE_POSITION:
+                return ReturnPageFragment.newInstance();
+            default:
+                return null;
+        }
+    }
+
     private void previousPage() {
         mCurrentPosition--;
-        updateViewPager();
+        getSupportFragmentManager().popBackStack();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(mStatusBarColor[mCurrentPosition]);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mCurrentPosition--;
     }
 
     @Override
@@ -156,5 +153,4 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
     public void onBackClicked() {
         previousPage();
     }
-
 }

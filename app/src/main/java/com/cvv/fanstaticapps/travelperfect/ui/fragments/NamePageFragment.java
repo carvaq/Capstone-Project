@@ -1,6 +1,7 @@
 package com.cvv.fanstaticapps.travelperfect.ui.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -142,6 +144,8 @@ public class NamePageFragment extends WizardFragment
     @OnClick(R.id.right_button)
     void onForwardClicked() {
         if (canGoForward()) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
             mOnUserInputSetListener.onNameOfPlaceSet(mNameOfPlace, mAttributions, mFilePath);
         }
     }

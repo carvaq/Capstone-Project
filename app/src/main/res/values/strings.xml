@@ -25,4 +25,5 @@
     <string name="choose_your_trip">Select the trip you want to add to your homescreen:</string>
     <string name="widget_no_trips_message">You don\'t have any trips yet</string>
     <string name="add_widget">Add widget</string>
+    <string name="hint_no_items_for_trip">You don\'t have anything pending to do for this trip</string>
 </resources>

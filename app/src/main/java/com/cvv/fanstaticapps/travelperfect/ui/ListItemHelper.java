@@ -1,6 +1,7 @@
 package com.cvv.fanstaticapps.travelperfect.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Paint;
 import android.text.TextUtils;
@@ -101,8 +102,7 @@ public class ListItemHelper {
     }
 
     public void addListItems(long tripId) {
-        Cursor cursor = mActivity.getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null,
-                WHERE_TRIP_FK, new String[]{String.valueOf(tripId)}, null);
+        Cursor cursor = getListItemCursor(mActivity, tripId);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -119,6 +119,11 @@ public class ListItemHelper {
                 mItemContainer.addView(view);
             }
         }
+    }
+
+    public static Cursor getListItemCursor(Context context, long tripId) {
+        return context.getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null,
+                WHERE_TRIP_FK, new String[]{String.valueOf(tripId)}, null);
     }
 
     private CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener(final TextView name, final TextView numberOf) {

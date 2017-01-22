@@ -37,6 +37,10 @@ public class MainActivity extends BaseActivity implements SelectionListener {
         } else {
             mMainFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_main_container);
         }
+
+        if (getIntent().hasExtra(DetailFragment.ARGS_TRIP_ID)) {
+            onItemSelected(getIntent().getLongExtra(DetailFragment.ARGS_TRIP_ID, 0));
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,9 +36,11 @@ import butterknife.OnClick;
 public class MainFragment extends BaseFragment implements
         LoaderManager.LoaderCallbacks<Cursor>, TripAdapter.TripViewListener {
 
+    public static final String ACTION_TRIP_DELETED = "com.cvv.fanstaticapps.travelperfect.ui.fragments.ACTION_TRIP_DELETED";
+    public static final int REQUEST_CODE = 432;
+    
     private static final int ID_LOADER = 123;
     private static final String LAST_SELECTED_POSITION = "lastSelectedPos";
-    public static final int REQUEST_CODE = 432;
 
     @BindBool(R.bool.dual_pane)
     boolean mDualPane;
@@ -131,6 +134,7 @@ public class MainFragment extends BaseFragment implements
                     getContentResolver().delete(TripContract.ListItemEntry.CONTENT_URI, where, selectionArgs);
                     where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
                     getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
+                    sendDeleteBroadcast();
                 }
             }
         };
@@ -139,6 +143,10 @@ public class MainFragment extends BaseFragment implements
                 .setNegativeButton(R.string.btn_cancel, listener)
                 .setPositiveButton(R.string.btn_delete, listener)
                 .show();
+    }
+
+    private void sendDeleteBroadcast() {
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent(ACTION_TRIP_DELETED));
     }
 
     @Override

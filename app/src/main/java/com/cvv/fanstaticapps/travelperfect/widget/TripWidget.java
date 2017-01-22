@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.TaskStackBuilder;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.cvv.fanstaticapps.travelperfect.R;
@@ -39,23 +40,33 @@ public class TripWidget extends AppWidgetProvider {
 
             Class<? extends Activity> activityClass = context.getResources().getBoolean(R.bool.dual_pane) ?
                     MainActivity.class : DetailActivity.class;
-            Intent intent = new Intent(context, activityClass);
-            intent.putExtra(DetailFragment.ARGS_TRIP_ID, tripId);
-
-            PendingIntent pendingIntent = TaskStackBuilder.create(context)
-                    .addNextIntentWithParentStack(intent)
-                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = getPendingIntent(context, tripId, activityClass);
             views.setOnClickPendingIntent(R.id.widget_title, pendingIntent);
+
+            Intent remoteViewServiceIntent = new Intent(context, TripRemoteViewsService.class);
+            remoteViewServiceIntent.putExtra(DetailFragment.ARGS_TRIP_ID, tripId);
+            views.setRemoteAdapter(R.id.widget_list, remoteViewServiceIntent);
+
+            views.setEmptyView(R.id.widget_list, R.id.trip_showing_error);
+
+        } else {
+            views.setViewVisibility(R.id.widget_title, View.GONE);
+            views.setViewVisibility(R.id.widget_list, View.GONE);
+            PendingIntent pendingIntent = getPendingIntent(context, -1, MainActivity.class);
+            views.setOnClickPendingIntent(R.id.trip_showing_error, pendingIntent);
         }
 
-
-        Intent remoteViewServiceIntent = new Intent(context, TripRemoteViewsService.class);
-        remoteViewServiceIntent.putExtra(DetailFragment.ARGS_TRIP_ID, tripId);
-        views.setRemoteAdapter(R.id.widget_list, remoteViewServiceIntent);
-
-        views.setEmptyView(R.id.widget_list, R.id.trip_showing_error);
-
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    private static PendingIntent getPendingIntent(Context context, long tripId, Class<? extends Activity> activityClass) {
+        Intent intent = new Intent(context, activityClass);
+        if (tripId != -1) {
+            intent.putExtra(DetailFragment.ARGS_TRIP_ID, tripId);
+        }
+        return TaskStackBuilder.create(context)
+                .addNextIntentWithParentStack(intent)
+                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -65,6 +76,7 @@ public class TripWidget extends AppWidgetProvider {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             ComponentName componentName = new ComponentName(context, getClass());
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(componentName);
+            onUpdate(context, appWidgetManager, appWidgetIds);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
         }
     }

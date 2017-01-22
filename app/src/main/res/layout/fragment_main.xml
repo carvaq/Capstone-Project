@@ -41,6 +41,7 @@
         android:id="@+id/reveal_effect"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="false"
         android:background="@color/colorAccent"
         android:elevation="5dp"
         android:visibility="invisible"/>

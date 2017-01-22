@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:paddingEnd="@dimen/frame_padding"
-	android:paddingStart="@dimen/frame_padding"
-	app:layout_behavior="@string/appbar_scrolling_view_behavior"
-	tools:context="com.cvv.fanstaticapps.travelperfect.ui.activities.MainActivity"
-	tools:showIn="@layout/fragment_main">
-	
-	<android.support.v7.widget.RecyclerView
-		android:id="@+id/recycle_view"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
-	
-	<TextView
-		android:id="@+id/empty_screen_message"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:background="#80ffffff"
-		android:gravity="center"
-		android:padding="@dimen/frame_padding"
-		android:text="@string/hint_empty_screen"
-		android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
-		android:textColor="@color/hintColor"
-		android:visibility="gone"
-		tools:visibility="visible"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingEnd="@dimen/frame_padding"
+    android:paddingStart="@dimen/frame_padding"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.cvv.fanstaticapps.travelperfect.ui.activities.MainActivity"
+    tools:showIn="@layout/fragment_main">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/empty_screen_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#80ffffff"
+        android:gravity="center"
+        android:padding="@dimen/frame_padding"
+        android:text="@string/hint_empty_screen"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/hintColor"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 </FrameLayout>

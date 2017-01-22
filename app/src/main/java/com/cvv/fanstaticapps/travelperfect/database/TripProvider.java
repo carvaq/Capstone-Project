@@ -21,12 +21,6 @@ public class TripProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private DatabaseHelper mOpenHelper;
 
-    @Override
-    public boolean onCreate() {
-        mOpenHelper = new DatabaseHelper(getContext());
-        return true;
-    }
-
     /**
      * Builds a UriMatcher that is used to determine witch database request is being made.
      */
@@ -44,6 +38,12 @@ public class TripProvider extends ContentProvider {
         matcher.addURI(content, TripContract.PATH_TRIP + "/#", TRIP_ID);
 
         return matcher;
+    }
+
+    @Override
+    public boolean onCreate() {
+        mOpenHelper = new DatabaseHelper(getContext());
+        return true;
     }
 
     @Override

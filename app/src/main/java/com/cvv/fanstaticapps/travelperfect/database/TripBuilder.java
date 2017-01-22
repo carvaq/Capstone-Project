@@ -12,6 +12,17 @@ import android.os.Parcelable;
  */
 
 public class TripBuilder implements Parcelable {
+    public static final Creator<TripBuilder> CREATOR = new Creator<TripBuilder>() {
+        @Override
+        public TripBuilder createFromParcel(Parcel in) {
+            return new TripBuilder(in);
+        }
+
+        @Override
+        public TripBuilder[] newArray(int size) {
+            return new TripBuilder[size];
+        }
+    };
     private String mTitle;
     private String mFilePath;
     private String mAttributions;
@@ -40,18 +51,6 @@ public class TripBuilder implements Parcelable {
         mReturn = in.readLong();
         mProgress = in.readInt();
     }
-
-    public static final Creator<TripBuilder> CREATOR = new Creator<TripBuilder>() {
-        @Override
-        public TripBuilder createFromParcel(Parcel in) {
-            return new TripBuilder(in);
-        }
-
-        @Override
-        public TripBuilder[] newArray(int size) {
-            return new TripBuilder[size];
-        }
-    };
 
     public String getTitle() {
         return mTitle;

@@ -6,10 +6,10 @@
               android:padding="@dimen/frame_padding">
 
     <TextView
+        style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        style="@style/TextAppearance.AppCompat.Large"
         android:text="@string/choose_your_trip"/>
 
     <LinearLayout

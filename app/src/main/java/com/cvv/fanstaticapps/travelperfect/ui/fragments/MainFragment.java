@@ -38,7 +38,7 @@ public class MainFragment extends BaseFragment implements
 
     public static final String ACTION_TRIP_DELETED = "com.cvv.fanstaticapps.travelperfect.ui.fragments.ACTION_TRIP_DELETED";
     public static final int REQUEST_CODE = 432;
-    
+
     private static final int ID_LOADER = 123;
     private static final String LAST_SELECTED_POSITION = "lastSelectedPos";
 

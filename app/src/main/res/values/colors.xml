@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="colorPrimary">#795548</color>
-	<color name="colorPrimaryDark">#5D4037</color>
-	<color name="colorAccent">#4CAF50</color>
-	
-	<color name="colorPressed">#804caf50</color>
-	<color name="scrim">#a0795548</color>
-	
-	<color name="hintBackgroundColor">#80ffffff</color>
-	<color name="hintColor">#acacac</color>
-	<color name="placeholderBackground">#ececec</color>
-	
-	<color name="wizardBackground1">#4a148c</color>
-	<color name="wizardBackground2">#FF6F00</color>
-	<color name="wizardBackground3">#00838F</color>
+    <color name="colorPrimary">#795548</color>
+    <color name="colorPrimaryDark">#5D4037</color>
+    <color name="colorAccent">#4CAF50</color>
+
+    <color name="colorPressed">#804caf50</color>
+    <color name="scrim">#a0795548</color>
+
+    <color name="hintBackgroundColor">#80ffffff</color>
+    <color name="hintColor">#acacac</color>
+    <color name="placeholderBackground">#ececec</color>
+
+    <color name="wizardBackground1">#4a148c</color>
+    <color name="wizardBackground2">#FF6F00</color>
+    <color name="wizardBackground3">#00838F</color>
 </resources>

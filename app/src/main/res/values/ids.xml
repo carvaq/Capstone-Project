@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<item name="list_item_db_id" type="id"/>
+    <item name="list_item_db_id" type="id"/>
     <item name="card_view" type="id"/>
 </resources>

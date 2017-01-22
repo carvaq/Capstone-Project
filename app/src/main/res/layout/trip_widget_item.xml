@@ -4,8 +4,8 @@
               android:id="@+id/row"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="@dimen/widget_padding"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+              android:padding="@dimen/widget_padding">
 
     <TextView
         android:id="@+id/number_of"

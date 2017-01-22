@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:layout_marginBottom="@dimen/frame_padding"
-	android:layout_marginTop="@dimen/frame_padding"
-	android:minHeight="96dp">
-	
-	<LinearLayout
-		android:id="@+id/clickable_content"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:foreground="@drawable/selection_bg"
-		android:orientation="vertical">
-		
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			tools:visibility="visible">
-			
-			<ImageView
-				android:id="@+id/image"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@color/placeholderBackground"
-				tools:layout_height="200dp"
-				tools:src="@drawable/ic_image"/>
-			
-			<TextView
-				android:id="@+id/attributions"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="end|bottom"
-				android:background="@color/hintBackgroundColor"
-				android:gravity="end|bottom"
-				android:paddingEnd="8dp"
-				android:paddingStart="8dp"
-				tools:text="A very fancy fotograph"/>
-		</FrameLayout>
-		
-		<ProgressBar
-			android:id="@+id/progress_bar"
-			style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="10dp"
-			android:layout_gravity="bottom"
-			android:max="100"
-			android:scaleY="2"
-			tools:progress="50"/>
-		
-		<TextView
-			android:id="@+id/title"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:maxLines="2"
-			android:padding="@dimen/frame_padding"
-			android:textAppearance="@style/TextAppearance.AppCompat.Large"
-			tools:text="Madagascar"/>
-		
-		<TextView
-			android:id="@+id/dates"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingBottom="@dimen/frame_padding"
-			android:paddingEnd="@dimen/frame_padding"
-			android:paddingStart="@dimen/frame_padding"
-			android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
-			tools:text="12.12-15.12"/>
-	
-	</LinearLayout>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/frame_padding"
+    android:layout_marginTop="@dimen/frame_padding"
+    android:minHeight="96dp">
+
+    <LinearLayout
+        android:id="@+id/clickable_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/selection_bg"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/placeholderBackground"
+                tools:layout_height="200dp"
+                tools:src="@drawable/ic_image"/>
+
+            <TextView
+                android:id="@+id/attributions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:background="@color/hintBackgroundColor"
+                android:gravity="end|bottom"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                tools:text="A very fancy fotograph"/>
+        </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="bottom"
+            android:max="100"
+            android:scaleY="2"
+            tools:progress="50"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:padding="@dimen/frame_padding"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="Madagascar"/>
+
+        <TextView
+            android:id="@+id/dates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/frame_padding"
+            android:paddingEnd="@dimen/frame_padding"
+            android:paddingStart="@dimen/frame_padding"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            tools:text="12.12-15.12"/>
+
+    </LinearLayout>
 </android.support.v7.widget.CardView>

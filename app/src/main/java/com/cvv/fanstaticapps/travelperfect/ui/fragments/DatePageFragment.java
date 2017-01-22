@@ -36,10 +36,8 @@ public abstract class DatePageFragment extends WizardFragment implements DateDia
     ImageView mAdd;
     @BindView(R.id.title)
     TextView mTitle;
-
-    private DateDialogHelper mDateDialogHelper;
     long mTimestamp;
-
+    private DateDialogHelper mDateDialogHelper;
 
     @Nullable
     @Override

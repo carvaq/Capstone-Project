@@ -26,11 +26,8 @@ public class ListItemHelper {
 
     private static final String WHERE_TRIP_FK = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
     private static final String WHERE_ITEM_ID = TripContract.ListItemEntry._ID + "=?";
-
-    private Activity mActivity;
     private final LinearLayout mItemContainer;
-
-
+    private Activity mActivity;
     private View.OnFocusChangeListener mOnFocusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -43,6 +40,11 @@ public class ListItemHelper {
     public ListItemHelper(Activity activity, LinearLayout itemContainer) {
         mActivity = activity;
         mItemContainer = itemContainer;
+    }
+
+    public static Cursor getListItemCursor(Context context, long tripId) {
+        return context.getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null,
+                WHERE_TRIP_FK, new String[]{String.valueOf(tripId)}, null);
     }
 
     public int saveListItems(long tripId) {
@@ -119,11 +121,6 @@ public class ListItemHelper {
                 mItemContainer.addView(view);
             }
         }
-    }
-
-    public static Cursor getListItemCursor(Context context, long tripId) {
-        return context.getContentResolver().query(TripContract.ListItemEntry.CONTENT_URI, null,
-                WHERE_TRIP_FK, new String[]{String.valueOf(tripId)}, null);
     }
 
     private CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener(final TextView name, final TextView numberOf) {

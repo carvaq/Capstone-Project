@@ -23,11 +23,11 @@ import butterknife.Unbinder;
 
 public abstract class WizardFragment extends Fragment {
 
+    protected OnUserInputSetListener mOnUserInputSetListener;
     @BindBool(R.bool.dual_pane)
     boolean mDualPane;
     @BindDimen(R.dimen.min_wizard_width)
     int mMinWizardWidth;
-
     @BindView(R.id.left_button)
     View mBackButton;
     @BindView(R.id.skip_button)
@@ -36,8 +36,6 @@ public abstract class WizardFragment extends Fragment {
     View mForwardButton;
     @BindView(R.id.navigation_bar)
     View mNavigationBar;
-
-    protected OnUserInputSetListener mOnUserInputSetListener;
     private Unbinder mUnbinder;
 
     @Override
@@ -78,18 +76,6 @@ public abstract class WizardFragment extends Fragment {
 
     public abstract boolean canGoForward();
 
-    public interface OnUserInputSetListener {
-        void onNameOfPlaceSet(String nameOfPlace, String attributions, String filePath);
-
-        void onDepartureSet(long departureDate);
-
-        void onReturnSet(long returnDate);
-
-        void onDone();
-
-        void onBackClicked();
-    }
-
     void enableButtons(boolean back, boolean skip, boolean forward) {
         if (back) {
             mBackButton.setVisibility(View.VISIBLE);
@@ -107,6 +93,18 @@ public abstract class WizardFragment extends Fragment {
             mForwardButton.setVisibility(View.INVISIBLE);
         }
 
+    }
+
+    public interface OnUserInputSetListener {
+        void onNameOfPlaceSet(String nameOfPlace, String attributions, String filePath);
+
+        void onDepartureSet(long departureDate);
+
+        void onReturnSet(long returnDate);
+
+        void onDone();
+
+        void onBackClicked();
     }
 
 }

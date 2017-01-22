@@ -48,6 +48,7 @@
         <receiver android:name=".widget.TripWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.cvv.fanstaticapps.travelperfect.ui.fragments.ACTION_TRIP_UPDATED"/>
             </intent-filter>
 
             <meta-data

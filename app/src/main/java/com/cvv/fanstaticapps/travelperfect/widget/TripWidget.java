@@ -61,7 +61,7 @@ public class TripWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (MainFragment.ACTION_TRIP_DELETED.equals(intent.getAction())) {
+        if (MainFragment.ACTION_TRIP_UPDATED.equals(intent.getAction())) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             ComponentName componentName = new ComponentName(context, getClass());
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(componentName);

@@ -48,14 +48,13 @@ public class DetailActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             mDetailFragment.saveTrip();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         mDetailFragment.saveTrip();
+        super.onBackPressed();
     }
 }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.database.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.database.TripContract;
+import com.cvv.fanstaticapps.travelperfect.ui.BroadcastHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.DateDialogHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.ListItemHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.UiUtils;
@@ -166,12 +167,19 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         super.onCreateOptionsMenu(menu, inflater);
         if (mDualPane) {
             mInnerToolbar.inflateMenu(R.menu.menu_detail);
-            mInnerToolbar.getMenu().findItem(R.id.action_discard).setVisible(false);
+            menu = mInnerToolbar.getMenu();
+            menu.findItem(R.id.action_discard).setVisible(false);
+            menu.findItem(R.id.action_save).setVisible(true);
             mInnerToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 
                 @Override
                 public boolean onMenuItemClick(MenuItem arg0) {
-                    return onOptionsItemSelected(arg0);
+                    if (arg0.getItemId() == R.id.action_save) {
+                        saveTrip();
+                        return true;
+                    } else {
+                        return onOptionsItemSelected(arg0);
+                    }
                 }
             });
         } else {
@@ -217,8 +225,7 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         getContentResolver()
                 .update(TripContract.TripEntry.CONTENT_URI,
                         mTripBuilder.getTripContentValues(), where, selectionArgs);
-
-        getActivity().finish();
+        BroadcastHelper.broadcastAction(getActivity(), MainFragment.ACTION_TRIP_UPDATED);
     }
 
     @Override

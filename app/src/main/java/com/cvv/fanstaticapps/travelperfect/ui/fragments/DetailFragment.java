@@ -107,6 +107,9 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         mDialogHelper = new DateDialogHelper(getActivity());
         mListItemHelper = new ListItemHelper(getActivity(), mItemContainer);
 
+        if (mToolbar != null) {
+            mToolbar.setTitle(" ");
+        }
 
         if (savedInstanceState != null) {
             readBundle(savedInstanceState);

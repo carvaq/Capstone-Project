@@ -11,7 +11,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 25
 
-        versionCode 7
+        versionCode 9
         versionName "1.0"
 
         vectorDrawables.useSupportLibrary = true
@@ -32,7 +32,7 @@ android {
     }
 }
 
-def playServices = "9.8.0"
+def playServices = "10.0.1"
 
 dependencies {
 
@@ -52,7 +52,7 @@ dependencies {
     compile 'joda-time:joda-time:2.9.7'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.jakewharton.timber:timber:4.4.0'
+    compile 'com.jakewharton.timber:timber:4.4.1'
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'

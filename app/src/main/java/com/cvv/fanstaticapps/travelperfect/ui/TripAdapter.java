@@ -55,7 +55,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     private int mWidth;
     private int mHeight;
 
-    public TripAdapter(Context context, TripViewListener tripViewListener, boolean dualPane) {
+    public TripAdapter(Context context, TripViewListener tripViewListener, int numColumns, boolean dualPane) {
         mTripViewListener = tripViewListener;
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
@@ -64,6 +64,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         } else {
             mWidth = UiUtils.getDisplayWidth((Activity) context);
         }
+        mWidth /= numColumns;
         mHeight = UiUtils.getProportionalHeight(mWidth);
     }
 

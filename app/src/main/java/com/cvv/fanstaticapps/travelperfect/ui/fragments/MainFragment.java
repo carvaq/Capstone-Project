@@ -13,8 +13,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +30,7 @@ import com.cvv.fanstaticapps.travelperfect.ui.activities.DetailActivity;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.MainActivity;
 
 import butterknife.BindBool;
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -44,6 +45,8 @@ public class MainFragment extends BaseFragment implements
 
     @BindBool(R.bool.dual_pane)
     boolean mDualPane;
+    @BindInt(R.integer.column_size)
+    int mColumnSize;
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
@@ -73,9 +76,9 @@ public class MainFragment extends BaseFragment implements
         if (savedInstanceState != null) {
             mLastSelectedPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
         }
-        mAdapter = new TripAdapter(getActivity(), this, mDualPane);
+        mAdapter = new TripAdapter(getActivity(), this, mColumnSize, mDualPane);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(mColumnSize, StaggeredGridLayoutManager.VERTICAL);
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);

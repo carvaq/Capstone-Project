@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -74,6 +76,8 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     @BindView(R.id.inner_toolbar)
     @Nullable
     Toolbar mInnerToolbar;
+    @BindView(R.id.overlaying_view)
+    View mOverlayingView;
 
 
     TripBuilder mTripBuilder = new TripBuilder();
@@ -272,5 +276,14 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
                     .resize(width, height)
                     .into(mImage);
         }
+
+        if (mOverlayingView != null) {
+            CoordinatorLayout.LayoutParams params =
+                    (CoordinatorLayout.LayoutParams) mOverlayingView.getLayoutParams();
+            AppBarLayout.ScrollingViewBehavior behavior =
+                    (AppBarLayout.ScrollingViewBehavior) params.getBehavior();
+            behavior.setOverlayTop(height / 2);
+        }
+
     }
 }

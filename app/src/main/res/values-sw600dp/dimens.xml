@@ -1,4 +1,3 @@
 <resources>
     <dimen name="fragment_content_padding">96dp</dimen>
-    <dimen name="overlay_top">256dp</dimen>
 </resources>

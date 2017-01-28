@@ -148,15 +148,15 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
 
     @OnClick(value = {R.id.return_add})
     void onAddDateClicked() {
-        mDialogHelper.showDatePicker(mReturnDate, mReturnTime, this);
+        mDialogHelper.showDatePicker(mTripBuilder.getDeparture(), mReturnDate, mReturnTime, this);
     }
 
     @OnClick(value = {R.id.departure_date, R.id.return_date})
     void onChangedDateClicked(View view) {
         if (view.getId() == R.id.departure_date) {
-            mDialogHelper.showDatePicker(mDepartureDate, null, this);
+            mDialogHelper.showDatePicker(0, mDepartureDate, null, this);
         } else {
-            mDialogHelper.showDatePicker(mReturnDate, null, this);
+            mDialogHelper.showDatePicker(mTripBuilder.getDeparture(), mReturnDate, null, this);
         }
     }
 

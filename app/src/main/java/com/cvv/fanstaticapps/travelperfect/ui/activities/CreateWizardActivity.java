@@ -103,7 +103,7 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
             case DeparturePageFragment.PAGE_POSITION:
                 return DeparturePageFragment.newInstance();
             case ReturnPageFragment.PAGE_POSITION:
-                return ReturnPageFragment.newInstance();
+                return ReturnPageFragment.newInstance(mTripBuilder.getDeparture());
             default:
                 return null;
         }

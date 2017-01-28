@@ -2,6 +2,7 @@ package com.cvv.fanstaticapps.travelperfect.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
@@ -19,19 +20,25 @@ import butterknife.OnClick;
 
 public class ReturnPageFragment extends DatePageFragment {
     public static final int PAGE_POSITION = 2;
-
+    private static final String ARGS_DEPARTURE = "args_departure";
 
     @BindView(R.id.return_time)
     TextView mReturnTime;
 
-    public static ReturnPageFragment newInstance() {
-        return new ReturnPageFragment();
+    public static Fragment newInstance(long departure) {
+        Fragment fragment = new ReturnPageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong(ARGS_DEPARTURE, departure);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         enableButtons(true, true, true);
+
+        mMinDate = getArguments().getLong(ARGS_DEPARTURE);
 
         mContainer.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.wizardBackground3));
         mTitle.setText(R.string.btn_add_return);

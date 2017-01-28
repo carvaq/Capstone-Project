@@ -33,13 +33,13 @@ public class DateDialogHelper {
         mActivity = activity;
     }
 
-    public void showDatePicker(@NonNull final TextView dateView,
+    public void showDatePicker(long minDate, @NonNull final TextView dateView,
                                @Nullable final TextView timeView, @NonNull final OnDatetimeSetListener datetimeSetListener) {
         final DateTimeFormatter formatter = DateTimeFormat.forPattern(DetailActivity.DATE_FORMAT);
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                DateTime date = new DateTime(year, month, dayOfMonth, 0, 0);
+                DateTime date = new DateTime(year, month + 1, dayOfMonth, 0, 0);
                 dateView.setText(date.toString(formatter));
                 dateView.setVisibility(View.VISIBLE);
                 if (timeView != null) {
@@ -53,7 +53,8 @@ public class DateDialogHelper {
         DateTime dateTime = getDateTime(dateView, formatter);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity, listener,
-                dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+                dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+        datePickerDialog.getDatePicker().setMinDate(getValidMinDate(minDate));
         datePickerDialog.show();
     }
 
@@ -96,6 +97,14 @@ public class DateDialogHelper {
         return dateTime;
     }
 
+    private long getValidMinDate(long minDate) {
+        if (minDate == 0) {
+            DateTime dateTime = DateTime.now();
+            dateTime.minusMonths(2);
+            minDate = dateTime.getMillis();
+        }
+        return minDate;
+    }
 
     public interface OnDatetimeSetListener {
         void onTimestampDefined(long timestamp, boolean departure);

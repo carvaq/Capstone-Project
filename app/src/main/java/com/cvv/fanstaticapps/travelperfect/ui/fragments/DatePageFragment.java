@@ -37,12 +37,15 @@ public abstract class DatePageFragment extends WizardFragment implements DateDia
     @BindView(R.id.title)
     TextView mTitle;
     long mTimestamp;
+
     private DateDialogHelper mDateDialogHelper;
+    protected long mMinDate;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
         return inflater.inflate(R.layout.fragment_date_page, container, false);
     }
 
@@ -54,12 +57,12 @@ public abstract class DatePageFragment extends WizardFragment implements DateDia
 
     @OnClick(R.id.date)
     void onDateClicked() {
-        mDateDialogHelper.showDatePicker(mDate, null, this);
+        mDateDialogHelper.showDatePicker(mMinDate, mDate, null, this);
     }
 
     @OnClick(R.id.add)
     void addDateTime() {
-        mDateDialogHelper.showDatePicker(mDate, getTimeView(), this);
+        mDateDialogHelper.showDatePicker(mMinDate, mDate, getTimeView(), this);
     }
 
     @OnClick(value = {R.id.departure_time, R.id.return_time})

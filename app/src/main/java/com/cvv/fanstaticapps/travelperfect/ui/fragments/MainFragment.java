@@ -116,8 +116,9 @@ public class MainFragment extends BaseFragment implements
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                long id = mAdapter.getItemId(viewHolder.getAdapterPosition());
-                deleteTrip(id);
+                int position = viewHolder.getAdapterPosition();
+                long id = mAdapter.getItemId(position);
+                deleteTrip(id, position);
             }
 
         };
@@ -125,7 +126,7 @@ public class MainFragment extends BaseFragment implements
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
-    private void deleteTrip(final Long id) {
+    private void deleteTrip(final Long id, final int position) {
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -138,6 +139,12 @@ public class MainFragment extends BaseFragment implements
                     where = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
                     getContentResolver().delete(TripContract.ReminderEntry.CONTENT_URI, where, selectionArgs);
                     BroadcastHelper.broadcastAction(getActivity(), ACTION_TRIP_UPDATED);
+                } else {
+                    if (position != -1) {
+                        mAdapter.notifyItemChanged(position);
+                    } else {
+                        mAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         };
@@ -159,7 +166,7 @@ public class MainFragment extends BaseFragment implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == DetailActivity.RESULT_DELETE
                 && data.hasExtra(DetailFragment.ARGS_TRIP_ID)) {
-            deleteTrip(data.getLongExtra(DetailFragment.ARGS_TRIP_ID, -1));
+            deleteTrip(data.getLongExtra(DetailFragment.ARGS_TRIP_ID, -1), -1);
         }
     }
 

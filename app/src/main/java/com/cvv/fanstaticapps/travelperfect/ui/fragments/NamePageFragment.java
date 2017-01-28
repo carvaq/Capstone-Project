@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.ui.PhotoTask;
@@ -41,7 +40,7 @@ public class NamePageFragment extends WizardFragment
     public static final int PAGE_POSITION = 0;
 
     @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
+    View mProgressBar;
     @BindView(R.id.error_name)
     View mErrorMessage;
     @BindView(R.id.plain_name_of_place)
@@ -71,7 +70,6 @@ public class NamePageFragment extends WizardFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         enableButtons(false, false, true);
-        mProgressBar.setVisibility(View.INVISIBLE);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getActivity())
                 .addApi(Places.GEO_DATA_API)
@@ -86,6 +84,7 @@ public class NamePageFragment extends WizardFragment
             public void onPlaceSelected(Place place) {
                 Timber.d("Place: %s", place.getName());
                 processPlace(place);
+                mProgressBar.setVisibility(View.VISIBLE);
                 mEditText.getText().clear();
             }
 

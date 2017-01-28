@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/placeholderBackground"
+                android:transitionName="@string/transition_name_trip_image"
                 tools:layout_height="200dp"
                 tools:src="@drawable/ic_image"/>
 
@@ -59,6 +60,7 @@
             android:maxLines="2"
             android:padding="@dimen/frame_padding"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:transitionName="@string/transition_name_trip_name"
             tools:text="Madagascar"/>
 
         <TextView

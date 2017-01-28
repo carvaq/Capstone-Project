@@ -6,9 +6,7 @@
     android:layout_height="match_parent">
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        style="@style/AppTheme.Detail.Pane">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +29,8 @@
                     android:layout_marginEnd="@dimen/fragment_content_padding"
                     android:layout_marginStart="@dimen/fragment_content_padding"
                     android:hint="@string/label_name_of_place"
-                    android:imeOptions="actionNext"/>
+                    android:imeOptions="actionNext"
+                    android:transitionName="@string/transition_name_trip_name"/>
             </android.support.v7.widget.Toolbar>
 
             <include layout="@layout/content_detail"/>

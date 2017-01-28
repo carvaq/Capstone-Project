@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:scaleType="centerCrop"
+            android:transitionName="@string/transition_name_trip_image"
             app:layout_collapseMode="parallax"
             app:layout_collapseParallaxMultiplier="0.2"
             tools:background="@android:color/darker_gray"

@@ -2,4 +2,5 @@
 <resources>
     <item name="list_item_db_id" type="id"/>
     <item name="card_view" type="id"/>
+    <item name="detail_pane" type="id"/>
 </resources>

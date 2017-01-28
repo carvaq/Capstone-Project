@@ -3,7 +3,13 @@ package com.cvv.fanstaticapps.travelperfect.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.ui.SelectionListener;
@@ -39,12 +45,12 @@ public class MainActivity extends BaseActivity implements SelectionListener {
         }
 
         if (getIntent().hasExtra(DetailFragment.ARGS_TRIP_ID)) {
-            onItemSelected(getIntent().getLongExtra(DetailFragment.ARGS_TRIP_ID, 0));
+            onItemSelected(getIntent().getLongExtra(DetailFragment.ARGS_TRIP_ID, 0), null, null);
         }
     }
 
     @Override
-    public void onItemSelected(long id) {
+    public void onItemSelected(long id, ImageView transView1, TextView transView2) {
         if (mDualPane) {
             DetailFragment detailFragment = DetailFragment.newInstance(id, false);
             getSupportFragmentManager()
@@ -54,7 +60,16 @@ public class MainActivity extends BaseActivity implements SelectionListener {
         } else {
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra(DetailFragment.ARGS_TRIP_ID, id);
-            mMainFragment.startActivityForResult(intent, MainFragment.REQUEST_CODE);
+
+            if (transView1 != null && transView2 != null) {
+                ActivityOptionsCompat activityOptions =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                                new Pair<View, String>(transView1, getString(R.string.transition_name_trip_image)),
+                                new Pair<View, String>(transView2, getString(R.string.transition_name_trip_name)));
+                ActivityCompat.startActivityForResult(this, intent, MainFragment.REQUEST_CODE, activityOptions.toBundle());
+            } else {
+                mMainFragment.startActivityForResult(intent, MainFragment.REQUEST_CODE);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -48,6 +49,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     private static final int IDX_COL_IMAGE_URL = 3;
     private static final int IDX_COL_ATTRIBUTIONS = 4;
     private static final int IDX_COL_PROGRESS = 5;
+    private static final String TRANSITION_NAME_IMAGE = "transitionImage%s";
+    private static final String TRANSITION_NAME_TITLE = "transitionTitle%s";
     private Cursor mCursor;
     private TripViewListener mTripViewListener;
     private LayoutInflater mLayoutInflater;
@@ -90,6 +93,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         holder.mTitle.setText(title);
         holder.mProgressBar.setProgress(progress);
         applyImage(holder, imageUrl, title);
+
+        ViewCompat.setTransitionName(holder.mTitle, String.format(TRANSITION_NAME_TITLE, position));
+        ViewCompat.setTransitionName(holder.mImage, String.format(TRANSITION_NAME_IMAGE, position));
     }
 
     private void applyImage(ViewHolder holder, String imageUrl, String title) {
@@ -152,7 +158,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     }
 
     public interface TripViewListener {
-        void onDetailOpenClicked(Long id, int position);
+        void onDetailOpenClicked(Long id, int position, ImageView tripImage, TextView tripTitle);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -182,7 +188,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         public void onClick(View v) {
             int position = getAdapterPosition();
             long itemId = TripAdapter.this.getItemId(position);
-            mTripViewListener.onDetailOpenClicked(itemId, position);
+            mTripViewListener.onDetailOpenClicked(itemId, position, mImage, mTitle);
         }
     }
 }

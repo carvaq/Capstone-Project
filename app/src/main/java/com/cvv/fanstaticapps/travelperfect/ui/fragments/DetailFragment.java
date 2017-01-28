@@ -67,6 +67,8 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     TextView mReturnAdd;
     @BindView(R.id.item_container)
     LinearLayout mItemContainer;
+    @BindView(R.id.detail_pane)
+    View mDetailPane;
     @BindView(R.id.image)
     @Nullable
     ImageView mImage;
@@ -76,9 +78,6 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     @BindView(R.id.inner_toolbar)
     @Nullable
     Toolbar mInnerToolbar;
-    @BindView(R.id.overlaying_view)
-    @Nullable
-    View mOverlayingView;
 
 
     TripBuilder mTripBuilder = new TripBuilder();
@@ -278,9 +277,9 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
                     .into(mImage);
         }
 
-        if (mOverlayingView != null) {
+        if (getView().findViewById(R.id.fragment_detail_with_card_view) != null) {
             CoordinatorLayout.LayoutParams params =
-                    (CoordinatorLayout.LayoutParams) mOverlayingView.getLayoutParams();
+                    (CoordinatorLayout.LayoutParams) mDetailPane.getLayoutParams();
             AppBarLayout.ScrollingViewBehavior behavior =
                     (AppBarLayout.ScrollingViewBehavior) params.getBehavior();
             behavior.setOverlayTop(height / 2);

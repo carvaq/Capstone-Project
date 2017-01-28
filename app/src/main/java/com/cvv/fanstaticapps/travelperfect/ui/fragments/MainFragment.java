@@ -19,6 +19,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.database.TripContract;
@@ -211,7 +213,7 @@ public class MainFragment extends BaseFragment implements
                 @Override
                 public void run() {
                     long id = cursor.getLong(TripAdapter.IDX_COL_ID);
-                    ((MainActivity) getActivity()).onItemSelected(id);
+                    ((MainActivity) getActivity()).onItemSelected(id, null, null);
                 }
             });
         }
@@ -223,8 +225,8 @@ public class MainFragment extends BaseFragment implements
     }
 
     @Override
-    public void onDetailOpenClicked(Long id, int position) {
-        ((MainActivity) getActivity()).onItemSelected(id);
+    public void onDetailOpenClicked(Long id, int position, ImageView tripImage, TextView tripTitle) {
+        ((MainActivity) getActivity()).onItemSelected(id, tripImage, tripTitle);
         mLastSelectedPosition = position;
     }
 }

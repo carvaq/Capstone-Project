@@ -33,6 +33,7 @@ public class DetailActivity extends BaseActivity {
             boolean deleteAsDiscard = getIntent().getBooleanExtra(DetailFragment.ARGS_DISCARD_EQUALS_DELETE, false);
             mDetailFragment.initialize(tripId, deleteAsDiscard);
         }
+        supportPostponeEnterTransition();
     }
 
     @Override

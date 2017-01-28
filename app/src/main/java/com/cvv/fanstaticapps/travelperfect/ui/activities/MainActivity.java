@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +22,7 @@ public class MainActivity extends BaseActivity implements SelectionListener {
     @BindBool(R.bool.dual_pane)
     boolean mDualPane;
 
-    private Fragment mMainFragment;
+    private MainFragment mMainFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,11 +40,12 @@ public class MainActivity extends BaseActivity implements SelectionListener {
                     .add(R.id.fragment_main_container, mMainFragment)
                     .commit();
         } else {
-            mMainFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_main_container);
+            mMainFragment = (MainFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.fragment_main_container);
         }
 
         if (getIntent().hasExtra(DetailFragment.ARGS_TRIP_ID)) {
-            onItemSelected(getIntent().getLongExtra(DetailFragment.ARGS_TRIP_ID, 0), null, null);
+            mMainFragment.selectItemForId(getIntent().getLongExtra(DetailFragment.ARGS_TRIP_ID, -1));
         }
     }
 

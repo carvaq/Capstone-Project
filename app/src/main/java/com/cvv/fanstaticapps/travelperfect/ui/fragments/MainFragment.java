@@ -19,6 +19,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -77,6 +78,7 @@ public class MainFragment extends BaseFragment implements
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null) {
             mLastSelectedPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
+            mAdapter.onRestoreInstanceState(savedInstanceState);
         }
         mAdapter = new TripAdapter(getActivity(), this, mColumnSize, mDualPane);
 
@@ -161,6 +163,8 @@ public class MainFragment extends BaseFragment implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(LAST_SELECTED_POSITION, mLastSelectedPosition);
+
+        mAdapter.onSaveInstanceState(outState);
     }
 
     @Override
@@ -191,32 +195,41 @@ public class MainFragment extends BaseFragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data.getCount() > 0) {
-            mEmptyScreenMessage.setVisibility(View.GONE);
-        } else {
-            mEmptyScreenMessage.setVisibility(View.VISIBLE);
-        }
         mAdapter.swapCursor(data);
         if (mLastSelectedPosition == RecyclerView.NO_POSITION) {
             mLastSelectedPosition = 0;
+            mRecyclerView.smoothScrollToPosition(mLastSelectedPosition);
         }
 
-        if (mDualPane) {
-            openDetailFragment(data);
-        }
-        mRecyclerView.smoothScrollToPosition(mLastSelectedPosition);
-    }
-
-    private void openDetailFragment(final Cursor cursor) {
-        if (cursor != null && cursor.moveToPosition(mLastSelectedPosition)) {
-            mHandler.post(new Runnable() {
+        if (data.getCount() == 0) {
+            getActivity().supportStartPostponedEnterTransition();
+            mEmptyScreenMessage.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyScreenMessage.setVisibility(View.GONE);
+            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
-                public void run() {
-                    long id = cursor.getLong(TripAdapter.IDX_COL_ID);
-                    ((MainActivity) getActivity()).onItemSelected(id, null, null);
+                public boolean onPreDraw() {
+                    if (mRecyclerView.getChildCount() > 0) {
+                        mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                        int itemPosition = mAdapter.getSelectedItemPosition();
+                        if (mDualPane) {
+                            selectItemForPosition(itemPosition);
+                        }
+                        return true;
+                    }
+                    return false;
                 }
             });
         }
+    }
+
+    public void selectItemForPosition(int position) {
+        if (RecyclerView.NO_POSITION == position) position = 0;
+        mAdapter.selectView(mRecyclerView.findViewHolderForAdapterPosition(position));
+    }
+
+    public void selectItemForId(long id) {
+        mAdapter.selectView(mRecyclerView.findViewHolderForItemId(id));
     }
 
     @Override

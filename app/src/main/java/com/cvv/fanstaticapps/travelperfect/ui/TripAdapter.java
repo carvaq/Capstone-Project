@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -12,6 +13,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -57,6 +59,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     private Context mContext;
     private int mWidth;
     private int mHeight;
+    final private ItemChoiceManager mICM;
 
     public TripAdapter(Context context, TripViewListener tripViewListener, int numColumns, boolean dualPane) {
         mTripViewListener = tripViewListener;
@@ -69,6 +72,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         }
         mWidth /= numColumns;
         mHeight = UiUtils.getProportionalHeight(mWidth);
+        mICM = new ItemChoiceManager(this);
+        mICM.setChoiceMode(dualPane ? AbsListView.CHOICE_MODE_SINGLE :
+                AbsListView.CHOICE_MODE_NONE);
     }
 
     @Override
@@ -96,6 +102,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
         ViewCompat.setTransitionName(holder.mTitle, String.format(TRANSITION_NAME_TITLE, position));
         ViewCompat.setTransitionName(holder.mImage, String.format(TRANSITION_NAME_IMAGE, position));
+
+        mICM.onBindViewHolder(holder, position);
     }
 
     private void applyImage(ViewHolder holder, String imageUrl, String title) {
@@ -140,6 +148,18 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         }
     }
 
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        mICM.onRestoreInstanceState(savedInstanceState);
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        mICM.onSaveInstanceState(outState);
+    }
+
+    public int getSelectedItemPosition() {
+        return mICM.getSelectedItemPosition();
+    }
+
     @Override
     public int getItemCount() {
         if (null == mCursor) return 0;
@@ -155,6 +175,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
+    }
+
+    public void selectView(RecyclerView.ViewHolder viewHolder) {
+        if (viewHolder instanceof ViewHolder) {
+            ViewHolder holder = (ViewHolder) viewHolder;
+            holder.onClick(holder.itemView);
+        }
     }
 
     public interface TripViewListener {
@@ -189,6 +216,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             int position = getAdapterPosition();
             long itemId = TripAdapter.this.getItemId(position);
             mTripViewListener.onDetailOpenClicked(itemId, position, mImage, mTitle);
+            mICM.onClick(this);
         }
     }
 }

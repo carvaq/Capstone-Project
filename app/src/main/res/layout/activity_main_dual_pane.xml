@@ -22,12 +22,12 @@
             android:layout_height="match_parent"
             android:layout_weight="3"/>
 
-
         <FrameLayout
             android:id="@+id/fragment_detail_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:padding="@dimen/fragment_content_padding"/>
+
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -2,3 +2,4 @@
 config.gradle
 client_secret.json
 /src/main/play
+google-services.json

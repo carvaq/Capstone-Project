@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
@@ -31,6 +30,8 @@ import com.cvv.fanstaticapps.travelperfect.ui.TripAdapter;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.CreateWizardActivity;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.DetailActivity;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.MainActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import butterknife.BindBool;
 import butterknife.BindInt;
@@ -59,8 +60,8 @@ public class MainFragment extends BaseFragment implements
     View mEmptyScreenMessage;
     @BindView(R.id.reveal_effect)
     View mRevealEffect;
-
-    private Handler mHandler = new Handler();
+    @BindView(R.id.adView)
+    AdView mAdView;
 
     private TripAdapter mAdapter;
     private int mLastSelectedPosition;
@@ -91,6 +92,8 @@ public class MainFragment extends BaseFragment implements
 
         getActivity().getSupportLoaderManager().initLoader(ID_LOADER, null, this);
 
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     @OnClick(R.id.fab)

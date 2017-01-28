@@ -77,6 +77,7 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     @Nullable
     Toolbar mInnerToolbar;
     @BindView(R.id.overlaying_view)
+    @Nullable
     View mOverlayingView;
 
 

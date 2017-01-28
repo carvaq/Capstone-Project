@@ -81,6 +81,7 @@ public abstract class DatePageFragment extends WizardFragment implements DateDia
     public void onTimestampDefined(long timestamp, boolean departure) {
         mTimestamp = timestamp;
         mError.setVisibility(View.INVISIBLE);
+        mAdd.setFocusable(false);
         mAdd.setVisibility(View.GONE);
     }
 }

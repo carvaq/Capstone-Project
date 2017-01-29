@@ -19,10 +19,15 @@ import com.cvv.fanstaticapps.travelperfect.ui.fragments.NamePageFragment;
 import com.cvv.fanstaticapps.travelperfect.ui.fragments.ReturnPageFragment;
 import com.cvv.fanstaticapps.travelperfect.ui.fragments.WizardFragment;
 
+import butterknife.BindBool;
+
 public class CreateWizardActivity extends BaseActivity implements WizardFragment.OnUserInputSetListener {
 
     private static final String EXTRA_CURRENT_POSITION = "current_position";
     private static final String EXTRA_TRIP_BUILDER = "trip_builder";
+
+    @BindBool(R.bool.dual_pane)
+    boolean mDualPane;
 
     private TripBuilder mTripBuilder;
     private int mCurrentPosition;
@@ -64,7 +69,12 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
     private void createTripAndShowDetail() {
         Uri uri = getContentResolver().insert(TripContract.TripEntry.CONTENT_URI, mTripBuilder.getTripContentValues());
         long tripId = ContentUris.parseId(uri);
-        Intent intent = new Intent(this, DetailActivity.class);
+        Intent intent;
+        if (mDualPane) {
+            intent = new Intent(this, MainActivity.class);
+        } else {
+            intent = new Intent(this, DetailActivity.class);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         intent.putExtra(DetailFragment.ARGS_DISCARD_EQUALS_DELETE, true);
         intent.putExtra(DetailFragment.ARGS_TRIP_ID, tripId);

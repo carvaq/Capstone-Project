@@ -63,22 +63,33 @@ public class NamePageFragment extends WizardFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_name_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_name_page, container, false);
+        android.app.FragmentManager fm = getActivity().getFragmentManager();
+
+        mPlaceAutocompleteFragment = (PlaceAutocompleteFragment)
+                fm.findFragmentById(R.id.place_autocomplete_fragment);
+        if (mPlaceAutocompleteFragment == null) {
+            mPlaceAutocompleteFragment = new PlaceAutocompleteFragment();
+            fm.beginTransaction()
+                    .add(R.id.place_autocomplete_fragment, mPlaceAutocompleteFragment)
+                    .commit();
+
+            mGoogleApiClient = new GoogleApiClient
+                    .Builder(getActivity())
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .enableAutoManage(getActivity(), this)
+                    .build();
+
+        }
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         enableButtons(false, false, true);
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(getActivity())
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(getActivity(), this)
-                .build();
 
-        mPlaceAutocompleteFragment = (PlaceAutocompleteFragment) getActivity()
-                .getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         mPlaceAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {

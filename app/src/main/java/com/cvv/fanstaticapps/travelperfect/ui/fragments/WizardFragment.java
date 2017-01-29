@@ -36,6 +36,7 @@ public abstract class WizardFragment extends Fragment {
     View mForwardButton;
     @BindView(R.id.navigation_bar)
     View mNavigationBar;
+
     private Unbinder mUnbinder;
 
     @Override

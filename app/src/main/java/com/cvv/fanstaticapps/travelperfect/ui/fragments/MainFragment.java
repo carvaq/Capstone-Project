@@ -77,11 +77,13 @@ public class MainFragment extends BaseFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mAdapter = new TripAdapter(getActivity(), this, mColumnSize, mDualPane);
+
         if (savedInstanceState != null) {
             mLastSelectedPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
             mAdapter.onRestoreInstanceState(savedInstanceState);
         }
-        mAdapter = new TripAdapter(getActivity(), this, mColumnSize, mDualPane);
 
         RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(mColumnSize, StaggeredGridLayoutManager.VERTICAL);
 

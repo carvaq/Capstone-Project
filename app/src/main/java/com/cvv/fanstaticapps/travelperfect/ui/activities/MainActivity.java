@@ -2,6 +2,7 @@ package com.cvv.fanstaticapps.travelperfect.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -43,7 +44,11 @@ public class MainActivity extends BaseActivity implements SelectionListener {
             mMainFragment = (MainFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.fragment_main_container);
         }
+    }
 
+    @Override
+    public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
         if (getIntent().hasExtra(DetailFragment.ARGS_TRIP_ID)) {
             mMainFragment.selectItemForId(getIntent().getLongExtra(DetailFragment.ARGS_TRIP_ID, -1));
         }

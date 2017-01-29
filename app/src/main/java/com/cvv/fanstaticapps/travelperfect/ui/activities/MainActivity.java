@@ -69,7 +69,6 @@ public class MainActivity extends BaseActivity implements SelectionListener {
             if (transView1 != null && transView2 != null) {
                 ActivityOptionsCompat activityOptions =
                         ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                                new Pair<View, String>(transView1, getString(R.string.transition_name_trip_image)),
                                 new Pair<View, String>(transView2, getString(R.string.transition_name_trip_name)));
                 ActivityCompat.startActivityForResult(this, intent, MainFragment.REQUEST_CODE, activityOptions.toBundle());
             } else {

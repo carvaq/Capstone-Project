@@ -27,13 +27,14 @@ public class DetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
         mDetailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detail_fragment);
+
         if (savedInstanceState == null) {
             long tripId = getIntent().getLongExtra(DetailFragment.ARGS_TRIP_ID, -1);
             boolean deleteAsDiscard = getIntent().getBooleanExtra(DetailFragment.ARGS_DISCARD_EQUALS_DELETE, false);
             mDetailFragment.initialize(tripId, deleteAsDiscard);
         }
-        supportPostponeEnterTransition();
     }
 
     @Override

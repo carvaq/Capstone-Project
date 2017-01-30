@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.github.triplet.play'
 
 apply from: 'config.gradle'
+apply from: 'defaul_config.gradle'
 
 android {
     compileSdkVersion 25
@@ -11,7 +12,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 25
 
-        versionCode 9
+        versionCode 11
         versionName "1.0"
 
         vectorDrawables.useSupportLibrary = true

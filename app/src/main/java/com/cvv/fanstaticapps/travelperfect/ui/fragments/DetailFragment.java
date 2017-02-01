@@ -26,6 +26,7 @@ import com.cvv.fanstaticapps.travelperfect.database.TripContract;
 import com.cvv.fanstaticapps.travelperfect.ui.BroadcastHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.DateDialogHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.ListItemHelper;
+import com.cvv.fanstaticapps.travelperfect.ui.ReminderHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.UiUtils;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.DetailActivity;
 import com.squareup.picasso.Picasso;
@@ -78,12 +79,17 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
     @BindView(R.id.inner_toolbar)
     @Nullable
     Toolbar mInnerToolbar;
+    @BindView(R.id.add_reminder)
+    TextView mAddReminder;
+    @BindView(R.id.reminder)
+    TextView mReminder;
 
 
     TripBuilder mTripBuilder = new TripBuilder();
 
     private DateDialogHelper mDialogHelper;
     private ListItemHelper mListItemHelper;
+    private ReminderHelper mReminderHelper;
 
     private long mTripId;
     private boolean mDeleteAsDiscard;
@@ -110,6 +116,7 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         super.onViewCreated(view, savedInstanceState);
         mDialogHelper = new DateDialogHelper(getActivity());
         mListItemHelper = new ListItemHelper(getActivity(), mItemContainer);
+        mReminderHelper = new ReminderHelper(getActivity(), mAddReminder, mReminder);
 
         if (mToolbar != null) {
             mToolbar.setTitle(" ");
@@ -167,6 +174,11 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         } else {
             mDialogHelper.showTimePicker(mReturnTime, mTripBuilder.getReturn(), this);
         }
+    }
+
+    @OnClick(value = {R.id.reminder, R.id.add_reminder})
+    void changeReminder() {
+        mReminderHelper.changeReminder();
     }
 
     @Override
@@ -255,6 +267,7 @@ public class DetailFragment extends BaseFragment implements DateDialogHelper.OnD
         mEditText.setText(mTripBuilder.getTitle());
         setDateTimeInView(mTripBuilder.getDeparture(), mDepartureDate, mDepartureTime);
         setDateTimeInView(mTripBuilder.getReturn(), mReturnDate, mReturnTime);
+        mReminderHelper.prepareReminder(mTripId, mTripBuilder.getDeparture());
         if (mTripBuilder.getReturn() > 0) {
             mReturnAdd.setVisibility(View.GONE);
         }

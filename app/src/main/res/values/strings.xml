@@ -27,4 +27,23 @@
     <string name="add_widget">Add widget</string>
     <string name="hint_no_items_for_trip">You don\'t have anything pending to do for this trip</string>
     <string name="btn_save">Save</string>
+    <string name="btn_add_reminder">Add Reminder</string>
+
+    <string name="plural_day_singular">Day</string>
+    <string name="plural_day_plurals">Days</string>
+    <string name="plural_hour_singular">Hour</string>
+    <string name="plural_hour_plurals">Hours</string>
+    <string name="reminder_text">You\'ll be reminded at %s</string>
+
+    <plurals name="day">
+        <item quantity="zero">@string/plural_day_plurals</item>
+        <item quantity="one">@string/plural_day_singular</item>
+        <item quantity="other">@string/plural_day_plurals</item>
+    </plurals>
+
+    <plurals name="hour">
+        <item quantity="zero">@string/plural_hour_plurals</item>
+        <item quantity="one">@string/plural_hour_singular</item>
+        <item quantity="other">@string/plural_hour_plurals</item>
+    </plurals>
 </resources>

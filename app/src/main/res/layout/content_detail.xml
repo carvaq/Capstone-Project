@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
@@ -9,6 +10,21 @@
 
     <include
         layout="@layout/dates_section"/>
+
+    <Button
+        android:id="@+id/add_reminder"
+        style="@style/AppTheme.ButtonWithImage"
+        android:drawableStart="@drawable/ic_add_colored"
+        android:text="@string/btn_add_reminder"/>
+
+    <TextView
+        android:id="@+id/reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:visibility="gone"
+        tools:text="I'm a reminder"
+        tools:visibility="visible"/>
 
     <LinearLayout
         android:layout_width="match_parent"

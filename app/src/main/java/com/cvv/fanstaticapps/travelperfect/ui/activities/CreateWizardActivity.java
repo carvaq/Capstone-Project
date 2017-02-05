@@ -82,8 +82,7 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
         FragmentTransaction fragmentTransaction = getFragmentManager()
                 .beginTransaction();
         if (mCurrentPosition != 0) {
-            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
-                    R.anim.enter_from_left, R.anim.exit_to_right)
+            fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
                     .addToBackStack(fragment.toString());
 
         }

@@ -14,6 +14,8 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import timber.log.Timber;
+
 /**
  * Created by Carla
  * Date: 01/02/2017
@@ -21,9 +23,10 @@ import org.joda.time.format.DateTimeFormatter;
  */
 
 public class ReminderHelper {
-    private static final String WHERE_TRIP_FK = TripContract.ListItemEntry.COLUMN_TRIP_FK + "=?";
+    private static final String WHERE_TRIP_FK = TripContract.ReminderEntry.COLUMN_TRIP_FK + "=?";
     private static final String TAG_REMINDER = "TAG_REMINDER";
-    private DateTimeFormatter mDateFormatter = DateTimeFormat.shortDateTime();
+    private static final String WHERE_REMINDER_ID = TripContract.ReminderEntry._ID + "=?";
+    private DateTimeFormatter mDateFormatter = DateTimeFormat.forPattern("dd. MM YYYY HH:mm");
 
     private FragmentActivity mActivity;
     private TextView mAddReminder;
@@ -45,34 +48,55 @@ public class ReminderHelper {
             public void onReminderSet(DateTime dateTime) {
                 mReminder.setTimestamp(dateTime.getMillis());
                 if (mReminder.getId() != null) {
-                    mActivity.getContentResolver()
-                            .update(TripContract.ReminderEntry.buildReminderUri(mReminder.getId()), mReminder.getContentValues(), null, null);
+                    String[] selectionArgs = new String[]{String.valueOf(mReminder.getId())};
+                    int rowsUpdated = mActivity.getContentResolver()
+                            .update(TripContract.ReminderEntry.CONTENT_URI, mReminder.getContentValues(),
+                                    WHERE_REMINDER_ID, selectionArgs);
+                    Timber.d("Updated %s rows", rowsUpdated);
                 } else {
                     mActivity.getContentResolver()
                             .insert(TripContract.ReminderEntry.CONTENT_URI, mReminder.getContentValues());
                 }
                 fetchReminder(mReminder.getTripId());
-                mAddReminder.setVisibility(View.GONE);
-                mReminderView.setText(mActivity.getString(R.string.reminder_text, dateTime.toString(mDateFormatter)));
-                mReminderView.setVisibility(View.VISIBLE);
+                applyReminderToViews(dateTime);
             }
 
             @Override
             public void deleteReminder() {
-                mActivity.getContentResolver()
-                        .delete(TripContract.ReminderEntry.buildReminderUri(mReminder.getId()), null, null);
+                String[] selectionArgs = new String[]{String.valueOf(mReminder.getId())};
+                int rowsDeleted = mActivity.getContentResolver()
+                        .delete(TripContract.ReminderEntry.CONTENT_URI, WHERE_REMINDER_ID, selectionArgs);
+
+                Timber.d("Deleted %s rows", rowsDeleted);
+
                 mReminder.setId(null);
                 mReminder.setTimestamp(0L);
-                mAddReminder.setVisibility(View.VISIBLE);
-                mReminderView.setVisibility(View.GONE);
+                removeReminderFromViews();
             }
         });
         dialogFragment.show(mActivity.getSupportFragmentManager(), TAG_REMINDER);
     }
 
+    private void removeReminderFromViews() {
+        mAddReminder.setVisibility(View.VISIBLE);
+        mReminderView.setVisibility(View.GONE);
+    }
+
+    private void applyReminderToViews(DateTime dateTime) {
+        mAddReminder.setVisibility(View.GONE);
+        mReminderView.setText(mActivity.getString(R.string.reminder_text, dateTime.toString(mDateFormatter)));
+        mReminderView.setVisibility(View.VISIBLE);
+    }
+
     public void prepareReminder(long tripId, long arrivalTimestamp) {
         mArrivalTimestamp = arrivalTimestamp;
         fetchReminder(tripId);
+        if (mReminder.getTimestamp() != 0) {
+            applyReminderToViews(new DateTime(mReminder.getTimestamp()));
+        } else {
+            removeReminderFromViews();
+        }
+
     }
 
     private void fetchReminder(long tripId) {
@@ -80,6 +104,7 @@ public class ReminderHelper {
                 WHERE_TRIP_FK, new String[]{String.valueOf(tripId)}, null);
         if (cursor != null && cursor.moveToFirst()) {
             mReminder = new Reminder(cursor);
+            mReminder.setTripId(tripId);
             cursor.close();
         } else {
             mReminder = new Reminder(0L, tripId);

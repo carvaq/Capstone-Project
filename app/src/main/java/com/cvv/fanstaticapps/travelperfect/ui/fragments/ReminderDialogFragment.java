@@ -137,14 +137,12 @@ public class ReminderDialogFragment extends DialogFragment {
     }
 
     private DateTime getReminderTimestamp(int number, boolean isHours) {
-        DateTime dateTime = DateTime.now();
-        dateTime.withMillis(mTimestamp);
+        DateTime dateTime = new DateTime(mTimestamp);
         if (isHours) {
-            dateTime.minusHours(number);
+            return dateTime.minusHours(number);
         } else {
-            dateTime.minusDays(number);
+            return dateTime.minusDays(number);
         }
-        return dateTime;
     }
 
 

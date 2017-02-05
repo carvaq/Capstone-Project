@@ -22,6 +22,7 @@ public class Reminder {
 
     public Reminder(Cursor cursor) {
         mId = cursor.getLong(cursor.getColumnIndex(TripContract.ReminderEntry._ID));
+        mTripId = cursor.getLong(cursor.getColumnIndex(TripContract.ReminderEntry.COLUMN_TRIP_FK));
         mTimestamp = cursor.getLong(cursor.getColumnIndex(TripContract.ReminderEntry.COLUMN_WHEN));
     }
 
@@ -50,7 +51,7 @@ public class Reminder {
     }
 
     public ContentValues getContentValues() {
-        ContentValues contentValues = new ContentValues(1);
+        ContentValues contentValues = new ContentValues(2);
         contentValues.put(TripContract.ReminderEntry.COLUMN_WHEN, mTimestamp);
         contentValues.put(TripContract.ReminderEntry.COLUMN_TRIP_FK, mTripId);
         return contentValues;

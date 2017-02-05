@@ -1,13 +1,13 @@
 package com.cvv.fanstaticapps.travelperfect.ui.activities;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 
 import com.cvv.fanstaticapps.travelperfect.R;
@@ -79,10 +79,11 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
 
     private void updateCurrentFragment() {
         Fragment fragment = getCurrentFragment();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+        FragmentTransaction fragmentTransaction = getFragmentManager()
                 .beginTransaction();
         if (mCurrentPosition != 0) {
-            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                    R.anim.enter_from_left, R.anim.exit_to_right)
                     .addToBackStack(fragment.toString());
 
         }

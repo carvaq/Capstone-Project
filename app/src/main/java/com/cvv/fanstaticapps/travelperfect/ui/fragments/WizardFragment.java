@@ -1,9 +1,9 @@
 package com.cvv.fanstaticapps.travelperfect.ui.fragments;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.RelativeLayout;
 

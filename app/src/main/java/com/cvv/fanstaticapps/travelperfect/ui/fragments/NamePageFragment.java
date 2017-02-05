@@ -1,10 +1,12 @@
 package com.cvv.fanstaticapps.travelperfect.ui.fragments;
 
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +66,7 @@ public class NamePageFragment extends WizardFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_name_page, container, false);
-        android.app.FragmentManager fm = getActivity().getFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
 
         mPlaceAutocompleteFragment = (PlaceAutocompleteFragment)
                 fm.findFragmentById(R.id.place_autocomplete_fragment);
@@ -78,7 +80,7 @@ public class NamePageFragment extends WizardFragment
                     .Builder(getActivity())
                     .addApi(Places.GEO_DATA_API)
                     .addApi(Places.PLACE_DETECTION_API)
-                    .enableAutoManage(getActivity(), this)
+                    .enableAutoManage((FragmentActivity) getActivity(), this)
                     .build();
 
         }

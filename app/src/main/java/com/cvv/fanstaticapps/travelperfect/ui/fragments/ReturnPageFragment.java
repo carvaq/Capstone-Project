@@ -2,7 +2,6 @@ package com.cvv.fanstaticapps.travelperfect.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
@@ -25,8 +24,8 @@ public class ReturnPageFragment extends DatePageFragment {
     @BindView(R.id.return_time)
     TextView mReturnTime;
 
-    public static Fragment newInstance(long departure) {
-        Fragment fragment = new ReturnPageFragment();
+    public static DatePageFragment newInstance(long departure) {
+        DatePageFragment fragment = new ReturnPageFragment();
         Bundle bundle = new Bundle();
         bundle.putLong(ARGS_DEPARTURE, departure);
         fragment.setArguments(bundle);

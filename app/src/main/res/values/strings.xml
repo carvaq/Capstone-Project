@@ -34,6 +34,8 @@
     <string name="plural_hour_singular">Hour</string>
     <string name="plural_hour_plurals">Hours</string>
     <string name="reminder_text">You\'ll be reminded at %s</string>
+    <string name="reminder_no_done_yet">You are at %d%% for this trip. You only need to prepare following things:</string>
+    <string name="reminder_you_are_all_done">You are all done! Have a nice trip!</string>
 
     <plurals name="day">
         <item quantity="zero">@string/plural_day_plurals</item>

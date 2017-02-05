@@ -1,4 +1,4 @@
-package com.cvv.fanstaticapps.travelperfect.ui;
+package com.cvv.fanstaticapps.travelperfect.ui.helpers;
 
 import android.content.Context;
 import android.content.Intent;

@@ -25,11 +25,11 @@ import android.widget.TextView;
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.database.TripContract;
 import com.cvv.fanstaticapps.travelperfect.ui.AnimationUtils;
-import com.cvv.fanstaticapps.travelperfect.ui.BroadcastHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.TripAdapter;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.CreateWizardActivity;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.DetailActivity;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.MainActivity;
+import com.cvv.fanstaticapps.travelperfect.ui.helpers.BroadcastHelper;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 

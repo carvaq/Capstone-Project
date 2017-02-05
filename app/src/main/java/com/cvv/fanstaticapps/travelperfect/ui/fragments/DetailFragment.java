@@ -23,12 +23,12 @@ import android.widget.TextView;
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.database.TripBuilder;
 import com.cvv.fanstaticapps.travelperfect.database.TripContract;
-import com.cvv.fanstaticapps.travelperfect.ui.BroadcastHelper;
-import com.cvv.fanstaticapps.travelperfect.ui.DateDialogHelper;
-import com.cvv.fanstaticapps.travelperfect.ui.ListItemHelper;
-import com.cvv.fanstaticapps.travelperfect.ui.ReminderHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.UiUtils;
 import com.cvv.fanstaticapps.travelperfect.ui.activities.DetailActivity;
+import com.cvv.fanstaticapps.travelperfect.ui.helpers.BroadcastHelper;
+import com.cvv.fanstaticapps.travelperfect.ui.helpers.DateDialogHelper;
+import com.cvv.fanstaticapps.travelperfect.ui.helpers.ListItemHelper;
+import com.cvv.fanstaticapps.travelperfect.ui.helpers.ReminderHelper;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;

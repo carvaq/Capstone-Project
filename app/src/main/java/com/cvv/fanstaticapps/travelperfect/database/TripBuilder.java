@@ -41,6 +41,7 @@ public class TripBuilder implements Parcelable {
         mFilePath = cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_IMAGE_URL));
         mAttributions = cursor.getString(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_ATTRIBUTIONS));
         mProgress = cursor.getInt(cursor.getColumnIndex(TripContract.TripEntry.COLUMN_PROGRESS));
+        cursor.close();
     }
 
     protected TripBuilder(Parcel in) {

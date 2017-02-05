@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cvv.fanstaticapps.travelperfect.R;
-import com.cvv.fanstaticapps.travelperfect.ui.DateDialogHelper;
+import com.cvv.fanstaticapps.travelperfect.ui.helpers.DateDialogHelper;
 
 import butterknife.BindView;
 import butterknife.OnClick;

@@ -1,6 +1,11 @@
-package com.cvv.fanstaticapps.travelperfect.ui;
+package com.cvv.fanstaticapps.travelperfect.ui.helpers;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +14,7 @@ import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.database.Reminder;
 import com.cvv.fanstaticapps.travelperfect.database.TripContract;
 import com.cvv.fanstaticapps.travelperfect.ui.fragments.ReminderDialogFragment;
+import com.cvv.fanstaticapps.travelperfect.ui.receivers.AlarmReceiver;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -59,6 +65,7 @@ public class ReminderHelper {
                 }
                 fetchReminder(mReminder.getTripId());
                 applyReminderToViews(dateTime);
+                updateNotification();
             }
 
             @Override
@@ -69,6 +76,7 @@ public class ReminderHelper {
 
                 Timber.d("Deleted %s rows", rowsDeleted);
 
+                deleteNotification();
                 mReminder.setId(null);
                 mReminder.setTimestamp(0L);
                 removeReminderFromViews();
@@ -109,5 +117,28 @@ public class ReminderHelper {
         } else {
             mReminder = new Reminder(0L, tripId);
         }
+    }
+
+    private void updateNotification() {
+        PendingIntent pendingIntent = getReminderPendingIntent();
+        AlarmManager alarmManager = (AlarmManager) mActivity.getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, mReminder.getTimestamp(), pendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, mReminder.getTimestamp(), pendingIntent);
+        }
+    }
+
+    private void deleteNotification() {
+        AlarmManager alarmManager = (AlarmManager) mActivity.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(getReminderPendingIntent());
+    }
+
+    private PendingIntent getReminderPendingIntent() {
+        int reminderUpdate = mReminder.getId().intValue();
+        Intent alarmIntent = new Intent(mActivity, AlarmReceiver.class);
+        alarmIntent.putExtra(AlarmReceiver.EXTRA_REMINDER_ID, mReminder.getId());
+        alarmIntent.putExtra(AlarmReceiver.EXTRA_TRIP_ID, mReminder.getTripId());
+        return PendingIntent.getBroadcast(mActivity, reminderUpdate, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

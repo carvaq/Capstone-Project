@@ -9,8 +9,8 @@ import android.widget.RemoteViewsService;
 
 import com.cvv.fanstaticapps.travelperfect.R;
 import com.cvv.fanstaticapps.travelperfect.database.Item;
-import com.cvv.fanstaticapps.travelperfect.ui.ListItemHelper;
 import com.cvv.fanstaticapps.travelperfect.ui.fragments.DetailFragment;
+import com.cvv.fanstaticapps.travelperfect.ui.helpers.ListItemHelper;
 
 
 public class TripRemoteViewsService extends RemoteViewsService {

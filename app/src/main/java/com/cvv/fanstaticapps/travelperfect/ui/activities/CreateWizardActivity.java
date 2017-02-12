@@ -82,7 +82,8 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
         FragmentTransaction fragmentTransaction = getFragmentManager()
                 .beginTransaction();
         if (mCurrentPosition != 0) {
-            fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+            fragmentTransaction
+                    .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
                     .addToBackStack(fragment.toString());
 
         }
@@ -111,7 +112,7 @@ public class CreateWizardActivity extends BaseActivity implements WizardFragment
 
     private void previousPage() {
         mCurrentPosition--;
-        getSupportFragmentManager().popBackStack();
+        getFragmentManager().popBackStack();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(mStatusBarColor[mCurrentPosition]);
         }

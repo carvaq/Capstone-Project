@@ -5,7 +5,7 @@
                     android:initialLayout="@layout/trip_widget"
                     android:minHeight="80dp"
                     android:minWidth="110dp"
-                    android:previewImage="@drawable/example_appwidget_preview"
+                    android:previewImage="@drawable/travel_widget_preview"
                     android:resizeMode="horizontal|vertical"
                     android:widgetCategory="home_screen">
 </appwidget-provider>

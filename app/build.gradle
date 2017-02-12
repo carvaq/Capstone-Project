@@ -31,7 +31,6 @@ android {
         beta {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard_libs.pro', 'proguard_beta.pro'
         }
-
     }
 }
 
